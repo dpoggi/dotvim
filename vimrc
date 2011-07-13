@@ -11,6 +11,7 @@ set directory=~/.vim/tmp
 if has('autocmd')
   autocmd BufRead *.erb set filetype=eruby
   autocmd BufRead *.ru set filetype=ruby
+  autocmd BufRead *.zsh-theme set filetype=zsh
 endif
 
 " This be how we like our backspace
