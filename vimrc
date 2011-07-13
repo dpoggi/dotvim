@@ -21,18 +21,24 @@ set listchars=tab:>-,trail:.,extends:>
 
 " Indentation
 set autoindent
+set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
 filetype plugin indent on
 
-" Python + Java fixes for indentation
+" Java + PHP + Python fixes for indentation
 " Silly goats, 4 space tabs are teh suck
 if has('autocmd')
-  autocmd filetype python set softtabstop=4
-  autocmd filetype python set shiftwidth=4
+  autocmd filetype java set tabstop=4
   autocmd filetype java set softtabstop=4
   autocmd filetype java set shiftwidth=4
+  autocmd filetype php set tabstop=4
+  autocmd filetype php set softtabstop=4
+  autocmd filetype php set shiftwidth=4
+  autocmd filetype python set tabstop=4
+  autocmd filetype python set softtabstop=4
+  autocmd filetype python set shiftwidth=4
 endif
 
 " Line numbering and cursor on current line
@@ -50,6 +56,9 @@ set incsearch
 set hlsearch
 set ignorecase
 set smartcase
+
+" Le NERD Tree
+let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.o$', '\.obj$']
 
 " Buffer mappings
 map <leader>bn :bn<cr>
