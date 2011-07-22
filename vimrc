@@ -76,10 +76,11 @@ map <leader>tp :tabprevious<cr>
 " Le hashrocket!!!
 imap <C-l> <Space>=><Space>
 
-" Random mappings that me likey
-map <leader>z :set invhlsearch<cr>
-map <leader>v :set list!<cr>
+" Mappings for NERD Tree, removing search highlights,
+" and visible whitespace.
 map <leader>n :NERDTreeToggle<cr>
+map <leader>h :set invhlsearch<cr>
+map <leader>v :set list!<cr>
 
 " For Gvim - Inconsolata, no toolbar, xterm-256color, visual bell
 set guifont=Inconsolata:h14.00
