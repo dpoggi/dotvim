@@ -31,16 +31,15 @@ filetype plugin indent on
 
 " Java + PHP + Python fixes for indentation
 " Silly goats, 4 space tabs are teh suck
+function FourSpaceIndent()
+  set tabstop=4
+  set softtabstop=4
+  set shiftwidth=4
+endfunction
 if has('autocmd')
-  autocmd filetype java set tabstop=4
-  autocmd filetype java set softtabstop=4
-  autocmd filetype java set shiftwidth=4
-  autocmd filetype php set tabstop=4
-  autocmd filetype php set softtabstop=4
-  autocmd filetype php set shiftwidth=4
-  autocmd filetype python set tabstop=4
-  autocmd filetype python set softtabstop=4
-  autocmd filetype python set shiftwidth=4
+  autocmd filetype java call FourSpaceIndent()
+  autocmd filetype php call FourSpaceIndent()
+  autocmd filetype python call FourSpaceIndent()
 endif
 
 " Line numbering and cursor on current line
@@ -81,6 +80,21 @@ imap <C-l> <Space>=><Space>
 map <leader>n :NERDTreeToggle<cr>
 map <leader>h :set invhlsearch<cr>
 map <leader>v :set list!<cr>
+
+" I don't always write C/C++, but when I do...
+" I have sexy Vim mappings for make
+function MapMakeShortcuts()
+  map <leader>co :copen<cr>
+  map <leader>cn :cn<cr>
+  map <leader>cp :cp<cr>
+  map <leader>cf :cfirst<cr>
+  map <leader>cl :clast<cr>
+endfunction
+if has('autocmd')
+  autocmd filetype c call MapMakeShortcuts()
+  autocmd filetype cpp call MapMakeShortcuts()
+  autocmd filetype objc call MapMakeShortcuts()
+endif
 
 " For Gvim - Inconsolata, no toolbar, xterm-256color, visual bell
 set guifont=Inconsolata:h14.00
