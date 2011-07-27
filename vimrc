@@ -84,6 +84,7 @@ map <leader>v :set list!<cr>
 " I don't always write C/C++, but when I do...
 " I have sexy Vim mappings for make
 function MapMakeShortcuts()
+  map <leader>m :make<cr>
   map <leader>co :copen<cr>
   map <leader>cn :cn<cr>
   map <leader>cp :cp<cr>
