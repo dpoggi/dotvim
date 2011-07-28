@@ -34,3 +34,9 @@
 [submodule "bundle/thrift"]
 	path = bundle/thrift
 	url = git://github.com/sprsquish/thrift.vim.git
+[submodule "bundle/snipmate"]
+	path = bundle/snipmate
+	url = git://github.com/msanders/snipmate.vim.git
+[submodule "bundle/cocoa"]
+	path = bundle/cocoa
+	url = git://github.com/msanders/cocoa.vim.git
