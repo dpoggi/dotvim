@@ -42,10 +42,12 @@ if has('autocmd')
   autocmd filetype python call FourSpaceIndent()
 endif
 
-" Line numbering and cursor on current line
+" Line numbering and cursor on current line,
+" ruler at the bottom.
 set number
 set numberwidth=5
 set cursorline
+set ruler
 
 " Syntax highlighting
 syntax on
