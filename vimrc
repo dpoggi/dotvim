@@ -23,7 +23,6 @@ set listchars=tab:>-,trail:.,extends:>
 
 " Indentation
 set autoindent
-set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
@@ -32,7 +31,6 @@ filetype plugin indent on
 " Java + PHP + Python fixes for indentation
 " Silly goats, 4 space tabs are teh suck
 function FourSpaceIndent()
-  set tabstop=4
   set softtabstop=4
   set shiftwidth=4
 endfunction
