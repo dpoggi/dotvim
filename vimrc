@@ -19,7 +19,7 @@ endif
 set bs=2
 
 " Visible whitespace :)
-set listchars=tab:>-,trail:.,extends:>
+set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
 
 " Indentation
 set autoindent
