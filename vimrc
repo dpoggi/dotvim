@@ -100,5 +100,4 @@ endif
 " For Gvim - Inconsolata, no toolbar, xterm-256color, visual bell
 set guifont=Inconsolata:h14.00
 set guioptions-=T
-set t_Co=256
 set visualbell
