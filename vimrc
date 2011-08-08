@@ -47,6 +47,11 @@ set numberwidth=5
 set cursorline
 set ruler
 
+" Subtle highlighting for lines over 80 characters,
+" when I get time I'mma script this into a toggle like Goldsrc.
+highlight ScarfaceLine ctermbg=red ctermfg=white guibg=#592929
+match ScarfaceLine /\%81v.\+/
+
 " Syntax highlighting
 syntax on
 colorscheme molokai
