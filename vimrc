@@ -53,8 +53,15 @@ colorscheme molokai
 
 " Subtle highlighting for lines over 80 characters,
 " when I get time I'mma script this into a toggle like Goldsrc.
-highlight ScarfaceLine ctermbg=red ctermfg=white guibg=#FFC4BE guifg=white
-match ScarfaceLine '\%>80v.\+'
+highlight Eighty ctermbg=red ctermfg=white guibg=#FFC4BE guifg=white
+function ToggleEighty()
+  try
+    call matchdelete(g:eighty)
+  catch
+    let g:eighty = matchadd('Eighty', '\%>80v.\+')
+  endtry
+endfunction
+map <leader>l :call ToggleEighty()<cr>
 
 " Search options - highlight while typing,
 " highlight after search, smart case-insensitivity
