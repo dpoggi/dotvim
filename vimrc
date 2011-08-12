@@ -52,14 +52,16 @@ syntax on
 let g:molokai_original=1
 colorscheme molokai
 
-" Subtle highlighting for lines over 80 characters,
-" when I get time I'mma script this into a toggle like Goldsrc.
-highlight Eighty ctermbg=red ctermfg=white guibg=#FFC4BE guifg=white
+" Status line (default from rvm.vim)
+set laststatus=2
+set statusline=[%n]\ %<%.99f\ %h%w%m%r%y%{exists('g:loaded_rvm')?rvm#statusline():''}%=%-16(\ %l,%c-%v\ %)%P
+
+" Toggle highlight lines over 80 characters
 function ToggleEighty()
   try
     call matchdelete(g:eighty)
   catch
-    let g:eighty = matchadd('Eighty', '\%>80v.\+')
+    let g:eighty = matchadd('Error', '\%>80v.\+')
   endtry
 endfunction
 map <leader>l :call ToggleEighty()<cr>
