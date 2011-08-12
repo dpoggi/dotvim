@@ -49,6 +49,7 @@ set ruler
 
 " Syntax highlighting
 syntax on
+let g:molokai_original=1
 colorscheme molokai
 
 " Subtle highlighting for lines over 80 characters,

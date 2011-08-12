@@ -1,11 +1,20 @@
 #!/bin/sh
 # Fetch ze colorschemes, for they are nowhere on Github :(
 
-for file in \
-  https://raw.github.com/vim-scripts/molokai/master/colors/molokai.vim \
-  http://blog.toddwerth.com/entry_files/8/ir_black.vim
+hash wget 2>&- && DCP_GET="wget --no-check-certificate --content-disposition"
+hash curl 2>&- && DCP_GET="curl -kLJO"
+test "$DCP_GET" || { echo >&2 "Error! Couldn't find cURL or Wget!"; exit 1; }
+
+OLD_WD=`pwd`
+cd "$HOME/.vim/colors"
+rm -f *.vim
+
+for URL in \
+  "http://www.vim.org/scripts/download_script.php?src_id=9750" \
+  "http://blog.toddwerth.com/entry_files/8/ir_black.vim"
 do
-  echo "Updating $(basename $file)..."
-  curl -kL -o "$HOME/.vim/colors/$(basename $file)" "$file"
+  $DCP_GET "$URL"
   echo
 done
+
+cd "$OLD_WD"
