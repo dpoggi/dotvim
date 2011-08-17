@@ -117,7 +117,7 @@ function MapMakeShortcuts()
   map <leader>cl :clast<cr>
 endfunction
 if has('autocmd')
-  autocmd filetype c call MapMakeShortcuts()
-  autocmd filetype cpp call MapMakeShortcuts()
-  autocmd filetype objc call MapMakeShortcuts()
+  autocmd FileType c call MapMakeShortcuts()
+  autocmd FileType cpp call MapMakeShortcuts()
+  autocmd FileType objc call MapMakeShortcuts()
 endif
