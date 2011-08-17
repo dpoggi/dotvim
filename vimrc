@@ -12,10 +12,12 @@ set directory=~/.vim/tmp
 
 " Correct bad filetype detection
 if has('autocmd')
-  autocmd BufRead *.erb set filetype=eruby
-  autocmd BufRead *.ru set filetype=ruby
-  autocmd BufRead *.thrift set filetype=thrift
-  autocmd BufRead *.zsh-theme set filetype=zsh
+  autocmd BufRead,BufNewFile *.erb set filetype=eruby
+  autocmd BufRead,BufNewFile *.ru set filetype=ruby
+  autocmd BufRead,BufNewFile *.thrift set filetype=thrift
+  autocmd BufRead,BufNewFile *.zsh-theme set filetype=zsh
+  autocmd BufRead,BufNewFile jquery.*.js set filetype=javascript syntax=jquery
+  autocmd BufRead,BufNewFile *.jquery.js set filetype=javasript syntax=jquery
 endif
 
 " This be how we like our backspace
