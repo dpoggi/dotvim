@@ -1,3 +1,6 @@
+" HAHAHA NO ONE LOVES YOU VI
+set nocompatible
+
 " Initialize pathogen
 call pathogen#infect()
 call pathogen#helptags()
