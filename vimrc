@@ -17,7 +17,7 @@ if has('autocmd')
   autocmd BufRead,BufNewFile *.thrift set filetype=thrift
   autocmd BufRead,BufNewFile *.zsh-theme set filetype=zsh
   autocmd BufRead,BufNewFile jquery.*.js set filetype=javascript syntax=jquery
-  autocmd BufRead,BufNewFile *.jquery.js set filetype=javasript syntax=jquery
+  autocmd BufRead,BufNewFile *.jquery.js set filetype=javascript syntax=jquery
 endif
 
 " This be how we like our backspace
@@ -35,10 +35,12 @@ function TwoSpaceIndent()
   set softtabstop=2
   set shiftwidth=2
 endfunction
+
 function FourSpaceIndent()
   set softtabstop=4
   set shiftwidth=4
 endfunction
+
 if has('autocmd')
   autocmd FileType * call TwoSpaceIndent()
   autocmd FileType java call FourSpaceIndent()
