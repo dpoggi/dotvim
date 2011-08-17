@@ -28,22 +28,25 @@ set listchars=tab:>-,trail:.,nbsp:.
 
 " Indentation
 set autoindent
-set softtabstop=2
-set shiftwidth=2
 set expandtab
 filetype plugin indent on
 
-" Java + PHP + Python fixes for indentation
-" Silly goats, 4 space tabs are teh suck
+function TwoSpaceIndent()
+  set softtabstop=2
+  set shiftwidth=2
+endfunction
 function FourSpaceIndent()
   set softtabstop=4
   set shiftwidth=4
 endfunction
 if has('autocmd')
-  autocmd filetype java call FourSpaceIndent()
-  autocmd filetype php call FourSpaceIndent()
-  autocmd filetype python call FourSpaceIndent()
+  autocmd FileType * call TwoSpaceIndent()
+  autocmd FileType java call FourSpaceIndent()
+  autocmd FileType php call FourSpaceIndent()
+  autocmd FileType python call FourSpaceIndent()
 endif
+
+call TwoSpaceIndent()
 
 " Line numbering and cursor on current line,
 " ruler at the bottom.
