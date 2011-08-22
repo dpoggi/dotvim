@@ -62,9 +62,14 @@ syntax on
 let g:molokai_original=1
 colorscheme molokai
 
-" Status line (default from rvm.vim)
+" Status line
 set laststatus=2
-set statusline=[%n]\ %<%.99f\ %h%w%m%r%y%{exists('g:loaded_rvm')?rvm#statusline():''}%=%-16(\ %l,%c-%v\ %)%P
+set statusline=[%n]
+set statusline+=\ %<%.99f
+set statusline+=\ %h%w%m%r%y
+set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
+set statusline+=%{exists('g:loaded_rvm')?rvm#statusline():''}
+set statusline+=%=%-16(\ %l,%c-%v\ %)%P
 
 " Toggle highlight lines over 80 characters
 function ToggleEighty()
