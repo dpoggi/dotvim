@@ -40,9 +40,6 @@
 [submodule "bundle/cocoa"]
 	path = bundle/cocoa
 	url = git://github.com/msanders/cocoa.vim.git
-[submodule "bundle/scala"]
-	path = bundle/scala
-	url = git://github.com/zoonfafer/vim-scala.git
 [submodule "bundle/jquery"]
 	path = bundle/jquery
 	url = git://github.com/nono/jquery.vim.git
