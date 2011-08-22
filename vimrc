@@ -101,10 +101,11 @@ map <leader>tp :tabprevious<cr>
 imap <C-l> <Space>=><Space>
 
 " Mappings for NERD Tree, removing search highlights,
-" and visible whitespace.
+" visible whitespace, and Command-T.
 map <leader>n :NERDTreeToggle<cr>
 map <leader>h :set invhlsearch<cr>
 map <leader>v :set list!<cr>
+map <leader>tf :CommandTFlush<cr>
 
 " I don't always write C/C++, but when I do...
 " I have sexy Vim mappings for make
