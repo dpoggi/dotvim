@@ -46,6 +46,3 @@
 [submodule "bundle/jquery"]
 	path = bundle/jquery
 	url = git://github.com/nono/jquery.vim.git
-[submodule "pathogen"]
-	path = pathogen
-	url = git://github.com/vim-scripts/pathogen.vim.git
