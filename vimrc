@@ -110,6 +110,7 @@ imap <C-l> <Space>=><Space>
 map <leader>n :NERDTreeToggle<cr>
 map <leader>h :set invhlsearch<cr>
 map <leader>v :set list!<cr>
+map <leader>u :set number!<cr>
 map <leader>tf :CommandTFlush<cr>
 
 " I don't always write C/C++, but when I do...
