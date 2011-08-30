@@ -1,5 +1,8 @@
 " HAHAHA NO ONE LOVES YOU VI
 set nocompatible
+if has('mouse')
+  set mouse=a
+endif
 
 " Initialize pathogen
 call pathogen#infect()
