@@ -94,7 +94,11 @@ function GregMotherfuckingKlein()
   highlight ColorColumn ctermbg=darkgrey guibg=darkgrey
   set colorcolumn=80
 endfunction
+function SaneMotherfuckingPeople()
+  set colorcolumn=0
+endfunction
 map <leader>g :call GregMotherfuckingKlein()<cr>
+map <leader>go :call SaneMotherfuckingPeople()<cr>
 
 " Search options - highlight while typing,
 " highlight after search, smart case-insensitivity
