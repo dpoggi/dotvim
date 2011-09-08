@@ -32,6 +32,7 @@ set listchars=tab:>-,trail:.,nbsp:.
 " Indentation
 set autoindent
 set expandtab
+set tabstop=8
 filetype plugin indent on
 
 function TwoSpaceIndent()
@@ -42,6 +43,11 @@ endfunction
 function FourSpaceIndent()
   set softtabstop=4
   set shiftwidth=4
+endfunction
+
+function TabIndent()
+  set softtabstop=0
+  set shiftwidth=8
 endfunction
 
 if has('autocmd')
@@ -118,16 +124,18 @@ map <leader>tf :CommandTFlush<cr>
 
 " I don't always write C/C++, but when I do...
 " I have sexy Vim mappings for make
-function MapMakeShortcuts()
+function MapCShortcuts()
   map <leader>m :make<cr>
   map <leader>co :copen<cr>
   map <leader>cn :cn<cr>
   map <leader>cp :cp<cr>
   map <leader>cf :cfirst<cr>
   map <leader>cl :clast<cr>
+
+  imap <C-l> ->
 endfunction
 if has('autocmd')
-  autocmd FileType c call MapMakeShortcuts()
-  autocmd FileType cpp call MapMakeShortcuts()
-  autocmd FileType objc call MapMakeShortcuts()
+  autocmd FileType c call MapCShortcuts()
+  autocmd FileType cpp call MapCShortcuts()
+  autocmd FileType objc call MapCShortcuts()
 endif
