@@ -90,6 +90,12 @@ function ToggleEighty()
 endfunction
 map <leader>l :call ToggleEighty()<cr>
 
+function GregMotherfuckingKlein()
+  highlight ColorColumn ctermbg=darkgrey guibg=darkgrey
+  set colorcolumn=80
+endfunction
+map <leader>g :call GregMotherfuckingKlein()<cr>
+
 " Search options - highlight while typing,
 " highlight after search, smart case-insensitivity
 set incsearch
@@ -112,7 +118,19 @@ map <leader>tn :tabnext<cr>
 map <leader>tp :tabprevious<cr>
 
 " Le hashrocket!!!
-imap <C-l> <Space>=><Space>
+function MapRubyHashrocket()
+  imap <C-l> <Space>=><Space>
+endfunction
+function MapCStructOperator()
+  imap <C-l> ->
+endfunction
+if has('autocmd')
+  autocmd FileType * call MapRubyHashrocket()
+  autocmd FileType c call MapCStructOperator()
+  autocmd FileType cpp call MapCStructOperator()
+  autocmd FileType objc call MapCStructOperator()
+endif
+call MapRubyHashrocket()
 
 " Mappings for NERD Tree, removing search highlights,
 " visible whitespace, and Command-T.
@@ -131,8 +149,6 @@ function MapCShortcuts()
   map <leader>cp :cp<cr>
   map <leader>cf :cfirst<cr>
   map <leader>cl :clast<cr>
-
-  imap <C-l> ->
 endfunction
 if has('autocmd')
   autocmd FileType c call MapCShortcuts()
