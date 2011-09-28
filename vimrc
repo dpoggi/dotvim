@@ -77,7 +77,6 @@ set statusline=[%n]
 set statusline+=\ %<%.99f
 set statusline+=\ %h%w%m%r%y
 set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
-set statusline+=%{exists('g:loaded_rvm')?rvm#statusline():''}
 set statusline+=%=%-16(\ %l,%c-%v\ %)%P
 
 " Toggle highlight lines over 80 characters
