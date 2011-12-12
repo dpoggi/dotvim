@@ -1,77 +1,38 @@
-" HAHAHA NO ONE LOVES YOU VI
+"" Basic settings
 set nocompatible
 if has('mouse')
   set mouse=a
 endif
 
-" Initialize pathogen
 call pathogen#infect()
 call pathogen#helptags()
 
-" Set backup/tmp folders
 set backup
 set backupdir=~/.vim/backups
 set directory=~/.vim/tmp
 
-" Correct bad filetype detection
-if has('autocmd')
-  autocmd BufRead,BufNewFile *.erb set filetype=eruby
-  autocmd BufRead,BufNewFile *.ru set filetype=ruby
-  autocmd BufRead,BufNewFile *.thrift set filetype=thrift
-  autocmd BufRead,BufNewFile *.zsh-theme set filetype=zsh
-  autocmd BufRead,BufNewFile jquery.*.js set filetype=javascript syntax=jquery
-  autocmd BufRead,BufNewFile *.jquery.js set filetype=javascript syntax=jquery
-endif
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
 
-" This be how we like our backspace
-set bs=2
-
-" Visible whitespace :)
-set listchars=tab:>-,trail:.,nbsp:.
-
-" Indentation
 set autoindent
 set expandtab
 set tabstop=8
 filetype plugin indent on
 
-function TwoSpaceIndent()
-  set softtabstop=2
-  set shiftwidth=2
-endfunction
+syntax on
+let g:molokai_original=1
+colorscheme molokai
 
-function FourSpaceIndent()
-  set softtabstop=4
-  set shiftwidth=4
-endfunction
-
-function TabIndent()
-  set softtabstop=0
-  set shiftwidth=8
-endfunction
-
-if has('autocmd')
-  autocmd FileType * call TwoSpaceIndent()
-  autocmd FileType java call FourSpaceIndent()
-  autocmd FileType php call FourSpaceIndent()
-  autocmd FileType python call FourSpaceIndent()
-endif
-
-call TwoSpaceIndent()
-
-" Line numbering and cursor on current line,
-" ruler at the bottom.
 set number
 set numberwidth=5
 set cursorline
 set ruler
 
-" Syntax highlighting
-syntax on
-let g:molokai_original=1
-colorscheme molokai
+set backspace=indent,eol,start
+set listchars=tab:>-,trail:.,nbsp:.
 
-" Status line
 set laststatus=2
 set statusline=[%n]
 set statusline+=\ %<%.99f
@@ -79,7 +40,32 @@ set statusline+=\ %h%w%m%r%y
 set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
 set statusline+=%=%-16(\ %l,%c-%v\ %)%P
 
-" Toggle highlight lines over 80 characters
+"" Filetype corrections
+if has('autocmd')
+  autocmd BufRead,BufNewFile *.ru set filetype=ruby
+  autocmd BufRead,BufNewFile *.thrift set filetype=thrift
+  autocmd BufRead,BufNewFile *.zsh-theme set filetype=zsh
+  autocmd BufRead,BufNewFile jquery.*.js set filetype=javascript syntax=jquery
+  autocmd BufRead,BufNewFile *.jquery.js set filetype=javascript syntax=jquery
+endif
+
+"" Function definitions
+function MapHashrocket()
+  imap <C-l> <space>=><space>
+endfunction
+function MapStructOperator()
+  imap <C-l> ->
+endfunction
+
+function TwoSpaceIndent()
+  set softtabstop=2
+  set shiftwidth=2
+endfunction
+function FourSpaceIndent()
+  set softtabstop=4
+  set shiftwidth=4
+endfunction
+
 function ToggleEighty()
   try
     call matchdelete(g:eighty)
@@ -87,64 +73,7 @@ function ToggleEighty()
     let g:eighty = matchadd('Error', '\%>80v.\+')
   endtry
 endfunction
-map <leader>l :call ToggleEighty()<cr>
 
-function GregMotherfuckingKlein()
-  highlight ColorColumn ctermbg=darkgrey guibg=darkgrey
-  set colorcolumn=80
-endfunction
-function SaneMotherfuckingPeople()
-  set colorcolumn=0
-endfunction
-map <leader>g :call GregMotherfuckingKlein()<cr>
-map <leader>go :call SaneMotherfuckingPeople()<cr>
-
-" Search options - highlight while typing,
-" highlight after search, smart case-insensitivity
-set incsearch
-set hlsearch
-set ignorecase
-set smartcase
-
-" Le NERD Tree
-let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.o$', '\.obj$']
-
-" Buffer mappings
-map <leader>bn :bn<cr>
-map <leader>bp :bp<cr>
-map <leader>bc :bd<cr>
-
-" Tab mappings
-map <leader>tt :tabnew<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tn :tabnext<cr>
-map <leader>tp :tabprevious<cr>
-
-" Le hashrocket!!!
-function MapRubyHashrocket()
-  imap <C-l> <Space>=><Space>
-endfunction
-function MapCStructOperator()
-  imap <C-l> ->
-endfunction
-if has('autocmd')
-  autocmd FileType * call MapRubyHashrocket()
-  autocmd FileType c call MapCStructOperator()
-  autocmd FileType cpp call MapCStructOperator()
-  autocmd FileType objc call MapCStructOperator()
-endif
-call MapRubyHashrocket()
-
-" Mappings for NERD Tree, removing search highlights,
-" visible whitespace, and Command-T.
-map <leader>n :NERDTreeToggle<cr>
-map <leader>h :set invhlsearch<cr>
-map <leader>v :set list!<cr>
-map <leader>u :set number!<cr>
-map <leader>tf :CommandTFlush<cr>
-
-" I don't always write C/C++, but when I do...
-" I have sexy Vim mappings for make
 function MapCShortcuts()
   map <leader>m :make<cr>
   map <leader>co :copen<cr>
@@ -153,8 +82,49 @@ function MapCShortcuts()
   map <leader>cf :cfirst<cr>
   map <leader>cl :clast<cr>
 endfunction
+
+"" Mappings
+let mapleader=','
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+
+map <leader>l :call ToggleEighty()<cr>
+map <leader>/ :set invhlsearch<cr>
+map <leader><space> :set list!<cr>
+
+map <leader>h :bp
+map <leader>l :bn
+nnoremap <leader><leader> <c-^>
+
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+
+map <leader>tc :tabnew<cr>
+map <leader>tp :tabprev<cr>
+map <leader>tn :tabnext<cr>
+map <leader>td :tabclose<cr>
+
+map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
+map <leader>F :CommandTFlush<cr>\|:CommandT %%<cr>
+
+" Auto commands
 if has('autocmd')
+  autocmd FileType * call TwoSpaceIndent()
+  autocmd FileType java call FourSpaceIndent()
+  autocmd FileType php call FourSpaceIndent()
+  autocmd FileType python call FourSpaceIndent()
+
   autocmd FileType c call MapCShortcuts()
   autocmd FileType cpp call MapCShortcuts()
   autocmd FileType objc call MapCShortcuts()
+
+  autocmd FileType ruby call MapHashrocket()
+  autocmd FileType eruby call MapHashrocket()
+  autocmd FileType haml call MapHashrocket()
+
+  autocmd FileType c call MapStructOperator()
+  autocmd FileType cpp call MapStructOperator()
+  autocmd FileType objc call MapStructOperator()
 endif
+call TwoSpaceIndent()
