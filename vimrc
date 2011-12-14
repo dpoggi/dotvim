@@ -91,8 +91,8 @@ map <leader>l :call ToggleEighty()<cr>
 map <leader>/ :set invhlsearch<cr>
 map <leader><space> :set list!<cr>
 
-map <leader>h :bp
-map <leader>l :bn
+map <leader>h :bp<cr>
+map <leader>l :bn<cr>
 nnoremap <leader><leader> <c-^>
 
 nnoremap <c-j> <c-w>j
