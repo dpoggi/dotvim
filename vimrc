@@ -51,10 +51,10 @@ endif
 
 "" Function definitions
 function MapHashrocket()
-  imap <C-l> <space>=><space>
+  imap <C-h> <space>=><space>
 endfunction
 function MapStructOperator()
-  imap <C-l> ->
+  imap <C-h> ->
 endfunction
 
 function TwoSpaceIndent()
