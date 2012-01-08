@@ -51,10 +51,10 @@ endif
 
 "" Function definitions
 function MapHashrocket()
-  imap <C-h> <space>=><space>
+  imap <C-l> <space>=><space>
 endfunction
 function MapStructOperator()
-  imap <C-h> ->
+  imap <C-l> ->
 endfunction
 
 function TwoSpaceIndent()
@@ -94,11 +94,6 @@ map <leader><space> :set list!<cr>
 map <leader>h :bp<cr>
 map <leader>l :bn<cr>
 nnoremap <leader><leader> <c-^>
-
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
 
 map <leader>tc :tabnew<cr>
 map <leader>tp :tabprev<cr>
