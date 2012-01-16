@@ -1,8 +1,8 @@
 #!/bin/sh
 # Fetch ze colorschemes, for they are nowhere on Github :(
 
-hash wget 2>&- && DCP_GET="wget --no-check-certificate --content-disposition"
 hash curl 2>&- && DCP_GET="curl -kLJO"
+hash wget 2>&- && DCP_GET="wget --no-check-certificate --content-disposition"
 test "$DCP_GET" || { echo >&2 "Error! Couldn't find cURL or Wget!"; exit 1; }
 
 OLD_WD=`pwd`
