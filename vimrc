@@ -43,11 +43,12 @@ set statusline+=%=%-16(\ %l,%c-%v\ %)%P
 
 "" Filetype corrections
 if has('autocmd')
-  autocmd BufRead,BufNewFile *.ru set filetype=ruby
-  autocmd BufRead,BufNewFile *.thrift set filetype=thrift
-  autocmd BufRead,BufNewFile *.zsh-theme set filetype=zsh
-  autocmd BufRead,BufNewFile jquery.*.js set filetype=javascript syntax=jquery
-  autocmd BufRead,BufNewFile *.jquery.js set filetype=javascript syntax=jquery
+  autocmd BufRead,BufNewFile *.ru         set filetype=ruby
+  autocmd BufRead,BufNewFile *.thrift     set filetype=thrift
+  autocmd BufRead,BufNewFile *.zsh-theme  set filetype=zsh
+  autocmd BufRead,BufNewFile *.json       set filetype=javascript
+  autocmd BufRead,BufNewFile jquery.*.js  set filetype=javascript syntax=jquery
+  autocmd BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
 endif
 
 "" Function definitions
