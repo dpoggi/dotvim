@@ -49,6 +49,7 @@ if has('autocmd')
   autocmd BufRead,BufNewFile *.json       set filetype=javascript
   autocmd BufRead,BufNewFile jquery.*.js  set filetype=javascript syntax=jquery
   autocmd BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
+  autocmd BufRead,BufNewFile *.mako       set filetype=mako
 endif
 
 "" Function definitions
