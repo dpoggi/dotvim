@@ -46,3 +46,6 @@
 [submodule "bundle/less"]
 	path = bundle/less
 	url = git://github.com/groenewege/vim-less.git
+[submodule "bundle/mako"]
+	path = bundle/mako
+	url = git://github.com/vim-scripts/mako.vim
