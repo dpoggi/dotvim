@@ -106,6 +106,9 @@ map <leader>td :tabclose<cr>
 map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
 map <leader>F :CommandTFlush<cr>\|:CommandT %%<cr>
 
+" Save without opening via sudo
+cmap w!! %!sudo tee >/dev/null %
+
 " Auto commands
 if has('autocmd')
   autocmd FileType * call TwoSpaceIndent()
