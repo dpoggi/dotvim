@@ -49,3 +49,6 @@
 [submodule "bundle/mako"]
 	path = bundle/mako
 	url = git://github.com/vim-scripts/mako.vim
+[submodule "bundle/handlebars"]
+	path = bundle/handlebars
+	url = git://github.com/nono/vim-handlebars.git
