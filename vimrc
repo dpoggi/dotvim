@@ -62,12 +62,20 @@ function MapStructOperator()
 endfunction
 
 function TwoSpaceIndent()
+  set expandtab
   set softtabstop=2
   set shiftwidth=2
 endfunction
 function FourSpaceIndent()
+  set expandtab
   set softtabstop=4
   set shiftwidth=4
+endfunction
+function TabIndent()
+  set noexpandtab
+  set softtabstop=0
+  set tabstop=8
+  set shiftwidth=8
 endfunction
 
 function ToggleEighty()
