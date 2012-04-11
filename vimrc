@@ -124,6 +124,7 @@ if has('autocmd')
   autocmd FileType java call FourSpaceIndent()
   autocmd FileType php call FourSpaceIndent()
   autocmd FileType python call FourSpaceIndent()
+  autocmd FileType bindzone call TabIndent()
 
   autocmd FileType c call MapCShortcuts()
   autocmd FileType cpp call MapCShortcuts()
