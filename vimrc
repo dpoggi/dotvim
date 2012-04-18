@@ -99,7 +99,7 @@ endfunction
 let mapleader=','
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
-map <leader>l :call ToggleEighty()<cr>
+map <leader>8 :call ToggleEighty()<cr>
 map <leader>/ :set invhlsearch<cr>
 map <leader><space> :set list!<cr>
 
