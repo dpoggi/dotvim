@@ -53,6 +53,9 @@ if has('autocmd')
   autocmd BufRead,BufNewFile *.mako       set filetype=mako
 endif
 
+"" DEFAULT SH TYPE THANK YOU
+let g:is_bash = 1
+
 "" Function definitions
 function MapHashrocket()
   imap <C-l> <space>=><space>
