@@ -25,6 +25,7 @@ filetype plugin indent on
 syntax on
 let g:molokai_original=1
 colorscheme molokai
+highlight Pmenu ctermbg=238 gui=bold
 
 set number
 set numberwidth=5
@@ -142,5 +143,14 @@ if has('autocmd')
   autocmd FileType c call MapStructOperator()
   autocmd FileType cpp call MapStructOperator()
   autocmd FileType objc call MapStructOperator()
+
+  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+  autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 endif
 call TwoSpaceIndent()
+
+" SuperTab
+let g:SuperTabDefaultCompletionType="context"
+let g:SuperTabContextDefaultCompletionType="<C-x><C-o>"
