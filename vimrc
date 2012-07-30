@@ -36,11 +36,12 @@ set backspace=indent,eol,start
 set listchars=tab:>-,trail:.,nbsp:.
 
 set laststatus=2
-set statusline=[%n]
-set statusline+=\ %<%.99f
-set statusline+=\ %h%w%m%r%y
-set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
-set statusline+=%=%-16(\ %l,%c-%v\ %)%P
+"" Superseded by vim-powerline
+"set statusline=[%n]
+"set statusline+=\ %<%.99f
+"set statusline+=\ %h%w%m%r%y
+"set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
+"set statusline+=%=%-16(\ %l,%c-%v\ %)%P
 
 "" Filetype corrections
 if has('autocmd')
