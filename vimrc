@@ -94,6 +94,7 @@ endfunction
 
 function MapCShortcuts()
   map <leader>m :make<cr>
+  map <leader>mc :make clean<cr>
   map <leader>co :copen<cr>
   map <leader>cn :cn<cr>
   map <leader>cp :cp<cr>
