@@ -12,6 +12,8 @@ set backup
 set backupdir=~/.vim/backups
 set directory=~/.vim/tmp
 
+set wildignore+=*.o,*.obj
+
 set incsearch
 set hlsearch
 set ignorecase
@@ -36,12 +38,6 @@ set backspace=indent,eol,start
 set listchars=tab:>-,trail:.,nbsp:.
 
 set laststatus=2
-"" Superseded by vim-powerline
-"set statusline=[%n]
-"set statusline+=\ %<%.99f
-"set statusline+=\ %h%w%m%r%y
-"set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
-"set statusline+=%=%-16(\ %l,%c-%v\ %)%P
 
 "" Filetype corrections
 if has('autocmd')
