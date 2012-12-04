@@ -123,25 +123,25 @@ cmap w!! w !sudo dd of=%
 
 " Auto commands
 if has('autocmd')
-  autocmd FileType * call TwoSpaceIndent()
-  autocmd FileType java call FourSpaceIndent()
-  autocmd FileType php call FourSpaceIndent()
-  autocmd FileType python call FourSpaceIndent()
-  autocmd FileType bindzone call TabIndent()
-  autocmd FileType make call TabIndent()
+  autocmd FileType *         call TwoSpaceIndent()
+  autocmd FileType java      call FourSpaceIndent()
+  autocmd FileType php       call FourSpaceIndent()
+  autocmd FileType python    call FourSpaceIndent()
+  autocmd FileType bindzone  call TabIndent()
+  autocmd FileType make      call TabIndent()
 
-  autocmd FileType c call MapCShortcuts()
-  autocmd FileType cpp call MapCShortcuts()
-  autocmd FileType objc call MapCShortcuts()
+  autocmd FileType c     call MapCShortcuts()
+  autocmd FileType cpp   call MapCShortcuts()
+  autocmd FileType objc  call MapCShortcuts()
 
-  autocmd FileType ruby call MapHashrocket()
-  autocmd FileType eruby call MapHashrocket()
-  autocmd FileType haml call MapHashrocket()
-  autocmd FileType puppet call MapHashrocket()
+  autocmd FileType ruby    call MapHashrocket()
+  autocmd FileType eruby   call MapHashrocket()
+  autocmd FileType haml    call MapHashrocket()
+  autocmd FileType puppet  call MapHashrocket()
 
-  autocmd FileType c call MapStructOperator()
-  autocmd FileType cpp call MapStructOperator()
-  autocmd FileType objc call MapStructOperator()
+  autocmd FileType c     call MapStructOperator()
+  autocmd FileType cpp   call MapStructOperator()
+  autocmd FileType objc  call MapStructOperator()
 endif
 call TwoSpaceIndent()
 
