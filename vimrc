@@ -39,7 +39,9 @@ set listchars=tab:>-,trail:.,nbsp:.
 
 set laststatus=2
 
+"" Annoyances
 set timeoutlen=300
+imap jj <esc>
 
 "" Filetype corrections
 if has('autocmd')
