@@ -39,6 +39,8 @@ set listchars=tab:>-,trail:.,nbsp:.
 
 set laststatus=2
 
+set timeoutlen=300
+
 "" Filetype corrections
 if has('autocmd')
   autocmd BufRead,BufNewFile *.ru         set filetype=ruby
