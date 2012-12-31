@@ -79,3 +79,6 @@
 [submodule "bundle/surround"]
 	path = bundle/surround
 	url = git://github.com/tpope/vim-surround.git
+[submodule "bundle/clojure"]
+	path = bundle/clojure
+	url = git://github.com/vim-scripts/VimClojure.git
