@@ -6,4 +6,4 @@ Either clone the repository as your .vim folder and run `git submodule update --
 
 ## Copyright
 
-Copyright (C) 2012 Dan Poggi. MIT License, see LICENSE for details.
+Copyright (C) 2011 Dan Poggi. MIT License, see LICENSE for details.
