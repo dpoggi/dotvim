@@ -1,6 +1,6 @@
-tmp/*
-!tmp/.gitkeep
-backups/*
-!backups/.gitkeep
-*.DS_Store
-*.netrwhist
+/tmp/*
+!/tmp/.gitkeep
+/backups/*
+!/backups/.gitkeep
+
+.netrwhist
