@@ -64,3 +64,6 @@
 [submodule "bundle/clojure"]
 	path = bundle/clojure
 	url = git://github.com/vim-scripts/VimClojure.git
+[submodule "bundle/syntastic"]
+	path = bundle/syntastic
+	url = git://github.com/scrooloose/syntastic.git
