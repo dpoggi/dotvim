@@ -12,7 +12,7 @@ set backup
 set backupdir=~/.vim/backups
 set directory=~/.vim/tmp
 
-set wildignore+=*.o,*.obj
+set wildignore+=*.o,*.obj,tmp/**,bin/**
 
 set incsearch
 set hlsearch
