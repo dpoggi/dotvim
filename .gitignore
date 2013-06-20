@@ -2,5 +2,6 @@
 !/tmp/.gitkeep
 /backups/*
 !/backups/.gitkeep
-
 .netrwhist
+vimrc.local
+gvimrc.local

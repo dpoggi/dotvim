@@ -151,3 +151,8 @@ call TwoSpaceIndent()
 
 " Syntastic
 let g:syntastic_check_on_open=1
+
+" Local user changes
+if filereadable($HOME . "/.vim/vimrc.local")
+  source ~/.vim/vimrc.local
+endif

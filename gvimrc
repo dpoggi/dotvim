@@ -5,3 +5,8 @@ set guifont=Inconsolata:h14.00
 set guioptions-=T
 set visualbell
 " Don't put this stuff in vimrc! BAD THINGS!
+
+" Local user changes
+if filereadable($HOME . "/.vim/gvimrc.local")
+  source ~/.vim/gvimrc.local
+endif
