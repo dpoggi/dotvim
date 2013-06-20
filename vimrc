@@ -149,6 +149,5 @@ if has('autocmd')
 endif
 call TwoSpaceIndent()
 
-" SuperTab
-let g:SuperTabDefaultCompletionType="context"
-let g:SuperTabContextDefaultCompletionType="<C-x><C-o>"
+" Syntastic
+let g:syntastic_check_on_open=1
