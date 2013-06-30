@@ -5,6 +5,11 @@ if has('mouse')
   set ttymouse=xterm2
 endif
 
+let g:pathogen_disabled=[]
+if !has('mac') && !has('macunix')
+  call add(g:pathogen_disabled, 'ios')
+endif
+
 call pathogen#infect()
 call pathogen#helptags()
 
