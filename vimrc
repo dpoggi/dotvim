@@ -136,6 +136,7 @@ if has('autocmd')
   autocmd FileType java      call FourSpaceIndent()
   autocmd FileType php       call FourSpaceIndent()
   autocmd FileType python    call FourSpaceIndent()
+  autocmd FileType lua       call FourSpaceIndent()
   autocmd FileType bindzone  call TabIndent()
   autocmd FileType make      call TabIndent()
 
