@@ -29,9 +29,17 @@ set expandtab
 set tabstop=8
 filetype plugin indent on
 
+"" Normally we want molokai, but if we're at a basic terminal,
+"" solarized looks much nicer
+if match("linux", $TERM) != -1 || ( match("screen", $TERM) != -1 && match($TERM, "screen-256color") == -1 )
+  set background=dark
+  colorscheme solarized
+else
+  let g:molokai_original=1
+  colorscheme molokai
+endif
+
 syntax on
-let g:molokai_original=1
-colorscheme molokai
 highlight Pmenu ctermbg=238 gui=bold
 
 set number
