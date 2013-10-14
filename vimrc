@@ -80,6 +80,15 @@ function MapStructOperator()
   imap <C-l> ->
 endfunction
 
+function MapPoundComment()
+  map <leader>g :'a,. s/^/#/<cr>
+  map <leader>b :'a,. s/^#//<cr>
+endfunction
+function MapSlashComment()
+  map <leader>g :'a,. s/^/\/\//<cr>
+  map <leader>b :'a,. s/^\/\///<cr>
+endfunction
+
 function TwoSpaceIndent()
   set expandtab
   set softtabstop=2
@@ -162,6 +171,15 @@ if has('autocmd')
   autocmd FileType c     call MapStructOperator()
   autocmd FileType cpp   call MapStructOperator()
   autocmd FileType objc  call MapStructOperator()
+
+  autocmd FileType sh     call MapPoundComment()
+  autocmd FileType ruby   call MapPoundComment()
+  autocmd FileType python call MapPoundComment()
+  
+  autocmd FileType javascript call MapSlashComment()
+  autocmd FileType c          call MapSlashComment()
+  autocmd FileType cpp        call MapSlashComment()
+  autocmd FileType objc       call MapSlashComment()
 endif
 call TwoSpaceIndent()
 
