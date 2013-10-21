@@ -81,12 +81,20 @@ function MapStructOperator()
 endfunction
 
 function MapPoundComment()
-  map <leader>g :'a,. s/^/#/<cr>
-  map <leader>b :'a,. s/^#//<cr>
+  map <leader>g :'a,. s/^/#/<cr>:let @/ = ""<cr>
+  map <leader>b :'a,. s/^#//<cr>:let @/ = ""<cr>
 endfunction
 function MapSlashComment()
-  map <leader>g :'a,. s/^/\/\//<cr>
-  map <leader>b :'a,. s/^\/\///<cr>
+  map <leader>g :'a,. s/^/\/\//<cr>:let @/ = ""<cr>
+  map <leader>b :'a,. s/^\/\///<cr>:let @/ = ""<cr>
+endfunction
+function MapDQuoteComment()
+  map <leader>g :'a,. s/^/\"\"/<cr>:let @/ = ""<cr>
+  map <leader>b :'a,. s/^\"\"//<cr>:let @/ = ""<cr>
+endfunction
+function MapHyphenComment()
+  map <leader>g :'a,. s/^/--/<cr>:let @/ = ""<cr>
+  map <leader>b :'a,. s/^--//<cr>:let @/ = ""<cr>
 endfunction
 
 function TwoSpaceIndent()
@@ -180,6 +188,9 @@ if has('autocmd')
   autocmd FileType c          call MapSlashComment()
   autocmd FileType cpp        call MapSlashComment()
   autocmd FileType objc       call MapSlashComment()
+
+  autocmd FileType vim        call MapDQuoteComment()
+  autocmd FileType lua        call MapHyphenComment()
 endif
 call TwoSpaceIndent()
 
