@@ -88,3 +88,6 @@
 [submodule "bundle/tmux"]
 	path = bundle/tmux
 	url = git://github.com/zaiste/tmux.vim
+[submodule "bundle/gnupg"]
+	path = bundle/gnupg
+	url = git://github.com/vim-scripts/gnupg.vim
