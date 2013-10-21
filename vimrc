@@ -56,6 +56,13 @@ set laststatus=2
 set timeoutlen=300
 imap jj <esc>
 
+"" Only set *rc* and *profile* to sh if type is blank or conf (wrong, usually)
+function CorrectConfType()
+  if &filetype == '' || &filetype == 'conf'
+    set filetype=sh
+  endif
+endfunction
+
 "" Filetype corrections
 if has('autocmd')
   autocmd BufRead,BufNewFile *.ru         set filetype=ruby
@@ -67,6 +74,9 @@ if has('autocmd')
   autocmd BufRead,BufNewFile jquery.*.js  set filetype=javascript syntax=jquery
   autocmd BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
   autocmd BufRead,BufNewFile *.mako       set filetype=mako
+
+  autocmd BufRead,BufNewFile *rc*         call CorrectConfType()
+  autocmd BufRead,BufNewFile *profile*    call CorrectConfType()
 endif
 
 "" DEFAULT SH TYPE THANK YOU
