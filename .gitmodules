@@ -79,9 +79,6 @@
 [submodule "bundle/ios"]
 	path = bundle/ios
 	url = git://github.com/eraserhd/vim-ios.git
-[submodule "bundle/clang_complete"]
-	path = bundle/clang_complete
-	url = git://github.com/Rip-Rip/clang_complete.git
 [submodule "bundle/kiwi"]
 	path = bundle/kiwi
 	url = git://github.com/vim-scripts/kiwi.vim.git
