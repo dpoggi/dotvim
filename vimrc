@@ -196,6 +196,7 @@ if has('autocmd')
   autocmd FileType python call MapPoundComment()
   
   autocmd FileType javascript call MapSlashComment()
+  autocmd FileType java       call MapSlashComment()
   autocmd FileType cpp        call MapSlashComment()
   autocmd FileType objc       call MapSlashComment()
 
