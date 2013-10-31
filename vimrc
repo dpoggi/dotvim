@@ -182,6 +182,7 @@ if has('autocmd')
   autocmd FileType cpp   call MapCShortcuts()
   autocmd FileType objc  call MapCShortcuts()
 
+  autocmd FileType php     call MapHashrocket()
   autocmd FileType ruby    call MapHashrocket()
   autocmd FileType eruby   call MapHashrocket()
   autocmd FileType haml    call MapHashrocket()
