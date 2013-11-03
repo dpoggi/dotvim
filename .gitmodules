@@ -88,3 +88,6 @@
 [submodule "bundle/gnupg"]
 	path = bundle/gnupg
 	url = git://github.com/vim-scripts/gnupg.vim
+[submodule "bundle/systemverilog"]
+	path = bundle/systemverilog
+	url = git://github.com/vim-scripts/systemverilog.vim
