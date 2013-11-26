@@ -124,6 +124,12 @@ function TabIndent()
   set tabstop=8
   set shiftwidth=8
 endfunction
+function GoTabs()
+  set noexpandtab
+  set softtabstop=0
+  set tabstop=4
+  set shiftwidth=4
+endfunction
 
 function ToggleEighty()
   try
@@ -177,6 +183,7 @@ if has('autocmd')
   autocmd FileType lua       call FourSpaceIndent()
   autocmd FileType bindzone  call TabIndent()
   autocmd FileType make      call TabIndent()
+  autocmd FileType go        call GoTabs()
 
   autocmd FileType c     call MapCShortcuts()
   autocmd FileType cpp   call MapCShortcuts()
