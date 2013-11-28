@@ -131,6 +131,20 @@ function GoTabs()
   set shiftwidth=4
 endfunction
 
+function Write()
+  set noexpandtab
+  set softtabstop=0
+  set tabstop=6
+  set shiftwidth=6
+
+  set laststatus=0
+  set nolist
+  set wrap
+  set linebreak
+  set textwidth=0
+  set wrapmargin=0
+endfunction
+
 function ToggleEighty()
   try
     call matchdelete(g:eighty)
