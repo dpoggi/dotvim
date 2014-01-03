@@ -4,7 +4,7 @@
 # submodule form on a consistent basis.
 
 hash wget 2>&- && get="wget --no-check-certificate --content-disposition"
-hash curl 2>&- && get="curl --insecure --location --remote-name --remote-header-name"
+hash curl 2>&- && get="curl --location --remote-name --remote-header-name"
 test "${get}" || { echo >&2 "Error! Couldn't find cURL or Wget!"; exit 1; }
 
 cd "${HOME}/.vim/colors"
