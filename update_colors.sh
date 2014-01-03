@@ -1,11 +1,13 @@
-#!/bin/sh
-# Fetch ze colorschemes, for they are nowhere on Github :(
+#!/usr/bin/env bash
+# update_colors.sh
+# Fetches Vim color schemes from the web, since they can't be found in Git
+# submodule form on a consistent basis.
 
-hash curl 2>&- && get="curl -kLJO"
 hash wget 2>&- && get="wget --no-check-certificate --content-disposition"
-test "$get" || { echo >&2 "Error! Couldn't find cURL or Wget!"; exit 1; }
+hash curl 2>&- && get="curl --insecure --location --remote-name --remote-header-name"
+test "${get}" || { echo >&2 "Error! Couldn't find cURL or Wget!"; exit 1; }
 
-cd "$HOME/.vim/colors"
+cd "${HOME}/.vim/colors"
 rm -f *.vim
 
 for url in \
@@ -15,6 +17,9 @@ for url in \
   "https://raw.github.com/altercation/solarized/master/vim-colors-solarized/colors/solarized.vim" \
   "https://raw.github.com/vim-scripts/Zenburn/master/colors/zenburn.vim"
 do
-  $get "$url"
+  ${get} "${url}"
   echo
 done
+
+unset url
+unset get
