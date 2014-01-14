@@ -197,6 +197,7 @@ if has('autocmd')
   autocmd FileType lua       call FourSpaceIndent()
   autocmd FileType bindzone  call TabIndent()
   autocmd FileType make      call TabIndent()
+  autocmd FileType sudoers   call TabIndent()
   autocmd FileType go        call GoTabs()
 
   autocmd FileType c     call MapCShortcuts()
