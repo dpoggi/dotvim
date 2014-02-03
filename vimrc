@@ -215,6 +215,7 @@ if has('autocmd')
   autocmd FileType objc  call MapStructOperator()
 
   autocmd FileType sh     call MapPoundComment()
+  autocmd FileType css    call MapPoundComment()
   autocmd FileType ruby   call MapPoundComment()
   autocmd FileType python call MapPoundComment()
   autocmd FileType sshconfig  call MapPoundComment()
