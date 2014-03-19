@@ -15,8 +15,8 @@ for url in \
   "http://www.vim.org/scripts/download_script.php?src_id=9750" \
   "http://blog.toddwerth.com/entry_files/8/ir_black.vim" \
   "http://www.vim.org/scripts/download_script.php?src_id=11225" \
-  "https://raw.github.com/altercation/solarized/master/vim-colors-solarized/colors/solarized.vim" \
-  "https://raw.github.com/vim-scripts/Zenburn/master/colors/zenburn.vim" \
+  "https://raw.githubusercontent.com/altercation/solarized/master/vim-colors-solarized/colors/solarized.vim" \
+  "https://raw.githubusercontent.com/vim-scripts/Zenburn/master/colors/zenburn.vim" \
   "https://raw.githubusercontent.com/chriskempson/base16-vim/master/colors/base16-railscasts.vim"
 do
   ${curl_cmd} "${url}"
