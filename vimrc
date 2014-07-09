@@ -213,6 +213,7 @@ if has('autocmd')
   autocmd FileType c     call MapStructOperator()
   autocmd FileType cpp   call MapStructOperator()
   autocmd FileType objc  call MapStructOperator()
+  autocmd FileType php   call MapStructOperator()
 
   autocmd FileType sh     call MapPoundComment()
   autocmd FileType ruby   call MapPoundComment()
