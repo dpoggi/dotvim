@@ -6,7 +6,6 @@
 
 hash curl 2>&- ||
   { echo >&2 "Error: curl must be installed"; exit 1; }
-curl_cmd="curl --location --remote-name --remote-header-name"
 
 cd "${HOME}/.vim/colors"
 rm -f *.vim
@@ -19,6 +18,6 @@ for url in \
   "https://raw.githubusercontent.com/vim-scripts/Zenburn/master/colors/zenburn.vim" \
   "https://raw.githubusercontent.com/chriskempson/base16-vim/master/colors/base16-railscasts.vim"
 do
-  ${curl_cmd} "${url}"
+  curl --location --remote-name --remote-header-name "${url}"
   echo
 done
