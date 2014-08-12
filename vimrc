@@ -226,6 +226,7 @@ if has('autocmd')
   autocmd FileType cpp        call MapSlashComment()
   autocmd FileType objc       call MapSlashComment()
   autocmd FileType php        call MapSlashComment()
+  autocmd FileType go         call MapSlashComment()
 
   autocmd FileType vim        call MapDQuoteComment()
   autocmd FileType lua        call MapHyphenComment()
