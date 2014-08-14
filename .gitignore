@@ -5,3 +5,4 @@
 .netrwhist
 vimrc.local
 gvimrc.local
+bundle/nerdtree
