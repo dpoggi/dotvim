@@ -219,6 +219,7 @@ if has('autocmd')
   autocmd FileType ruby   call MapPoundComment()
   autocmd FileType python call MapPoundComment()
   autocmd FileType puppet call MapPoundComment()
+  autocmd FileType thrift call MapPoundComment()
   autocmd FileType sshconfig  call MapPoundComment()
   
   autocmd FileType javascript call MapSlashComment()
