@@ -209,6 +209,7 @@ if has('autocmd')
   autocmd FileType eruby   call MapHashrocket()
   autocmd FileType haml    call MapHashrocket()
   autocmd FileType puppet  call MapHashrocket()
+  autocmd FileType javascript call MapHashrocket()
 
   autocmd FileType c     call MapStructOperator()
   autocmd FileType cpp   call MapStructOperator()
