@@ -78,6 +78,10 @@ if has('autocmd')
 
   autocmd BufRead,BufNewFile *rc*         call CorrectConfType()
   autocmd BufRead,BufNewFile *profile*    call CorrectConfType()
+
+  autocmd BufRead,BufNewFile *.md setlocal spell
+  autocmd BufRead,BufNewFile *.mdown setlocal spell
+  autocmd BufRead,BufNewFile *.markdown setlocal spell
 endif
 
 "" DEFAULT SH TYPE THANK YOU
