@@ -82,6 +82,7 @@ if has('autocmd')
   autocmd BufRead,BufNewFile *.md setlocal spell
   autocmd BufRead,BufNewFile *.mdown setlocal spell
   autocmd BufRead,BufNewFile *.markdown setlocal spell
+  autocmd FileType gitcommit setlocal spell
 endif
 
 "" DEFAULT SH TYPE THANK YOU
