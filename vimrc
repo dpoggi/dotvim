@@ -95,6 +95,9 @@ endfunction
 function MapStructOperator()
   imap <C-l> ->
 endfunction
+function MapChannelOperator()
+  imap <C-l> <-
+endfunction
 
 function MapPoundComment()
   map <leader>g :'a,. s/^/#/<cr>:let @/ = ""<cr>
@@ -222,6 +225,7 @@ if has('autocmd')
   autocmd FileType cpp   call MapStructOperator()
   autocmd FileType objc  call MapStructOperator()
   autocmd FileType php   call MapStructOperator()
+  autocmd FileType go    call MapChannelOperator()
 
   autocmd FileType sh     call MapPoundComment()
   autocmd FileType ruby   call MapPoundComment()
