@@ -128,13 +128,13 @@ function FourSpaceIndent()
 endfunction
 function TabIndent()
   set noexpandtab
-  set softtabstop=0
+  set softtabstop=8
   set tabstop=8
   set shiftwidth=8
 endfunction
 function GoTabs()
   set noexpandtab
-  set softtabstop=0
+  set softtabstop=4
   set tabstop=4
   set shiftwidth=4
 endfunction
@@ -207,6 +207,7 @@ if has('autocmd')
   autocmd FileType bindzone  call TabIndent()
   autocmd FileType make      call TabIndent()
   autocmd FileType sudoers   call TabIndent()
+  autocmd FileType c         call TabIndent()
   autocmd FileType go        call GoTabs()
 
   autocmd FileType c     call MapCShortcuts()
