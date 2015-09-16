@@ -75,6 +75,7 @@ if has('autocmd')
   autocmd BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
   autocmd BufRead,BufNewFile *.mako       set filetype=mako
   autocmd BufRead,BufNewFile *gemrc*      set filetype=yaml
+  autocmd BufRead,BufNewFile *.gradle     set filetype=groovy
 
   autocmd BufRead,BufNewFile *rc*         call CorrectConfType()
   autocmd BufRead,BufNewFile *profile*    call CorrectConfType()
