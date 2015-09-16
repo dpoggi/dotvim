@@ -8,13 +8,13 @@ git fetch origin --recurse-submodules
 
 cd bundle
 for submodule in *; do
-  cd "${submodule}"
+  pushd "${submodule}" >/dev/null
 
   if [[ "${submodule}" = "powerline" ]]; then
     git rebase refs/remotes/origin/develop
-  elif [[ "${submodule}" != "go" ]]; then
+  else
     git rebase refs/remotes/origin/master
   fi
 
-  cd ..
+  popd >/dev/null
 done
