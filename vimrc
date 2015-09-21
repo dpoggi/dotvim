@@ -63,12 +63,12 @@ function CorrectConfType()
   endif
 endfunction
 
-"" Use XML syntax highlighting and tab indents for property lists
-"" FIXME: doesn't support old school NeXT-style or new school JSON plists.
-"" Binary is right out.
-function PlistIndents()
-  set filetype=xml
-  call TabIndent()
+"" If we open a property list and it's of the XML variety, we want to use
+"" tabs for indentation.
+function PlistIndent()
+  if &filetype == 'xml'
+    call TabIndent()
+  endif
 endfunction
 
 "" Filetype corrections
@@ -84,7 +84,7 @@ if has('autocmd')
   autocmd BufRead,BufNewFile *.mako       set filetype=mako
   autocmd BufRead,BufNewFile *gemrc*      set filetype=yaml
   autocmd BufRead,BufNewFile *.gradle     set filetype=groovy
-  autocmd BufRead,BufNewFile *.plist*     call PlistIndents()
+  autocmd BufRead,BufNewFile *.plist*     call PlistIndent()
 
   autocmd BufRead,BufNewFile *rc*         call CorrectConfType()
   autocmd BufRead,BufNewFile *profile*    call CorrectConfType()
