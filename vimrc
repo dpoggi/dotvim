@@ -74,6 +74,7 @@ endfunction
 "" Filetype corrections
 if has('autocmd')
   autocmd BufRead,BufNewFile *.ru         set filetype=ruby
+  autocmd BufRead,BufNewFile Fastfile     set filetype=ruby
   autocmd BufRead,BufNewFile Procfile     set filetype=yaml
   autocmd BufRead,BufNewFile *.thrift     set filetype=thrift
   autocmd BufRead,BufNewFile *.zsh-theme  set filetype=zsh
