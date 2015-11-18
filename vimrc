@@ -218,7 +218,7 @@ if has('autocmd')
   autocmd FileType bindzone  call TabIndent()
   autocmd FileType make      call TabIndent()
   autocmd FileType sudoers   call TabIndent()
-  autocmd FileType c         call TabIndent()
+  autocmd FileType c         call GoTabs()
   autocmd FileType go        call GoTabs()
 
   autocmd FileType c     call MapCShortcuts()
