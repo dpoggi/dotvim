@@ -176,6 +176,7 @@ function MapCShortcuts()
   map <leader>m :make<cr>
   map <leader>mc :make clean<cr>
   map <leader>co :copen<cr>
+  map <leader>cc :cclose<cr>
   map <leader>cn :cn<cr>
   map <leader>cp :cp<cr>
   map <leader>cf :cfirst<cr>
@@ -222,6 +223,7 @@ if has('autocmd')
   autocmd FileType go        call GoTabs()
 
   autocmd FileType c     call MapCShortcuts()
+  autocmd FileType go    call MapCShortcuts()
   autocmd FileType cpp   call MapCShortcuts()
   autocmd FileType objc  call MapCShortcuts()
 
