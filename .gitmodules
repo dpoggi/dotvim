@@ -103,3 +103,6 @@
 [submodule "bundle/go"]
 	path = bundle/go
 	url = git://github.com/fatih/vim-go.git
+[submodule "bundle/apiblueprint"]
+	path = bundle/apiblueprint
+	url = git://github.com/kylef/apiblueprint.vim.git
