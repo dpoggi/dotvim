@@ -211,14 +211,18 @@ cmap w!! w !sudo dd of=%
 " Auto commands
 if has('autocmd')
   autocmd FileType *         call TwoSpaceIndent()
-  autocmd FileType java      call FourSpaceIndent()
-  autocmd FileType scala     call FourSpaceIndent()
-  autocmd FileType php       call FourSpaceIndent()
-  autocmd FileType python    call FourSpaceIndent()
-  autocmd FileType lua       call FourSpaceIndent()
+
+  autocmd FileType java         call FourSpaceIndent()
+  autocmd FileType scala        call FourSpaceIndent()
+  autocmd FileType php          call FourSpaceIndent()
+  autocmd FileType python       call FourSpaceIndent()
+  autocmd FileType lua          call FourSpaceIndent()
+  autocmd FileType apiblueprint call FourSpaceIndent()
+
   autocmd FileType bindzone  call TabIndent()
   autocmd FileType make      call TabIndent()
   autocmd FileType sudoers   call TabIndent()
+
   autocmd FileType c         call GoTabs()
   autocmd FileType go        call GoTabs()
 
