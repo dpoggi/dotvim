@@ -258,6 +258,7 @@ if has('autocmd')
   autocmd FileType objc       call MapSlashComment()
   autocmd FileType php        call MapSlashComment()
   autocmd FileType go         call MapSlashComment()
+  autocmd FileType groovy     call MapSlashComment()
 
   autocmd FileType vim        call MapDQuoteComment()
   autocmd FileType lua        call MapHyphenComment()
