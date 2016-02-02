@@ -112,6 +112,9 @@ endfunction
 function MapLambdaOperator()
   imap <C-l> <space>->
 endfunction
+function MapReturnTypeOperator()
+  imap <C-l> <space>-><space>
+endfunction
 
 function MapPoundComment()
   map <leader>g :'a,. s/^/#/<cr>:let @/ = ""<cr>
@@ -251,6 +254,8 @@ if has('autocmd')
   autocmd FileType swift  call MapLambdaOperator()
   autocmd FileType coffee call MapLambdaOperator()
   autocmd FileType java   call MapLambdaOperator()
+
+  autocmd FileType rust   call MapReturnTypeOperator()
 
   autocmd FileType sh     call MapPoundComment()
   autocmd FileType ruby   call MapPoundComment()
