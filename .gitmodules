@@ -112,3 +112,6 @@
 [submodule "bundle/systemd"]
 	path = bundle/systemd
 	url = git://github.com/Matt-Deacalion/vim-systemd-syntax.git
+[submodule "bundle/css-color"]
+	path = bundle/css-color
+	url = git://github.com/ap/vim-css-color.git
