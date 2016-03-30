@@ -1,8 +1,10 @@
 /tmp/*
-!/tmp/.gitkeep
+!/tmp/.keep
 /backups/*
-!/backups/.gitkeep
-.netrwhist
+!/backups/.keep
+/view/*
+!/view/.keep
+/bundle/nerdtree/*
 vimrc.local
 gvimrc.local
-bundle/nerdtree
+.netrwhist
