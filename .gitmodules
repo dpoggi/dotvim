@@ -115,3 +115,6 @@
 [submodule "bundle/css-color"]
 	path = bundle/css-color
 	url = git://github.com/ap/vim-css-color.git
+[submodule "bundle/stylus"]
+	path = bundle/stylus
+	url = git://github.com/wavded/vim-stylus.git
