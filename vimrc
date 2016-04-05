@@ -10,7 +10,7 @@ if !has('mac') && !has('macunix')
   call add(g:pathogen_disabled, 'ios')
 endif
 
-call pathogen#infect()
+execute pathogen#infect()
 call pathogen#helptags()
 
 set backup
