@@ -14,8 +14,11 @@ execute pathogen#infect()
 call pathogen#helptags()
 
 set backup
-set backupdir=~/.vim/backups
-set directory=~/.vim/tmp
+set backupdir=~/.vim/backups//
+set swapfile
+set directory=~/.vim/swap//
+set undofile
+set undodir=~/.vim/undo//
 
 set wildignore+=*.o,*.obj,tmp/**,bin/**
 
