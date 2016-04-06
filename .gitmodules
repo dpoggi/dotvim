@@ -118,3 +118,6 @@
 [submodule "bundle/stylus"]
 	path = bundle/stylus
 	url = git://github.com/wavded/vim-stylus.git
+[submodule "bundle/ts"]
+	path = bundle/ts
+	url = git://github.com/Quramy/tsuquyomi.git

@@ -9,6 +9,9 @@ let g:pathogen_disabled=[]
 if !has('mac') && !has('macunix')
   call add(g:pathogen_disabled, 'ios')
 endif
+if v:version < 704
+  call add(g:pathogen_disabled, 'ts')
+endif
 
 execute pathogen#infect()
 call pathogen#helptags()
