@@ -121,3 +121,9 @@
 [submodule "bundle/ts"]
 	path = bundle/ts
 	url = git://github.com/Quramy/tsuquyomi.git
+[submodule "bundle/vimproc"]
+	path = bundle/vimproc
+	url = git://github.com/Shougo/vimproc.vim.git
+[submodule "bundle/typescript"]
+	path = bundle/typescript
+	url = git://github.com/leafgarland/typescript-vim.git
