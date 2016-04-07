@@ -269,6 +269,7 @@ if has('autocmd')
   autocmd FileType puppet call MapPoundComment()
   autocmd FileType thrift call MapPoundComment()
   autocmd FileType sshconfig  call MapPoundComment()
+  autocmd FileType Dockerfile call MapPoundComment()
   
   autocmd FileType javascript call MapSlashComment()
   autocmd FileType java       call MapSlashComment()
