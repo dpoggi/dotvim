@@ -1,21 +1,34 @@
-"" Basic settings
+""
+"" Get out of Vi mode, load Pathogen, do some setup
+""
+
 set nocompatible
+let g:pathogen_disabled = []
+
+"" Local pre-load hook for plugin disables/configuration
+if filereadable($HOME . '/.vim/plugins.local')
+  source ~/.vim/plugins.local
+endif
+
+"" Because submodules will inevitably overstay their welcome :shrug:
+call extend(g:pathogen_disabled,
+\   ['clojure', 'cocoa', 'funcoo', 'haml', 'ios', 'mako',
+\    'systemverilog', 'ts'])
+
+"" Load pathogen
+execute pathogen#infect()
+call pathogen#helptags()
+
+"" Comma leader
+let mapleader = ','
+
+"" Enable mouse support, if possible
 if has('mouse')
   set mouse=a
   set ttymouse=xterm2
 endif
 
-let g:pathogen_disabled=[]
-if !has('mac') && !has('macunix')
-  call add(g:pathogen_disabled, 'ios')
-endif
-if v:version < 704
-  call add(g:pathogen_disabled, 'ts')
-endif
-
-execute pathogen#infect()
-call pathogen#helptags()
-
+"" Backup, swap, and undo directories
 set backup
 set backupdir=~/.vim/backups//
 set swapfile
@@ -23,272 +36,281 @@ set directory=~/.vim/swap//
 set undofile
 set undodir=~/.vim/undo//
 
-set wildignore+=*.o,*.obj,tmp/**,bin/**
+"" Wildcards for :e / Command-T to ignore
+set wildignore+=*.o,*.obj,pkg/**,*.exe,*.app,*.ipa,*.dSYM*
+set wildignore+=tmp/**,build/**,dist/**,target/**
+set wildignore+=.bundle/**,Pods/**,Carthage/**
+set wildignore+=node_modules/**,bower_components/**,vendor/src/**
 
+"" Search options
 set incsearch
 set hlsearch
 set ignorecase
 set smartcase
 
-set autoindent
-set expandtab
-set tabstop=8
-filetype plugin indent on
-
-"" Normally we want molokai, but if we're at a basic terminal,
-"" solarized looks much nicer
-if $TERM =~ '^linux' || $TERM =~ '^screen$'
-  set background=dark
-  colorscheme solarized
-else
-  let g:molokai_original=1
-  colorscheme molokai
-endif
-
-syntax on
-highlight Pmenu ctermbg=238 gui=bold
-
+"" Line numbers and rulers
 set number
 set numberwidth=5
 set cursorline
 set ruler
 
+"" Backspace behavior, listchars
 set backspace=indent,eol,start
 set listchars=tab:>-,trail:.,nbsp:.
 
+"" Status bar
 set laststatus=2
 
 "" Annoyances
 set timeoutlen=300
-imap jj <esc>
+imap jk <esc>
 
-"" Only set *rc* and *profile* to sh if type is blank or conf (wrong, usually)
-function CorrectConfType()
+
+""
+"" Filetype/highlighting/colorscheme options
+""
+
+"" Default shell dialect
+let g:is_bash = 1
+
+"" Fix the filetype of certain misidentified shell scripts
+function! s:FixShellFt()
   if &filetype == '' || &filetype == 'conf'
     set filetype=sh
   endif
 endfunction
 
-"" If we open a property list and it's of the XML variety, we want to use
-"" tabs for indentation.
-function PlistIndent()
-  if &filetype == 'xml'
-    call TabIndent()
+"" Filetype corrections
+if has('autocmd')
+  au BufRead,BufNewFile Fastfile     set filetype=ruby
+  au BufRead,BufNewFile *gemrc*      set filetype=yaml
+  au BufRead,BufNewFile *.gradle     set filetype=groovy
+  au BufRead,BufNewFile *.hjs        set filetype=handlebars
+  au BufRead,BufNewFile jquery.*.js  set filetype=javascript syntax=jquery
+  au BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
+  au BufRead,BufNewFile *.json       set filetype=javascript
+  au BufRead,BufNewFile *.mako       set filetype=mako
+  au BufRead,BufNewFile Procfile     set filetype=yaml
+  au BufRead,BufNewFile *.ru         set filetype=ruby
+  au BufRead,BufNewFile *.thrift     set filetype=thrift
+
+  au BufRead,BufNewFile *env      call s:FixShellFt()
+  au BufRead,BufNewFile *.env.*   call s:FixShellFt()
+  au BufRead,BufNewFile *profile  call s:FixShellFt()
+  au BufRead,BufNewFile *vimrc*   set filetype=vim
+  au BufRead,BufNewFile *rc       call s:FixShellFt()
+  au BufRead,BufNewFile *.zsh*    set filetype=zsh
+
+  au FileType gitcommit setlocal spell
+  au FileType latex     setlocal spell
+  au FileType markdown  setlocal spell
+  au FileType plaintex  setlocal spell
+  au FileType text      setlocal spell
+endif
+
+"" Normally we want zenburn, but if we're at a basic TTY, solarized looks
+"" great, even though it doesn't look like solarized.
+if $TERM =~ '^linux' || $TERM =~ '^screen$'
+  set background=dark
+  colorscheme solarized
+else
+  set background=
+  colorscheme zenburn
+endif
+
+"" Syntastic options
+let g:syntastic_check_on_open = 1
+let g:syntastic_quiet_messages = {'level': 'warnings'}
+
+"" Enable syntax highlighting
+syntax on
+
+
+""
+"" Indent options/binds - default is 2 spaces
+""
+
+function! Tabs(size)
+  set noexpandtab
+  let &tabstop = a:size
+  let &softtabstop = 0
+  let &shiftwidth = a:size
+endfunction
+map <leader>0 :call Tabs(8)<cr>
+map <leader>g0 :call Tabs(4)<cr>
+
+function! Spaces(num)
+  set expandtab
+  let &tabstop = a:num
+  let &softtabstop = 0
+  let &shiftwidth = a:num
+endfunction
+map <leader>2 :call Spaces(2)<cr>
+map <leader>4 :call Spaces(4)<cr>
+
+"" Initialize indentation
+set autoindent
+call Spaces(2)
+filetype plugin indent on
+
+"" Indents for specific filetypes
+if has('autocmd')
+  au FileType * call Spaces(2)
+
+  au FileType apiblueprint  call Spaces(4)
+  au FileType cpp           call Spaces(4)
+  au FileType java          call Spaces(4)
+  au FileType lua           call Spaces(4)
+  au FileType php           call Spaces(4)
+  au FileType python        call Spaces(4)
+  au FileType scala         call Spaces(4)
+  au FileType typescript    call Spaces(4)
+  au FileType xml           call Spaces(4)
+
+  au FileType bindzone          call Tabs(8)
+  au FileType c                 call Tabs(8)
+  au FileType make              call Tabs(8)
+  au BufRead,BufNewFile *.plist call Tabs(8)
+  au FileType sudoers           call Tabs(8)
+
+  au FileType go call Tabs(4)
+endif
+
+
+""
+"" Keybind functions
+""
+
+function! s:MapHashrocket()
+  imap <C-l> <space>=><space>
+endfunction
+
+function! s:MapLeftArrow()
+  imap <C-l> <-
+endfunction
+
+function! s:MapRightArrow(spaces)
+  if a:spaces == 0
+    imap <C-l> ->
+  elseif a:spaces == 1
+    imap <C-l> <space>->
+  elseif a:spaces > 1
+    imap <C-l> <space>-><space>
   endif
 endfunction
 
-"" Filetype corrections
-if has('autocmd')
-  autocmd BufRead,BufNewFile *.ru         set filetype=ruby
-  autocmd BufRead,BufNewFile Fastfile     set filetype=ruby
-  autocmd BufRead,BufNewFile Procfile     set filetype=yaml
-  autocmd BufRead,BufNewFile *.thrift     set filetype=thrift
-  autocmd BufRead,BufNewFile *.zsh-theme  set filetype=zsh
-  autocmd BufRead,BufNewFile *.json       set filetype=javascript
-  autocmd BufRead,BufNewFile *.hjs        set filetype=handlebars
-  autocmd BufRead,BufNewFile jquery.*.js  set filetype=javascript syntax=jquery
-  autocmd BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
-  autocmd BufRead,BufNewFile *.mako       set filetype=mako
-  autocmd BufRead,BufNewFile *gemrc*      set filetype=yaml
-  autocmd BufRead,BufNewFile *.gradle     set filetype=groovy
-  autocmd BufRead,BufNewFile *.plist*     call PlistIndent()
+function! SetColGuide()
+  call inputsave()
+  let l:width = substitute(input('Column guide width: '), '[^0-9]', '', 'g')
+  call inputrestore()
+  redraw
 
-  autocmd BufRead,BufNewFile *rc*         call CorrectConfType()
-  autocmd BufRead,BufNewFile *profile*    call CorrectConfType()
-
-  autocmd BufRead,BufNewFile *.md setlocal spell
-  autocmd BufRead,BufNewFile *.mdown setlocal spell
-  autocmd BufRead,BufNewFile *.markdown setlocal spell
-  autocmd FileType gitcommit setlocal spell
-endif
-
-"" DEFAULT SH TYPE THANK YOU
-let g:is_bash = 1
-
-"" Function definitions
-function MapHashrocket()
-  imap <C-l> <space>=><space>
-endfunction
-function MapStructOperator()
-  imap <C-l> ->
-endfunction
-function MapChannelOperator()
-  imap <C-l> <-
-endfunction
-function MapLambdaOperator()
-  imap <C-l> <space>->
-endfunction
-function MapReturnTypeOperator()
-  imap <C-l> <space>-><space>
+  if l:width != ''
+    let g:col_guide_width = l:width
+    call ColGuide()
+    call ColGuide()
+    echom 'Column guide width @ ' . g:col_guide_width . '!'
+  else
+    echom 'Column guide width must be a number.'
+  endif
 endfunction
 
-function MapPoundComment()
-  map <leader>g :'a,. s/^/#/<cr>:let @/ = ""<cr>
-  map <leader>b :'a,. s/^#//<cr>:let @/ = ""<cr>
-endfunction
-function MapSlashComment()
-  map <leader>g :'a,. s/^/\/\//<cr>:let @/ = ""<cr>
-  map <leader>b :'a,. s/^\/\///<cr>:let @/ = ""<cr>
-endfunction
-function MapDQuoteComment()
-  map <leader>g :'a,. s/^/\"\"/<cr>:let @/ = ""<cr>
-  map <leader>b :'a,. s/^\"\"//<cr>:let @/ = ""<cr>
-endfunction
-function MapHyphenComment()
-  map <leader>g :'a,. s/^/--/<cr>:let @/ = ""<cr>
-  map <leader>b :'a,. s/^--//<cr>:let @/ = ""<cr>
-endfunction
-
-function TwoSpaceIndent()
-  set expandtab
-  set softtabstop=2
-  set shiftwidth=2
-endfunction
-function FourSpaceIndent()
-  set expandtab
-  set softtabstop=4
-  set shiftwidth=4
-endfunction
-function TabIndent()
-  set noexpandtab
-  set softtabstop=8
-  set tabstop=8
-  set shiftwidth=8
-endfunction
-function GoTabs()
-  set noexpandtab
-  set softtabstop=4
-  set tabstop=4
-  set shiftwidth=4
-endfunction
-
-function Write()
-  set noexpandtab
-  set softtabstop=0
-  set tabstop=6
-  set shiftwidth=6
-
-  set laststatus=0
-  set nolist
-  set wrap
-  set linebreak
-  set textwidth=0
-  set wrapmargin=0
-endfunction
-
-function ToggleEighty()
+function! ColGuide()
   try
-    call matchdelete(g:eighty)
+    call matchdelete(g:col_guide)
+    return 0
   catch
-    let g:eighty = matchadd('Error', '\%>80v.\+')
+    if exists('g:col_guide_width')
+      let l:width = g:col_guide_width
+    else
+      let l:width = 80
+    endif
+    let g:col_guide = matchadd('Error', '\%>' . l:width . 'v.\+')
+    return 1
   endtry
 endfunction
 
-function MapCShortcuts()
-  map <leader>m :make<cr>
-  map <leader>mc :make clean<cr>
-  map <leader>co :copen<cr>
-  map <leader>cc :cclose<cr>
-  map <leader>cn :cn<cr>
-  map <leader>cp :cp<cr>
-  map <leader>cf :cfirst<cr>
-  map <leader>cl :clast<cr>
-endfunction
 
-"" Mappings
-let mapleader=','
+""
+"" Keybinds
+""
+
+"" Column guide
+map <leader>\ :call ColGuide()<cr>
+map <leader>s\ :call SetColGuide()<cr>
+
+"" Get current file's directory in command mode
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
-map <leader>8 :call ToggleEighty()<cr>
+"" Re-indent the entire file
+map <leader>I mmgg=G`m
+
+"" Save a buffer as superuser while running Vim unprivileged
+cnoremap w!! w !sudo tee -i % >/dev/null
+
+"" Reload .vimrc
+map <leader>Rl :source ~/.vimrc<cr>
+
+"" <3 make
+map <leader>m :make<cr>
+map <leader>mc :make clean<cr>
+
+"" Location list management
+map <leader>co :copen<cr>
+map <leader>cc :cclose<cr>
+map <leader>cn :cn<cr>
+map <leader>cp :cp<cr>
+map <leader>cf :cfirst<cr>
+map <leader>cl :clast<cr>
+
+"" Show/hide search highlights + listchars
 map <leader>/ :set invhlsearch<cr>
 map <leader><space> :set list!<cr>
 
-map <leader>i mmgg=G`m
-
+"" Previous/next buffer
 map <leader>h :bp<cr>
 map <leader>l :bn<cr>
+"" Flip-flop buffers
 nnoremap <leader><leader> <c-^>
 
+"" Tab management
 map <leader>tc :tabnew<cr>
 map <leader>tp :tabprev<cr>
 map <leader>tn :tabnext<cr>
 map <leader>td :tabclose<cr>
 
+"" Command-T
 map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
 map <leader>F :CommandTFlush<cr>\|:CommandT %%<cr>
 
-" Save without opening via sudo
-cmap w!! w !sudo dd of=%
-
-" Auto commands
+"" Filetype-specific keybinds
 if has('autocmd')
-  autocmd FileType *         call TwoSpaceIndent()
+  au FileType php         call s:MapHashrocket()
+  au FileType ruby        call s:MapHashrocket()
+  au FileType eruby       call s:MapHashrocket()
+  au FileType haml        call s:MapHashrocket()
+  au FileType puppet      call s:MapHashrocket()
+  au FileType scala       call s:MapHashrocket()
+  au FileType javascript  call s:MapHashrocket()
 
-  autocmd FileType java         call FourSpaceIndent()
-  autocmd FileType scala        call FourSpaceIndent()
-  autocmd FileType php          call FourSpaceIndent()
-  autocmd FileType python       call FourSpaceIndent()
-  autocmd FileType lua          call FourSpaceIndent()
-  autocmd FileType apiblueprint call FourSpaceIndent()
+  au FileType go call s:MapLeftArrow()
 
-  autocmd FileType bindzone  call TabIndent()
-  autocmd FileType make      call TabIndent()
-  autocmd FileType sudoers   call TabIndent()
+  au FileType c     call s:MapRightArrow(0)
+  au FileType cpp   call s:MapRightArrow(0)
+  au FileType objc  call s:MapRightArrow(0)
 
-  autocmd FileType c         call GoTabs()
-  autocmd FileType go        call GoTabs()
+  au FileType coffee call s:MapRightArrow(1)
 
-  autocmd FileType c     call MapCShortcuts()
-  autocmd FileType go    call MapCShortcuts()
-  autocmd FileType cpp   call MapCShortcuts()
-  autocmd FileType objc  call MapCShortcuts()
-
-  autocmd FileType php     call MapHashrocket()
-  autocmd FileType ruby    call MapHashrocket()
-  autocmd FileType eruby   call MapHashrocket()
-  autocmd FileType haml    call MapHashrocket()
-  autocmd FileType puppet  call MapHashrocket()
-  autocmd FileType scala   call MapHashrocket()
-  autocmd FileType javascript call MapHashrocket()
-
-  autocmd FileType c     call MapStructOperator()
-  autocmd FileType cpp   call MapStructOperator()
-  autocmd FileType objc  call MapStructOperator()
-  autocmd FileType php   call MapStructOperator()
-  autocmd FileType go    call MapChannelOperator()
-
-  autocmd FileType swift  call MapLambdaOperator()
-  autocmd FileType coffee call MapLambdaOperator()
-  autocmd FileType java   call MapLambdaOperator()
-
-  autocmd FileType rust   call MapReturnTypeOperator()
-
-  autocmd FileType sh     call MapPoundComment()
-  autocmd FileType ruby   call MapPoundComment()
-  autocmd FileType python call MapPoundComment()
-  autocmd FileType puppet call MapPoundComment()
-  autocmd FileType thrift call MapPoundComment()
-  autocmd FileType sshconfig  call MapPoundComment()
-  autocmd FileType Dockerfile call MapPoundComment()
-  
-  autocmd FileType javascript call MapSlashComment()
-  autocmd FileType java       call MapSlashComment()
-  autocmd FileType cpp        call MapSlashComment()
-  autocmd FileType objc       call MapSlashComment()
-  autocmd FileType php        call MapSlashComment()
-  autocmd FileType go         call MapSlashComment()
-  autocmd FileType groovy     call MapSlashComment()
-
-  autocmd FileType vim        call MapDQuoteComment()
-  autocmd FileType lua        call MapHyphenComment()
+  au FileType java  call s:MapRightArrow(2)
+  au FileType rust  call s:MapRightArrow(2)
+  au FileType swift call s:MapRightArrow(2)
 endif
-call TwoSpaceIndent()
 
-" Syntastic
-let g:syntastic_check_on_open=1
-let g:syntastic_quiet_messages = {'level': 'warnings'}
 
-" Local user changes
-if filereadable($HOME . "/.vim/vimrc.local")
+""
+"" Load vimrc.local if it exists
+""
+
+if filereadable($HOME . '/.vim/vimrc.local')
   source ~/.vim/vimrc.local
 endif

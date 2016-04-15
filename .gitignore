@@ -10,5 +10,6 @@
 !/view/.keep
 /tmp/*
 
+plugins.local
 vimrc.local
 gvimrc.local

@@ -10,9 +10,6 @@
 [submodule "bundle/javascript"]
 	path = bundle/javascript
 	url = git://github.com/pangloss/vim-javascript.git
-[submodule "bundle/haml"]
-	path = bundle/haml
-	url = git://github.com/tpope/vim-haml.git
 [submodule "bundle/command-t"]
 	path = bundle/command-t
 	url = git://github.com/wincent/Command-T.git
@@ -25,9 +22,6 @@
 [submodule "bundle/thrift"]
 	path = bundle/thrift
 	url = git://github.com/sprsquish/thrift.vim.git
-[submodule "bundle/cocoa"]
-	path = bundle/cocoa
-	url = git://github.com/msanders/cocoa.vim.git
 [submodule "bundle/jquery"]
 	path = bundle/jquery
 	url = git://github.com/nono/jquery.vim.git
@@ -43,9 +37,6 @@
 [submodule "bundle/less"]
 	path = bundle/less
 	url = git://github.com/groenewege/vim-less.git
-[submodule "bundle/mako"]
-	path = bundle/mako
-	url = git://github.com/vim-scripts/mako.vim
 [submodule "bundle/handlebars"]
 	path = bundle/handlebars
 	url = git://github.com/nono/vim-handlebars.git
@@ -58,24 +49,15 @@
 [submodule "bundle/surround"]
 	path = bundle/surround
 	url = git://github.com/tpope/vim-surround.git
-[submodule "bundle/clojure"]
-	path = bundle/clojure
-	url = git://github.com/vim-scripts/VimClojure.git
 [submodule "bundle/syntastic"]
 	path = bundle/syntastic
 	url = git://github.com/scrooloose/syntastic.git
 [submodule "bundle/jinja2"]
 	path = bundle/jinja2
 	url = git://github.com/Glench/Vim-Jinja2-Syntax.git
-[submodule "bundle/funcoo"]
-	path = bundle/funcoo
-	url = git://github.com/rizzatti/funcoo.vim.git
 [submodule "bundle/dash"]
 	path = bundle/dash
 	url = git://github.com/rizzatti/dash.vim.git
-[submodule "bundle/ios"]
-	path = bundle/ios
-	url = git://github.com/eraserhd/vim-ios.git
 [submodule "bundle/kiwi"]
 	path = bundle/kiwi
 	url = git://github.com/vim-scripts/kiwi.vim.git
@@ -85,9 +67,6 @@
 [submodule "bundle/gnupg"]
 	path = bundle/gnupg
 	url = git://github.com/vim-scripts/gnupg.vim
-[submodule "bundle/systemverilog"]
-	path = bundle/systemverilog
-	url = git://github.com/vim-scripts/systemverilog.vim
 [submodule "bundle/scala"]
 	path = bundle/scala
 	url = git://github.com/derekwyatt/vim-scala.git
@@ -118,12 +97,15 @@
 [submodule "bundle/stylus"]
 	path = bundle/stylus
 	url = git://github.com/wavded/vim-stylus.git
-[submodule "bundle/ts"]
-	path = bundle/ts
-	url = git://github.com/Quramy/tsuquyomi.git
-[submodule "bundle/vimproc"]
-	path = bundle/vimproc
-	url = git://github.com/Shougo/vimproc.vim.git
 [submodule "bundle/typescript"]
 	path = bundle/typescript
 	url = git://github.com/leafgarland/typescript-vim.git
+[submodule "bundle/vimproc"]
+	path = bundle/vimproc
+	url = git://github.com/Shougo/vimproc.vim.git
+[submodule "bundle/commentary"]
+	path = bundle/commentary
+	url = git://github.com/tpope/vim-commentary.git
+[submodule "bundle/css3"]
+	path = bundle/css3
+	url = git://github.com/hail2u/vim-css3-syntax.git
