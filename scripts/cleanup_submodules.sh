@@ -29,17 +29,15 @@ do
     rm -rf "${module_dir}"
   fi
 
-  modules_line="$(grep -n "\/${pair[1]}" "${git_modules}" | cut -d ':' -f 1)"
-  if [[ -n "${modules_line}" ]]; then
+  if grep "bundle\/${pair[0]}" "${git_modules}" >/dev/null; then
     printf >&2 "Cleaning up .gitmodules for ${pair[1]}...\n"
-    prev_line="$(expr ${modules_line} - 2)"
-    sed -i '' -e "${prev_line},${modules_line}d" "${git_modules}"
+    sed -i'' -e "s/^.*bundle\/${pair[0]}.*$//g" "${git_modules}"
+    sed -i'' -e "/^.*\/${pair[1]}.*$/d" "${git_modules}"
   fi
 
-  config_line="$(grep -n "\/${pair[1]}" "${git_config}" | cut -d ':' -f 1)"
-  if [[ -n "${config_line}" ]]; then
+  if grep "bundle\/${pair[0]}" "${git_config}" >/dev/null; then
     printf >&2 "Cleaning up .git/config for ${pair[1]}...\n"
-    prev_line="$(expr ${config_line} - 1)"
-    sed -i '' -e "${prev_line},${config_line}d" "${git_config}"
+    sed -i'' -e "/^.*bundle\/${pair[0]}.*$/d" "${git_config}"
+    sed -i'' -e "/^.*\/${pair[1]}.*$/d" "${git_config}"
   fi
 done
