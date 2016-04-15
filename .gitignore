@@ -1,3 +1,5 @@
+.netrwhist
+
 /backups/*
 !/backups/.keep
 /swap/*
@@ -7,10 +9,6 @@
 /view/*
 !/view/.keep
 /tmp/*
-!/tmp/.keep
-.netrwhist
-
-/bundle/nerdtree/*
 
 vimrc.local
 gvimrc.local
