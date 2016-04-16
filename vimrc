@@ -99,6 +99,7 @@ if has('autocmd')
   au BufRead,BufNewFile *profile  call s:FixShellFt()
   au BufRead,BufNewFile *vimrc*   set filetype=vim
   au BufRead,BufNewFile *rc       call s:FixShellFt()
+  au BufRead,BufNewFile *rc_*     call s:FixShellFt()
   au BufRead,BufNewFile *.zsh*    set filetype=zsh
 
   au FileType gitcommit setlocal spell
