@@ -5,8 +5,8 @@ set gdefault
 set incsearch
 set hlsearch
 
-inoremap jk <esc>
+inoremap jk <esc>`^
 nnoremap 'I mmgg=G`m
 
-"" Swift return types
+"" Java 8 lambdas
 imap <C-l> <space>-><space>
