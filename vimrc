@@ -10,10 +10,18 @@ if filereadable($HOME . '/.vim/plugins.local')
   source ~/.vim/plugins.local
 endif
 
-"" Because submodules will inevitably overstay their welcome :shrug:
-call extend(g:pathogen_disabled,
-\   ['clojure', 'cocoa', 'funcoo', 'haml', 'ios', 'mako',
-\    'systemverilog', 'ts'])
+"" Because submodules will inevitably overstay their welcome ¯\_(ツ)_/¯
+call extend(g:pathogen_disabled, [
+\   'clojure',
+\   'cocoa',
+\   'command-t',
+\   'funcoo',
+\   'haml',
+\   'ios',
+\   'mako',
+\   'systemverilog',
+\   'ts',
+\ ])
 
 "" Load pathogen
 execute pathogen#infect()
@@ -22,25 +30,13 @@ call pathogen#helptags()
 "" Comma leader
 let mapleader = ','
 
-"" Enable mouse support, if possible
-if has('mouse')
-  set mouse=a
-  set ttymouse=xterm2
-endif
-
 "" Backup, swap, and undo directories
 set backup
-set backupdir=~/.vim/backups//
+set backupdir=~/.vim/backup//
 set swapfile
 set directory=~/.vim/swap//
 set undofile
 set undodir=~/.vim/undo//
-
-"" Wildcards for :e / Command-T to ignore
-set wildignore+=*.o,*.obj,pkg/**,*.exe,*.app,*.ipa,*.dSYM*
-set wildignore+=tmp/**,build/**,dist/**,target/**
-set wildignore+=.bundle/**,Pods/**,Carthage/**
-set wildignore+=node_modules/**,bower_components/**,vendor/src/**
 
 "" Search options
 set incsearch
@@ -61,9 +57,74 @@ set listchars=tab:>-,trail:.,nbsp:.
 "" Status bar
 set laststatus=2
 
-"" Annoyances
+"" 300ms keymap
 set timeoutlen=300
-imap jk <esc>
+
+"" Enable mouse support, if possible
+if has('mouse')
+  set mouse=a
+  set ttymouse=xterm2
+endif
+
+
+""
+"" Wildcards to ignore
+""
+
+set wildignore+=*.tmp*,tmp/**,**/tmp/**
+set wildignore+=backup/**,swap/**,undo/**,view/**
+set wildignore+=*.dSYM*,*.syms
+set wildignore+=*.o,*.obj,pkg/**
+set wildignore+=*.exe,*.app,*.ipa
+set wildignore+=*.jar,target/**,.idea/**
+set wildignore+=.bundle/**,Pods/**,Carthage/**
+set wildignore+=bundle/**,vendor/src/**
+set wildignore+=build/**,dist/**
+set wildignore+=node_modules/**,bower_components/**
+set wildignore+=.imported_roles/**
+
+
+""
+"" Unite.vim options
+""
+
+let g:unite_prompt = '» '
+
+let g:unite_source_grep_command = 'grep'
+let g:unite_source_grep_default_opts = '-i -n -H'
+let g:unite_source_grep_recursive_opt = '-r'
+
+"" Delegate to pt, ag, or ack for searches if available
+if executable('pt')
+  let g:unite_source_grep_command = 'pt'
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+  let g:unite_source_grep_recursive_opt = ''
+elseif executable('ag')
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '-i --vimgrep --hidden'
+  let g:unite_source_grep_recursive_opt = ''
+elseif executable('ack') || executable('ack-grep')
+  if executable('ack')
+    let g:unite_source_grep_command = 'ack'
+  elseif executable('ack-grep')
+    let g:unite_source_grep_command = 'ack-grep'
+  endif
+  let g:unite_source_grep_default_opts = '-i -k -H --no-heading --no-color'
+  let g:unite_source_grep_recursive_opt = ''
+endif
+
+"" Ignore everything in wildignore
+call unite#custom#source('file_rec,file_rec/async,grep', 'ignore_globs',
+\   split(&wildignore, ','))
+
+"" Fuzzy matchers, sort by rank, command defaults
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#profile('default', 'context', {
+\   'auto_resize': 1,
+\   'direction': 'dynamicbottom',
+\   'start_insert': 1,
+\ })
 
 
 ""
@@ -129,26 +190,25 @@ syntax on
 
 
 ""
-"" Indent options/binds - default is 2 spaces
+"" Indent options - default is 2 spaces
 ""
-
-function! Tabs(size)
-  set noexpandtab
-  let &tabstop = a:size
-  let &softtabstop = 0
-  let &shiftwidth = a:size
-endfunction
-map <leader>0 :call Tabs(8)<cr>
-map <leader>g0 :call Tabs(4)<cr>
 
 function! Spaces(num)
   set expandtab
+  set smarttab
   let &tabstop = a:num
   let &softtabstop = 0
   let &shiftwidth = a:num
 endfunction
-map <leader>2 :call Spaces(2)<cr>
-map <leader>4 :call Spaces(4)<cr>
+
+function! Tabs(size)
+  set noexpandtab
+  set nosmarttab
+  let &tabstop = a:size
+  let &softtabstop = 0
+  let &shiftwidth = a:size
+endfunction
+
 
 "" Initialize indentation
 set autoindent
@@ -180,7 +240,7 @@ endif
 
 
 ""
-"" Keybind functions
+"" Keymap functions
 ""
 
 function! s:MapHashrocket()
@@ -225,7 +285,7 @@ function! ColGuide()
     if exists('g:col_guide_width')
       let l:width = g:col_guide_width
     else
-      let l:width = 80
+      let l:width = '80'
     endif
     let g:col_guide = matchadd('Error', '\%>' . l:width . 'v.\+')
     return 1
@@ -234,58 +294,73 @@ endfunction
 
 
 ""
-"" Keybinds
+"" Keymaps
 ""
 
+"" Ditch <esc>
+inoremap jk <esc>
+
 "" Column guide
-map <leader>\ :call ColGuide()<cr>
-map <leader>s\ :call SetColGuide()<cr>
+nmap <leader>\ :call ColGuide()<cr>
+nmap <leader>s\ :call SetColGuide()<cr>
+
+"" Indents
+nmap <leader>2 :call Spaces(2)<cr>
+nmap <leader>4 :call Spaces(4)<cr>
+nmap <leader>g4 :call Tabs(4)<cr>
+nmap <leader>8 :call Tabs(8)<cr>
 
 "" Get current file's directory in command mode
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
+cnoremap %% <C-r>=expand('%:h').'/'<cr>
 
 "" Re-indent the entire file
-map <leader>I mmgg=G`m
+nnoremap <leader>I mmgg=G`m
 
 "" Save a buffer as superuser while running Vim unprivileged
 cnoremap w!! w !sudo tee -i % >/dev/null
 
 "" Reload .vimrc
-map <leader>Rl :source ~/.vimrc<cr>
+nmap <leader>Rl :source ~/.vimrc<cr>
 
 "" <3 make
-map <leader>m :make<cr>
-map <leader>mc :make clean<cr>
+nmap <leader>m :make<cr>
+nmap <leader>mc :make clean<cr>
 
 "" Location list management
-map <leader>co :copen<cr>
-map <leader>cc :cclose<cr>
-map <leader>cn :cn<cr>
-map <leader>cp :cp<cr>
-map <leader>cf :cfirst<cr>
-map <leader>cl :clast<cr>
+nmap <leader>co :copen<cr>
+nmap <leader>cc :cclose<cr>
+nmap <leader>cn :cn<cr>
+nmap <leader>cp :cp<cr>
+nmap <leader>cf :cfirst<cr>
+nmap <leader>cl :clast<cr>
 
-"" Show/hide search highlights + listchars
-map <leader>/ :set invhlsearch<cr>
+"" Toggle search highlights + listchars
+map <leader><tab> :set invhlsearch!<cr>
 map <leader><space> :set list!<cr>
 
-"" Previous/next buffer
-map <leader>h :bp<cr>
-map <leader>l :bn<cr>
 "" Flip-flop buffers
-nnoremap <leader><leader> <c-^>
+nnoremap <leader><leader> <C-^>
 
 "" Tab management
-map <leader>tc :tabnew<cr>
-map <leader>tp :tabprev<cr>
-map <leader>tn :tabnext<cr>
-map <leader>td :tabclose<cr>
+nmap <leader>tc :tabnew<cr>
+nmap <leader>tp :tabprev<cr>
+nmap <leader>tn :tabnext<cr>
+nmap <leader>td :tabclose<cr>
 
-"" Command-T
-map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
-map <leader>F :CommandTFlush<cr>\|:CommandT %%<cr>
+"" Unite.vim
+if index(g:pathogen_disabled, 'vimproc') >= 0
+  nnoremap <leader>f :<C-u>Unite file_rec<cr>
+else
+  nnoremap <leader>f :<C-u>Unite file_rec/async:!<cr>
+endif
+nnoremap <leader>/ :<C-u>Unite -no-empty grep:.<cr>
+nnoremap <leader>bb :<C-u>Unite buffer<cr>
 
-"" Filetype-specific keybinds
+function! s:UniteSettings()
+  au InsertLeave <buffer> :UniteClose
+endfunction
+
+"" Filetype-specific keymaps
 if has('autocmd')
   au FileType php         call s:MapHashrocket()
   au FileType ruby        call s:MapHashrocket()
@@ -306,6 +381,8 @@ if has('autocmd')
   au FileType java  call s:MapRightArrow(2)
   au FileType rust  call s:MapRightArrow(2)
   au FileType swift call s:MapRightArrow(2)
+
+  au FileType unite call s:UniteSettings()
 endif
 
 
