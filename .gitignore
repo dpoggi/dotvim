@@ -1,15 +1,17 @@
 .netrwhist
 
-/backups/*
-!/backups/.keep
+/backup/*
+!/backup/.keep
 /swap/*
 !/swap/.keep
 /undo/*
 !/undo/.keep
 /view/*
 !/view/.keep
+
+/backups/*
 /tmp/*
 
-plugins.local
-vimrc.local
-gvimrc.local
+/plugins.local
+/vimrc.local
+/gvimrc.local
