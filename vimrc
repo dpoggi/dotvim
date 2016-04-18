@@ -102,6 +102,7 @@ if executable('pt')
 elseif executable('ag')
   let g:unite_source_grep_command = 'ag'
   let g:unite_source_grep_default_opts = '-i --vimgrep --hidden'
+  \ . ' --ignore ''.git'' --ignore ''.svn'' --ignore ''.hg'''
   let g:unite_source_grep_recursive_opt = ''
 elseif executable('ack') || executable('ack-grep')
   if executable('ack')
@@ -356,10 +357,6 @@ endif
 nnoremap <leader>/ :<C-u>Unite -no-empty grep:.<cr>
 nnoremap <leader>bb :<C-u>Unite buffer<cr>
 
-function! s:UniteSettings()
-  au InsertLeave <buffer> :UniteClose
-endfunction
-
 "" Filetype-specific keymaps
 if has('autocmd')
   au FileType php         call s:MapHashrocket()
@@ -381,8 +378,6 @@ if has('autocmd')
   au FileType java  call s:MapRightArrow(2)
   au FileType rust  call s:MapRightArrow(2)
   au FileType swift call s:MapRightArrow(2)
-
-  au FileType unite call s:UniteSettings()
 endif
 
 
