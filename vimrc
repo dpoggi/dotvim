@@ -3,6 +3,7 @@
 ""
 
 set nocompatible
+nnoremap Q <nop>
 let g:pathogen_disabled = []
 
 "" Local pre-load hook for plugin disables/configuration
@@ -245,20 +246,20 @@ endif
 ""
 
 function! s:MapHashrocket()
-  imap <C-l> <space>=><space>
+  inoremap <C-l> <space>=><space>
 endfunction
 
 function! s:MapLeftArrow()
-  imap <C-l> <-
+  inoremap <C-l> <-
 endfunction
 
 function! s:MapRightArrow(spaces)
   if a:spaces == 0
-    imap <C-l> ->
+    inoremap <C-l> ->
   elseif a:spaces == 1
-    imap <C-l> <space>->
+    inoremap <C-l> <space>->
   elseif a:spaces > 1
-    imap <C-l> <space>-><space>
+    inoremap <C-l> <space>-><space>
   endif
 endfunction
 
@@ -293,17 +294,44 @@ function! ColGuide()
   endtry
 endfunction
 
+function! GetSelectedText()
+  normal gv"xy
+  let l:selection = getreg('x')
+  normal gv
+  return l:selection
+endfunction
+
+function! Slackcat()
+  if !executable('slackcat')
+    echom 'slackcat is not installed.'
+    return
+  endif
+
+  let l:selection = GetSelectedText()
+
+  call inputsave()
+  let l:channel = substitute(input('Send to: '), '\n', '', 'g')
+  call inputrestore()
+  redraw
+
+  if l:channel != ''
+    call system('slackcat -c "' . l:channel . '" -n "' . expand('%:t') . '"', l:selection)
+  else
+    echom 'Please enter a channel/person to send to.'
+  endif
+endfunction
+
 
 ""
 "" Keymaps
 ""
 
 "" Ditch <esc>
-inoremap jk <esc>
+inoremap <silent> jk <esc>
 
 "" Column guide
-nmap <leader>\ :call ColGuide()<cr>
-nmap <leader>s\ :call SetColGuide()<cr>
+nmap <silent> <leader>\ :call ColGuide()<cr>
+nmap <silent> <leader>s\ :call SetColGuide()<cr>
 
 "" Indents
 nmap <leader>2 :call Spaces(2)<cr>
@@ -317,6 +345,9 @@ cnoremap %% <C-r>=expand('%:h').'/'<cr>
 "" Re-indent the entire file
 nnoremap <leader>I mmgg=G`m
 
+"" Send visual mode selection to slackcat
+xmap <silent> <leader>sc :<C-u>call Slackcat()<cr>
+
 "" Save a buffer as superuser while running Vim unprivileged
 cnoremap w!! w !sudo tee -i % >/dev/null
 
@@ -324,38 +355,38 @@ cnoremap w!! w !sudo tee -i % >/dev/null
 nmap <leader>Rl :source ~/.vimrc<cr>
 
 "" <3 make
-nmap <leader>m :make<cr>
-nmap <leader>mc :make clean<cr>
+nmap <silent> <leader>m :make<cr>
+nmap <silent> <leader>mc :make clean<cr>
 
 "" Location list management
-nmap <leader>co :copen<cr>
-nmap <leader>cc :cclose<cr>
-nmap <leader>cn :cn<cr>
-nmap <leader>cp :cp<cr>
-nmap <leader>cf :cfirst<cr>
-nmap <leader>cl :clast<cr>
+nmap <silent> <leader>co :copen<cr>
+nmap <silent> <leader>cc :cclose<cr>
+nmap <silent> <leader>cn :cn<cr>
+nmap <silent> <leader>cp :cp<cr>
+nmap <silent> <leader>cf :cfirst<cr>
+nmap <silent> <leader>cl :clast<cr>
 
 "" Toggle search highlights + listchars
-map <leader><tab> :set invhlsearch!<cr>
-map <leader><space> :set list!<cr>
+nmap <leader><tab> :set invhlsearch!<cr>
+nmap <leader><space> :set list!<cr>
 
 "" Flip-flop buffers
 nnoremap <leader><leader> <C-^>
 
 "" Tab management
-nmap <leader>tc :tabnew<cr>
-nmap <leader>tp :tabprev<cr>
-nmap <leader>tn :tabnext<cr>
-nmap <leader>td :tabclose<cr>
+nmap <silent> <leader>tc :tabnew<cr>
+nmap <silent> <leader>tp :tabprev<cr>
+nmap <silent> <leader>tn :tabnext<cr>
+nmap <silent> <leader>td :tabclose<cr>
 
 "" Unite.vim
 if index(g:pathogen_disabled, 'vimproc') >= 0
-  nnoremap <leader>f :<C-u>Unite file_rec<cr>
+  nnoremap <silent> <leader>f :<C-u>Unite file_rec<cr>
 else
-  nnoremap <leader>f :<C-u>Unite file_rec/async:!<cr>
+  nnoremap <silent> <leader>f :<C-u>Unite file_rec/async:!<cr>
 endif
-nnoremap <leader>/ :<C-u>Unite -no-empty grep:.<cr>
-nnoremap <leader>bb :<C-u>Unite buffer<cr>
+nnoremap <silent> <leader>/ :<C-u>Unite -no-empty grep:.<cr>
+nnoremap <silent> <leader>bb :<C-u>Unite buffer<cr>
 
 "" Filetype-specific keymaps
 if has('autocmd')
