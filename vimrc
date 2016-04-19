@@ -366,6 +366,7 @@ if has('autocmd')
   au FileType puppet      call s:MapHashrocket()
   au FileType scala       call s:MapHashrocket()
   au FileType javascript  call s:MapHashrocket()
+  au FileType typescript  call s:MapHashrocket()
 
   au FileType go call s:MapLeftArrow()
 
