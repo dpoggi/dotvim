@@ -72,6 +72,7 @@ endif
 "" Wildcards to ignore
 ""
 
+set wildignore+=.git/**,.svn/**,.hg/**
 set wildignore+=*.tmp*,tmp/**,**/tmp/**
 set wildignore+=backup/**,swap/**,undo/**,view/**
 set wildignore+=*.dSYM*,*.syms
@@ -381,9 +382,11 @@ nmap <silent> <leader>td :tabclose<cr>
 
 "" Unite.vim
 if index(g:pathogen_disabled, 'vimproc') >= 0
-  nnoremap <silent> <leader>f :<C-u>Unite file_rec<cr>
+  nnoremap <silent> <leader>f :<C-u>Unite file_rec:!<cr>
+  nnoremap <silent> <leader>f. :<C-u>Unite file_rec:.<cr>
 else
   nnoremap <silent> <leader>f :<C-u>Unite file_rec/async:!<cr>
+  nnoremap <silent> <leader>f. :<C-u>Unite file_rec/async:.<cr>
 endif
 nnoremap <silent> <leader>/ :<C-u>Unite -no-empty grep:.<cr>
 nnoremap <silent> <leader>bb :<C-u>Unite buffer<cr>
