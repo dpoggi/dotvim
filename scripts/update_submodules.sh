@@ -12,18 +12,27 @@ printf >&2 "\n"
 
 # Pathogen is deliberately excluded as its updates are sometimes more involved.
 for submodule in "${HOME}/.vim/bundle"/*; do
+  plugin="$(basename "${submodule}")"
   pushd "${submodule}" >/dev/null
 
-  ref="$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null)"
-  if [[ -z "${ref}" ]]; then
-    printf >&2 "Error: unable to establish remote ref for ${submodule}, skipping...\n"
+  # The JavaScript plugin's master branch is... a little... behind.
+  if [[ "${plugin}" = "javascript" ]]; then
+    symbolic_ref="refs/remotes/origin/develop"
+  else
+    symbolic_ref="$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null)"
+  fi
+  [[ -z "${symbolic_ref}" ]] ||
+    ref="$(git show-ref --hash --verify "${symbolic_ref}" 2>/dev/null)"
+
+  if [[ -z "${symbolic_ref}" || -z "${ref}" ]]; then
+    printf >&2 "Error: unable to establish remote branch for ${plugin}, skipping...\n"
     popd >/dev/null
     continue
   fi
 
-  printf >&2 "Attempting to merge ${ref} for ${submodule}...\n"
-  git merge --ff-only --no-edit "${ref}"
-  printf >&2 "Updating submodules for ${submodule}, if any...\n"
+  printf >&2 "Attempting to checkout ${symbolic_ref} for ${plugin}...\n"
+  git checkout --force "${ref}"
+  printf >&2 "Updating submodules for ${plugin}, if any...\n"
   git submodule update --init --recursive
   printf >&2 "\n"
 
