@@ -55,9 +55,6 @@
 [submodule "bundle/dash"]
 	path = bundle/dash
 	url = git://github.com/rizzatti/dash.vim.git
-[submodule "bundle/kiwi"]
-	path = bundle/kiwi
-	url = git://github.com/vim-scripts/kiwi.vim.git
 [submodule "bundle/tmux"]
 	path = bundle/tmux
 	url = git://github.com/zaiste/tmux.vim

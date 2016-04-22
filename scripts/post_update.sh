@@ -27,6 +27,7 @@ for plugin in \
   "funcoo:funcoo.vim" \
   "haml:vim-haml" \
   "ios:vim-ios" \
+  "kiwi:kiwi.vim" \
   "mako:mako.vim" \
   "systemverilog:systemverilog.vim" \
   "ts:tsuquyomi"
