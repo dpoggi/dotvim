@@ -19,6 +19,7 @@ call extend(g:pathogen_disabled, [
 \   'funcoo',
 \   'haml',
 \   'ios',
+\   'kiwi',
 \   'mako',
 \   'systemverilog',
 \   'ts',
@@ -92,10 +93,6 @@ set wildignore+=.imported_roles/**
 
 let g:unite_prompt = '» '
 
-let g:unite_source_grep_command = 'grep'
-let g:unite_source_grep_default_opts = '-i -n -H'
-let g:unite_source_grep_recursive_opt = '-r'
-
 "" Delegate to pt, ag, or ack for searches if available
 if executable('pt')
   let g:unite_source_grep_command = 'pt'
@@ -114,6 +111,10 @@ elseif executable('ack') || executable('ack-grep')
   endif
   let g:unite_source_grep_default_opts = '-i -k -H --no-heading --no-color'
   let g:unite_source_grep_recursive_opt = ''
+else
+  let g:unite_source_grep_command = 'grep'
+  let g:unite_source_grep_default_opts = '-i -n -H'
+  let g:unite_source_grep_recursive_opt = '-r'
 endif
 
 "" Ignore everything in wildignore
