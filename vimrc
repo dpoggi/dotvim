@@ -175,14 +175,13 @@ if has('autocmd')
   au FileType text      setlocal spell
 endif
 
-"" Normally we want zenburn, but if we're at a basic TTY, solarized looks
+"" Normally we want molokai, but if we're at a basic TTY, solarized looks
 "" great, even though it doesn't look like solarized.
+set background=dark
 if $TERM =~ '^linux' || $TERM =~ '^screen$'
-  set background=dark
   colorscheme solarized
 else
-  set background=
-  colorscheme zenburn
+  colorscheme molokai
 endif
 
 "" Syntastic options
