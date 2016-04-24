@@ -27,7 +27,6 @@ call extend(g:pathogen_disabled, [
 
 "" Load pathogen
 execute pathogen#infect()
-call pathogen#helptags()
 
 "" Comma leader
 let mapleader = ','

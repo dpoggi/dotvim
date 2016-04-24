@@ -67,3 +67,5 @@ do
       rm -f "${git_config}.bak"
   fi
 done
+
+vim -c "call pathogen#helptags()" -c "qall!"
