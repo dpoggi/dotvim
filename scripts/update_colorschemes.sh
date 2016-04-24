@@ -13,8 +13,7 @@ pushd "${HOME}/.vim/colors" >/dev/null
 
 gh_base="https://raw.githubusercontent.com"
 for url in \
-  "${gh_base}/vim-scripts/blackboard.vim/master/colors/blackboard.vim" \
-  "${gh_base}/chrishunt/color-schemes/master/railscasts/base16-railscasts.vim"
+  "${gh_base}/vim-scripts/blackboard.vim/master/colors/blackboard.vim"
 do
   name="$(basename "${url}")"
   printf >&2 "Deleting old ${name}...\n"
