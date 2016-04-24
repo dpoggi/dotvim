@@ -68,4 +68,5 @@ do
   fi
 done
 
+find "${dir}/bundle" -name "tags" -delete
 vim -c "call pathogen#helptags()" -c "qall!"
