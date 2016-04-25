@@ -28,8 +28,13 @@ call extend(g:pathogen_disabled, [
 "" Load pathogen
 execute pathogen#infect()
 
-"" Comma leader
-let mapleader = ','
+"" Comma leader... or spacebar.
+if filereadable($HOME . '/.vim/spaceleader')
+  nnoremap <space> <nop>
+  let mapleader = ' '
+else
+  let mapleader = ','
+endif
 
 "" Backup, swap, and undo directories
 set backup
