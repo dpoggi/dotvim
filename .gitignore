@@ -13,6 +13,5 @@
 /tmp/*
 
 /plugins.local
-/spaceleader
 /vimrc.local
 /gvimrc.local
