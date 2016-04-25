@@ -25,11 +25,13 @@ call extend(g:pathogen_disabled, [
 \   'ts',
 \ ])
 
+"" Comma leader
+let mapleader = ','
+
 "" Load pathogen
 execute pathogen#infect()
 
-"" Comma leader... or spacebar.
-let mapleader = ','
+"" But totally also a space leader
 map <space> <leader>
 
 "" Backup, swap, and undo directories
@@ -58,6 +60,9 @@ set listchars=tab:>-,trail:.,nbsp:.
 
 "" Status bar
 set laststatus=2
+
+"" How did I go without this?
+set showcmd
 
 "" 300ms keymap
 set timeoutlen=300
