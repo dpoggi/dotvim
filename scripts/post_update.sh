@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-dir="${HOME}/.vim"
+dir="$(cd "$(dirname "${BASH_SOURCE}")/.." && pwd -P)"
 gitmodules="${dir}/.gitmodules"
 git_config="${dir}/.git/config"
 
