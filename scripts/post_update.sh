@@ -2,6 +2,7 @@
 set -e
 
 dir="$(cd "$(dirname "${BASH_SOURCE}")/.." && pwd -P)"
+fake_home="$(cd "${dir}/.." && pwd -P)"
 gitmodules="${dir}/.gitmodules"
 git_config="${dir}/.git/config"
 
@@ -69,4 +70,4 @@ do
 done
 
 find "${dir}/bundle" -name "tags" -delete
-vim -c "call pathogen#helptags()" -c "qall!"
+HOME="${fake_home}" vim -c "call pathogen#helptags()" -c "qall!"
