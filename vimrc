@@ -79,7 +79,7 @@ endif
 ""
 
 set wildignore+=.git/**,.svn/**,.hg/**
-set wildignore+=*.tmp*,tmp/**,**/tmp/**
+set wildignore+=*.tmp*,tmp/**
 set wildignore+=backup/**,swap/**,undo/**,view/**
 set wildignore+=*.dSYM*,*.syms
 set wildignore+=*.o,*.obj,pkg/**
@@ -96,12 +96,60 @@ set wildignore+=.imported_roles/**
 "" Unite.vim options
 ""
 
+"" Same prompt as muh zsh theme <3
 let g:unite_prompt = '» '
+"" Fuzzy matchers, sort by rank, command defaults
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#profile('default', 'context', {
+\   'auto_resize': 1,
+\   'direction': 'dynamicbottom',
+\   'start_insert': 1,
+\ })
+
+function! UniteIgnoreGlobs()
+  let l:globs = split(&wildignore, ',')
+  "" Filter globs from wildignore *after* candidates come from the source.
+  call unite#custom#source('file_rec,file_rec/async,grep',
+  \ 'ignore_globs', l:globs) 
+
+  "" Add globs from wildignore to file_rec/async's find(1) args.
+  "" For some reason using wildignore to ignore .keep/.gitkeep etc. causes
+  "" strange behavior. Fortunately I wanted to start this list with something
+  "" to keep the loop simpler anyway, so here it is.
+  let g:unite_source_rec_find_args = ['-path', '*.*keep']
+  for l:glob in l:globs
+    call extend(g:unite_source_rec_find_args, ['-o', '-path', '*/' . l:glob])
+    "" If the glob represents a dir (ends in **), add -prune so find(1) won't
+    "" descend into it.
+    if l:glob =~ '\*\*$'
+      call extend(g:unite_source_rec_find_args, ['-prune'])
+    endif
+  endfor
+  "" Handle symlinks and print.
+  call extend(g:unite_source_rec_find_args, ['-o', '-type', 'l', '-print'])
+
+  "" TODO: Find a decent way to give the grep source similar arguments.
+  "" Why's it not here already? Each one of these tools has slightly different
+  "" semantics for passing such arguments, and there are options available to
+  "" mitigate the issue. .ptignore, .agignore, and .ackrc all do the trick.
+  ""
+  "" ack is the single largest impediment, as it has no way to ignore pathname
+  "" globs. You get four options: exact match, exact extension, Perl regexp,
+  "" or Perl regexp run on the file's first line (shebangs and such). Dang.
+endfunction
+
+call UniteIgnoreGlobs()
+
+"" FIXME: If the above TODO gets done, running pt/ag with -U (or even -u) as
+"" well as adding globs from wildignore to their args might not be a bad idea.
+"" Sometimes you want to search in files you've gitignored or something.
 
 "" Delegate to pt, ag, or ack for searches if available
 if executable('pt')
   let g:unite_source_grep_command = 'pt'
   let g:unite_source_grep_default_opts = '-i -e --nogroup --nocolor'
+  \ . ' --global-gitignore --home-ptignore'
   let g:unite_source_grep_recursive_opt = ''
 elseif executable('ag')
   let g:unite_source_grep_command = 'ag'
@@ -121,19 +169,6 @@ else
   let g:unite_source_grep_default_opts = '-i -n -H'
   let g:unite_source_grep_recursive_opt = '-r'
 endif
-
-"" Ignore everything in wildignore
-call unite#custom#source('file_rec,file_rec/async,grep', 'ignore_globs',
-\   split(&wildignore, ','))
-
-"" Fuzzy matchers, sort by rank, command defaults
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-call unite#custom#profile('default', 'context', {
-\   'auto_resize': 1,
-\   'direction': 'dynamicbottom',
-\   'start_insert': 1,
-\ })
 
 
 ""
@@ -300,6 +335,18 @@ function! ColGuide()
   endtry
 endfunction
 
+function! IgnoreGlob()
+  call inputsave()
+  let l:glob = substitute(input('Glob to ignore: '), '\n', '', 'g')
+  call inputrestore()
+  redraw
+
+  if l:glob != ''
+    let &wildignore = &wildignore . ',' . l:glob
+    call UniteIgnoreGlobs()
+  endif
+endfunction
+
 function! GetSelectedText()
   normal gv"xy
   let l:selection = getreg('x')
@@ -321,7 +368,11 @@ function! Slackcat()
   redraw
 
   if l:channel != ''
-    call system('slackcat -c "' . l:channel . '" -n "' . expand('%:t') . '"', l:selection)
+    call system('slackcat'
+    \ . ' -c "' . l:channel
+    \ . '" -n "' . expand('%:t') . '"',
+    \ l:selection)
+    echom 'Sent to {#|@}' . l:channel . '!'
   else
     echoerr 'Please enter a channel/person to send to.'
   endif
@@ -336,14 +387,17 @@ endfunction
 inoremap <silent> jk <esc>
 
 "" Column guide
-nmap <silent> <leader>\ :call ColGuide()<cr>
-nmap <silent> <leader>s\ :call SetColGuide()<cr>
+nmap <silent> <leader>\ :<C-u>call ColGuide()<cr>
+nmap <silent> <leader>s\ :<C-u>call SetColGuide()<cr>
+
+"" Append glob to wildignore
+nmap <silent> <leader>ig :<C-u>call IgnoreGlob()<cr>
 
 "" Indents
-nmap <leader>2 :call Spaces(2)<cr>
-nmap <leader>4 :call Spaces(4)<cr>
-nmap <leader>g4 :call Tabs(4)<cr>
-nmap <leader>8 :call Tabs(8)<cr>
+nmap <leader>2 :<C-u>call Spaces(2)<cr>
+nmap <leader>4 :<C-u>call Spaces(4)<cr>
+nmap <leader>g4 :<C-u>call Tabs(4)<cr>
+nmap <leader>8 :<C-u>call Tabs(8)<cr>
 
 "" Get current file's directory in command mode
 cnoremap %% <C-r>=expand('%:h').'/'<cr>
@@ -358,32 +412,32 @@ xmap <silent> <leader>sc :<C-u>call Slackcat()<cr>
 cnoremap w!! w !sudo tee -i % >/dev/null
 
 "" Reload .vimrc
-nmap <leader>Rl :source ~/.vimrc<cr>
+nmap <leader>Rl :<C-u>source ~/.vimrc<cr>
 
 "" <3 make
-nmap <silent> <leader>m :make<cr>
-nmap <silent> <leader>mc :make clean<cr>
+nmap <silent> <leader>m :<C-u>make<cr>
+nmap <silent> <leader>mc :<C-u>make clean<cr>
 
 "" Location list management
-nmap <silent> <leader>co :copen<cr>
-nmap <silent> <leader>cc :cclose<cr>
-nmap <silent> <leader>cn :cn<cr>
-nmap <silent> <leader>cp :cp<cr>
-nmap <silent> <leader>cf :cfirst<cr>
-nmap <silent> <leader>cl :clast<cr>
+nmap <silent> <leader>co :<C-u>copen<cr>
+nmap <silent> <leader>cc :<C-u>cclose<cr>
+nmap <silent> <leader>cn :<C-u>cn<cr>
+nmap <silent> <leader>cp :<C-u>cp<cr>
+nmap <silent> <leader>cf :<C-u>cfirst<cr>
+nmap <silent> <leader>cl :<C-u>clast<cr>
 
 "" Toggle search highlights + listchars
-nmap <leader><tab> :set invhlsearch!<cr>
-nmap <leader><space> :set list!<cr>
+nmap <leader><tab> :<C-u>set invhlsearch!<cr>
+nmap <leader><space> :<C-u>set list!<cr>
 
 "" Flip-flop buffers
 nnoremap <leader><leader> <C-^>
 
 "" Tab management
-nmap <silent> <leader>tc :tabnew<cr>
-nmap <silent> <leader>tp :tabprev<cr>
-nmap <silent> <leader>tn :tabnext<cr>
-nmap <silent> <leader>td :tabclose<cr>
+nmap <silent> <leader>tc :<C-u>tabnew<cr>
+nmap <silent> <leader>tp :<C-u>tabprev<cr>
+nmap <silent> <leader>tn :<C-u>tabnext<cr>
+nmap <silent> <leader>td :<C-u>tabclose<cr>
 
 "" Unite.vim
 if index(g:pathogen_disabled, 'vimproc') >= 0
