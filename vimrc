@@ -101,7 +101,7 @@ let g:unite_prompt = '» '
 "" Delegate to pt, ag, or ack for searches if available
 if executable('pt')
   let g:unite_source_grep_command = 'pt'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+  let g:unite_source_grep_default_opts = '-e --nogroup --nocolor'
   let g:unite_source_grep_recursive_opt = ''
 elseif executable('ag')
   let g:unite_source_grep_command = 'ag'
