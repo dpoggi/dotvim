@@ -309,7 +309,7 @@ endfunction
 
 function! Slackcat()
   if !executable('slackcat')
-    echom 'slackcat is not installed.'
+    echoerr 'slackcat is not installed.'
     return
   endif
 
@@ -323,7 +323,7 @@ function! Slackcat()
   if l:channel != ''
     call system('slackcat -c "' . l:channel . '" -n "' . expand('%:t') . '"', l:selection)
   else
-    echom 'Please enter a channel/person to send to.'
+    echoerr 'Please enter a channel/person to send to.'
   endif
 endfunction
 
