@@ -119,11 +119,16 @@ function! UniteIgnoreGlobs()
   "" to keep the loop simpler anyway, so here it is.
   let g:unite_source_rec_find_args = ['-path', '*.*keep']
   for l:glob in l:globs
-    call extend(g:unite_source_rec_find_args, ['-o', '-path', '*/' . l:glob])
+    call extend(g:unite_source_rec_find_args, ['-o', '-path'])
     "" If the glob represents a dir (ends in **), add -prune so find(1) won't
     "" descend into it.
     if l:glob =~ '\*\*$'
-      call extend(g:unite_source_rec_find_args, ['-prune'])
+      call extend(g:unite_source_rec_find_args, [
+      \   '*/' . strpart(l:glob, 0, len(l:glob) - 1),
+      \   '-prune',
+      \ ])
+    else
+      call extend(g:unite_source_rec_find_args, ['*/' . l:glob])
     endif
   endfor
   "" Handle symlinks and print.
