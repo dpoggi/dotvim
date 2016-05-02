@@ -257,6 +257,8 @@ function! Tabs(size)
   let &shiftwidth = a:size
 endfunction
 
+"" editorconfig
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 "" Initialize indentation
 set autoindent
