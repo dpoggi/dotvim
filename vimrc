@@ -355,19 +355,24 @@ function! IgnoreGlob()
 endfunction
 
 function! GetSelectedText()
-  normal gv"xy
+  normal! gv"xy
   let l:selection = getreg('x')
-  normal gv
+  normal! gv
   return l:selection
 endfunction
 
-function! Slackcat()
+function! Slackcat(global)
   if !executable('slackcat')
     echoerr 'slackcat is not installed.'
     return
   endif
 
-  let l:selection = GetSelectedText()
+  if a:global
+    let l:selection = join(getline(1, '$'), '\n')
+  else
+    let l:selection = GetSelectedText()
+    normal! :<C-u><cr>
+  endif
 
   call inputsave()
   let l:channel = substitute(input('Send to: '), '\n', '', 'g')
@@ -376,10 +381,10 @@ function! Slackcat()
 
   if l:channel != ''
     call system('slackcat'
-    \ . ' -c "' . l:channel
-    \ . '" -n "' . expand('%:t') . '"',
+    \ . ' -c "' . l:channel . '"'
+    \ . ' -n "' . expand('%:t') . '"',
     \ l:selection)
-    echom 'Sent to {#|@}' . l:channel . '!'
+    echom 'Sent to (#|@)' . l:channel . '!'
   else
     echoerr 'Please enter a channel/person to send to.'
   endif
@@ -413,7 +418,9 @@ cnoremap %% <C-r>=expand('%:h').'/'<cr>
 nnoremap <leader>I mmgg=G`m
 
 "" Send visual mode selection to slackcat
-xmap <silent> <leader>sc :<C-u>call Slackcat()<cr>
+xmap <silent> <leader>sc :<C-u>call Slackcat(0)<cr>
+"" Send entire file to slackcat
+nmap <silent> <leader>sc :<C-u>call Slackcat(1)<cr>
 
 "" Save a buffer as superuser while running Vim unprivileged
 cnoremap w!! w !sudo tee -i % >/dev/null
