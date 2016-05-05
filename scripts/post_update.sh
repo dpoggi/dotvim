@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 dir="$(cd "$(dirname "${BASH_SOURCE}")/.." && pwd -P)"
@@ -6,19 +6,17 @@ fake_home="$(cd "${dir}/.." && pwd -P)"
 gitmodules="${dir}/.gitmodules"
 git_config="${dir}/.git/config"
 
-if [[ "$(uname -s)" = "Darwin" ]]; then
-  xcode-select --print-path >/dev/null && has_make="true" || true
+os="$(uname -s)"
+if [[ "${os}" = "Darwin" ]]; then
+  xcode-select --print-path >/dev/null && should_make="true" || true
 else
-  hash make 2>/dev/null && has_make="true" || true
+  should_make="true"
 fi
 grep -Fq "vimproc" "${dir}/plugins.local" 2>/dev/null || vimproc="true"
 
-if [[ "${has_make}" = "true" && "${vimproc}" = "true" ]]; then
+if [[ "${should_make}" = "true" && "${vimproc}" = "true" ]]; then
   printf >&2 "Rebuilding vimproc...\n"
-  pushd "${dir}/bundle/vimproc" >/dev/null
-  make clean
-  make
-  popd >/dev/null
+  HOME="${fake_home}" vim -c "silent VimProcInstall" -c "qall!"
 fi
 
 for plugin in \
