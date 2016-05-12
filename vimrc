@@ -496,3 +496,21 @@ endif
 if filereadable($HOME . '/.vim/vimrc.local')
   source ~/.vim/vimrc.local
 endif
+
+
+""
+"" CamelCaseMotion
+""
+
+if exists('g:camel_override_motions') && g:camel_override_motions
+  map <silent> w <Plug>CamelCaseMotion_w
+  sunmap w
+  map <silent> b <Plug>CamelCaseMotion_b
+  sunmap b
+  map <silent> e <Plug>CamelCaseMotion_e
+  sunmap e
+  map <silent> ge <Plug>CamelCaseMotion_ge
+  sunmap ge
+else
+  call camelcasemotion#CreateMotionMappings('<leader>')
+endif
