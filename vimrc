@@ -344,7 +344,7 @@ endfunction
 
 function! IgnoreGlob()
   call inputsave()
-  let l:glob = substitute(input('Glob to ignore: '), '\n', '', 'g')
+  let l:glob = substitute(input('Glob to ignore: '), "\n", '', 'g')
   call inputrestore()
   redraw
 
@@ -368,14 +368,14 @@ function! Slackcat(global)
   endif
 
   if a:global
-    let l:selection = join(getline(1, '$'), '\n')
+    let l:selection = join(getline(1, '$'), "\n")
   else
     let l:selection = GetSelectedText()
     normal! :<C-u><cr>
   endif
 
   call inputsave()
-  let l:channel = substitute(input('Send to: '), '\n', '', 'g')
+  let l:channel = substitute(input('Send to: '), "\n", '', 'g')
   call inputrestore()
   redraw
 
