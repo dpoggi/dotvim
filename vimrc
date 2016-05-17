@@ -354,10 +354,16 @@ function! IgnoreGlob()
   endif
 endfunction
 
-function! GetSelectedText()
-  normal! gv"xy
-  let l:selection = getreg('x')
-  normal! gv
+function! GetSelectedText(global)
+  if a:global
+    let l:selection = join(getline(1, '$'), "\n")
+  else
+    normal! gv"xy
+    let l:selection = getreg('x')
+    normal! gv
+    normal! :<C-u><cr>
+  endif
+
   return l:selection
 endfunction
 
@@ -367,12 +373,7 @@ function! Slackcat(global)
     return
   endif
 
-  if a:global
-    let l:selection = join(getline(1, '$'), "\n")
-  else
-    let l:selection = GetSelectedText()
-    normal! :<C-u><cr>
-  endif
+  let l:selection = GetSelectedText(a:global)
 
   call inputsave()
   let l:channel = substitute(input('Send to: '), "\n", '', 'g')
@@ -388,6 +389,21 @@ function! Slackcat(global)
   else
     echoerr 'Please enter a channel/person to send to.'
   endif
+endfunction
+
+function! PasteboardCopy(global)
+  if executable('pbcopy')
+    let l:cmd = 'pbcopy'
+  elseif executable('xsel')
+    let l:cmd = 'xsel --clipboard --input'
+  else
+    echoerr 'Couldn''t find pbcopy or xsel.'
+    return
+  endif
+
+  let l:selection = GetSelectedText(a:global)
+  call system(l:cmd, l:selection)
+  echom 'Copied to pasteboard!'
 endfunction
 
 
@@ -421,6 +437,11 @@ nnoremap <leader>I mmgg=G`m
 xmap <silent> <leader>sc :<C-u>call Slackcat(0)<cr>
 "" Send entire file to slackcat
 nmap <silent> <leader>sc :<C-u>call Slackcat(1)<cr>
+
+"" Send visual mode selection to pasteboard
+xmap <silent> <leader>pc :<C-u>call PasteboardCopy(0)<cr>
+"" Send entire file to pasteboard
+nmap <silent> <leader>pc :<C-u>call PasteboardCopy(1)<cr>
 
 "" Save a buffer as superuser while running Vim unprivileged
 cnoremap w!! w !sudo tee -i % >/dev/null
