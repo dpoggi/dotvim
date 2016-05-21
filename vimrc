@@ -203,7 +203,6 @@ if has('autocmd')
   au BufRead,BufNewFile Procfile     set filetype=yaml
   au BufRead,BufNewFile *.ru         set filetype=ruby
   au BufRead,BufNewFile *.socket     set filetype=systemd
-  au BufRead,BufNewFile *.thrift     set filetype=thrift
 
   au BufRead,BufNewFile *env      call s:FixShellFt()
   au BufRead,BufNewFile *.env.*   call s:FixShellFt()

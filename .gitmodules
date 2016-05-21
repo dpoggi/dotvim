@@ -16,9 +16,6 @@
 [submodule "bundle/rails"]
 	path = bundle/rails
 	url = git://github.com/tpope/vim-rails.git
-[submodule "bundle/thrift"]
-	path = bundle/thrift
-	url = git://github.com/sprsquish/thrift.vim.git
 [submodule "bundle/jquery"]
 	path = bundle/jquery
 	url = git://github.com/nono/jquery.vim.git
