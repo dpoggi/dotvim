@@ -5,16 +5,49 @@ dir="$(cd "$(dirname "${BASH_SOURCE}")/.." && pwd -P)"
 fake_home="$(cd "${dir}/.." && pwd -P)"
 gitmodules="${dir}/.gitmodules"
 git_config="${dir}/.git/config"
+vimproc="true"
 
-os="$(uname -s)"
-if [[ "${os}" = "Darwin" ]]; then
-  xcode-select --print-path >/dev/null && should_make="true" || true
-else
-  should_make="true"
+# Don't try to make vimproc if it's being ignored.
+if grep -Fq "vimproc" "${dir}/plugins.local" &> /dev/null; then
+  vimproc="false"
 fi
-grep -Fq "vimproc" "${dir}/plugins.local" 2>/dev/null || vimproc="true"
+# Don't try to make vimproc if we're on a Mac without Xcode/CLI tools
+# (/usr/bin/make will be present but trigger a GUI installer).
+if [[ "$(uname -s)" = "Darwin" ]]; then
+  xcode-select --print-path &> /dev/null || vimproc="false"
+fi
 
-if [[ "${should_make}" = "true" && "${vimproc}" = "true" ]]; then
+remove_dir() {
+  if [[ ! -e "$1" ]]; then
+    return
+  fi
+
+  printf >&2 "Removing %s for %s...\n" "$2" "$3"
+  rm -rf "$1"
+}
+
+clean_up() {
+  if ! grep -Fq "bundle/$3" "$1" &> /dev/null; then
+    return
+  fi
+
+  printf >&2 "Cleaning up %s for %s...\n" "$2" "$4"
+  perl -i -ln \
+    -e "print unless (/bundle\/$3/ || /\/$4.git/)" \
+    "$1"
+}
+
+remove_submodule() {
+  remove_dir "${dir}/bundle/$1" \
+    "plugin bundle" "$2"
+  remove_dir "${dir}/.git/modules/bundle/$1" \
+    "orphaned submodule" "$2"
+
+  clean_up "${gitmodules}" ".gitmodules" "$1" "$2"
+  clean_up "${git_config}" ".git/config" "$1" "$2"
+}
+
+if [[ "${vimproc}" = "true" ]]; then
   printf >&2 "Rebuilding vimproc...\n"
   HOME="${fake_home}" vim -c "silent VimProcInstall" -c "qall!"
 fi
@@ -31,41 +64,20 @@ for plugin in \
   "systemverilog:systemverilog.vim" \
   "ts:tsuquyomi"
 do
-  IFS=':' read -r bundle repo <<< "${plugin}"
-  bundle_fgrep="bundle/${bundle}"
-  bundle_sed="/^.*bundle\/${bundle}.*$/d"
-  repo_sed="/^.*\/${repo}.*$/d"
-
-  bundle_dir="${dir}/bundle/${bundle}"
-  if [[ -e "${bundle_dir}" ]]; then
-    printf >&2 "Removing plugin bundle for ${repo}...\n"
-    rm -rf "${bundle_dir}"
-  fi
-
-  module_dir="${dir}/.git/modules/bundle/${bundle}"
-  if [[ -e "${module_dir}" ]]; then
-    printf >&2 "Removing orphaned Git module for ${repo}...\n"
-    rm -rf "${module_dir}"
-  fi
-
-  if grep -F "${bundle_fgrep}" "${gitmodules}" >/dev/null; then
-    printf >&2 "Cleaning up .gitmodules for ${repo}...\n"
-    sed -i.bak \
-      -e "${bundle_sed}" \
-      -e "${repo_sed}" \
-      "${gitmodules}" &&
-      rm -f "${gitmodules}.bak"
-  fi
-
-  if grep -F "${bundle_fgrep}" "${git_config}" >/dev/null; then
-    printf >&2 "Cleaning up .git/config for ${repo}...\n"
-    sed -i.bak \
-      -e "${bundle_sed}" \
-      -e "${repo_sed}" \
-      "${git_config}" &&
-      rm -f "${git_config}.bak"
-  fi
+  IFS=":" read -r bundle repo <<< "${plugin}"
+  remove_submodule "${bundle}" "${repo}"
 done
+
+if grep -Fq "sprsquish" "${git_config}" &> /dev/null; then
+  remove_dir "${dir}/bundle/thrift" \
+    "plugin bundle" "thrift.vim"
+  remove_dir "${dir}/.git/modules/bundle/thrift" \
+    "orphaned submodule" "thrift.vim"
+  perl -i -pn \
+    -e "s/sprsquish/solarnz/" \
+    "${git_config}"
+  ( cd "${dir}" && git submodule update --init )
+fi
 
 find "${dir}/bundle" -name "tags" -delete
 HOME="${fake_home}" vim -c "call pathogen#helptags()" -c "qall!"
