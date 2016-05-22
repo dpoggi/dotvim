@@ -27,7 +27,7 @@
 	url = git://github.com/tpope/vim-fugitive.git
 [submodule "bundle/nginx"]
 	path = bundle/nginx
-	url = git://github.com/vim-scripts/nginx.vim
+	url = git://github.com/vim-scripts/nginx.vim.git
 [submodule "bundle/less"]
 	path = bundle/less
 	url = git://github.com/groenewege/vim-less.git
@@ -54,10 +54,10 @@
 	url = git://github.com/rizzatti/dash.vim.git
 [submodule "bundle/tmux"]
 	path = bundle/tmux
-	url = git://github.com/zaiste/tmux.vim
+	url = git://github.com/zaiste/tmux.vim.git
 [submodule "bundle/gnupg"]
 	path = bundle/gnupg
-	url = git://github.com/vim-scripts/gnupg.vim
+	url = git://github.com/vim-scripts/gnupg.vim.git
 [submodule "bundle/scala"]
 	path = bundle/scala
 	url = git://github.com/derekwyatt/vim-scala.git
