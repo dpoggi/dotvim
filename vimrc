@@ -200,9 +200,11 @@ if has('autocmd')
   au BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
   au BufRead,BufNewFile *.json       set filetype=javascript
   au BufRead,BufNewFile *.mako       set filetype=mako
-  au BufRead,BufNewFile Procfile     set filetype=yaml
+  au BufRead,BufNewFile *nginx*.conf set filetype=nginx
+  au BufRead,BufNewFile */nginx/*    set filetype=nginx
   au BufRead,BufNewFile *.ru         set filetype=ruby
   au BufRead,BufNewFile *.socket     set filetype=systemd
+  au BufRead,BufNewFile Procfile     set filetype=yaml
 
   au BufRead,BufNewFile *env      call s:FixShellFt()
   au BufRead,BufNewFile *.env.*   call s:FixShellFt()
