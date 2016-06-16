@@ -190,6 +190,13 @@ function! s:FixShellFt()
   endif
 endfunction
 
+"" Fix the filetype for things that look like nginx config
+function! s:FixNginxFt()
+  if (&filetype == '' || &filetype == 'conf') && &filetype != 'yaml'
+    set filetype=nginx
+  endif
+endfunction
+
 "" Filetype corrections
 if has('autocmd')
   au BufRead,BufNewFile Fastfile     set filetype=ruby
@@ -200,19 +207,20 @@ if has('autocmd')
   au BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
   au BufRead,BufNewFile *.json       set filetype=javascript
   au BufRead,BufNewFile *.mako       set filetype=mako
-  au BufRead,BufNewFile *nginx*.conf set filetype=nginx
-  au BufRead,BufNewFile */nginx/*    set filetype=nginx
   au BufRead,BufNewFile *.ru         set filetype=ruby
   au BufRead,BufNewFile *.socket     set filetype=systemd
   au BufRead,BufNewFile Procfile     set filetype=yaml
 
-  au BufRead,BufNewFile *env      call s:FixShellFt()
-  au BufRead,BufNewFile *.env.*   call s:FixShellFt()
-  au BufRead,BufNewFile *profile  call s:FixShellFt()
-  au BufRead,BufNewFile *vimrc*   set filetype=vim
-  au BufRead,BufNewFile *rc       call s:FixShellFt()
-  au BufRead,BufNewFile *rc_*     call s:FixShellFt()
-  au BufRead,BufNewFile *.zsh*    set filetype=zsh
+  au BufRead,BufNewFile *env         call s:FixShellFt()
+  au BufRead,BufNewFile *.env.*      call s:FixShellFt()
+  au BufRead,BufNewFile *nginx*.conf call s:FixNginxFt()
+  au BufRead,BufNewFile */nginx/*    call s:FixNginxFt()
+  au BufRead,BufNewFile *profile     call s:FixShellFt()
+  au BufRead,BufNewFile *vimrc*      set filetype=vim
+  au BufRead,BufNewFile *rc          call s:FixShellFt()
+  au BufRead,BufNewFile *rc_*        call s:FixShellFt()
+  au BufRead,BufNewFile *.yml        set filetype=yaml
+  au BufRead,BufNewFile *.zsh*       set filetype=zsh
 
   au FileType gitcommit setlocal spell
   au FileType latex     setlocal spell
