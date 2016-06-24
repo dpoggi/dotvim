@@ -53,6 +53,7 @@ if [[ "${vimproc}" = "true" ]]; then
 fi
 
 for plugin in \
+  "CamelCaseMotion:CamelCaseMotion" \
   "clojure:VimClojure" \
   "cocoa:cocoa.vim" \
   "command-t:Command-T" \
@@ -76,7 +77,7 @@ if grep -Fq "sprsquish" "${git_config}" &> /dev/null; then
   perl -i -pn \
     -e "s/sprsquish/solarnz/" \
     "${git_config}"
-  ( cd "${dir}" && git submodule update --init )
+  (cd "${dir}" && git submodule update --init)
 fi
 
 find "${dir}/bundle" -name "tags" -delete
