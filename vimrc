@@ -330,7 +330,7 @@ function! SetColGuide()
     let g:col_guide_width = l:width
     call ColGuide()
     call ColGuide()
-    echom 'Column guide width @ ' . g:col_guide_width . '!'
+    echom 'Column guide width set to ' . g:col_guide_width . '!'
   else
     echom 'Column guide width must be a number.'
   endif
@@ -344,8 +344,9 @@ function! ColGuide()
     if exists('g:col_guide_width')
       let l:width = g:col_guide_width
     else
-      let l:width = '80'
+      let l:width = '79'
     endif
+
     let g:col_guide = matchadd('Error', '\%>' . l:width . 'v.\+')
     return 1
   endtry
@@ -396,7 +397,7 @@ function! Slackcat(global)
     \ l:selection)
     echom 'Sent to (#|@)' . l:channel . '!'
   else
-    echoerr 'Please enter a channel/person to send to.'
+    echoerr 'Please enter a channel/user to send to.'
   endif
 endfunction
 
