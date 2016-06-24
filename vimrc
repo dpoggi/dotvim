@@ -79,17 +79,41 @@ endif
 "" Wildcards to ignore
 ""
 
-set wildignore+=.git/**,.svn/**,.hg/**
-set wildignore+=*.tmp*,tmp/**
-set wildignore+=backup/**,swap/**,undo/**,view/**
-set wildignore+=*.dSYM*,*.syms
-set wildignore+=*.o,*.obj,pkg/**
-set wildignore+=*.exe,*.app,*.ipa
-set wildignore+=*.jar,target/**,.idea/**
-set wildignore+=.bundle/**,Pods/**,Carthage/**
-set wildignore+=bundle/**,vendor/src/**
-set wildignore+=build/**,dist/**
-set wildignore+=node_modules/**,bower_components/**
+"" Finder metadata
+set wildignore+=.DS_Store
+"" Source control
+set wildignore+=.git/**
+set wildignore+=.hg/**
+set wildignore+=.svn/**
+set wildignore+=.keep,.gitkeep,.hgkeep
+"" Temporary files
+set wildignore+=tmp/**
+set wildignore+=*.tmp
+"" ~/.vim
+set wildignore+=backup/**
+set wildignore+=undo/**
+"" Native objects/debug symbols/binaries
+set wildignore+=*.o,*.obj,*.dSYM,*.exe,*.app,*.ipa
+"" Java
+set wildignore+=target/**
+set wildignore+=*.class,*.jar
+"" IDEA
+set wildignore+=.idea/**
+"" Ruby
+set wildignore+=.bundle/**
+"" Python
+set wildignore+=*.pyc
+"" CocoaPods/Carthage
+set wildignore+=Pods/**
+set wildignore+=Carthage/**
+"" Common build directories
+set wildignore+=build/**
+set wildignore+=dist/**
+"" Go (projects built with gb)
+set wildignore+=vendor/src/**
+"" JavaScript
+set wildignore+=node_modules/**
+"" Ansible
 set wildignore+=.imported_roles/**
 
 
@@ -108,59 +132,45 @@ call unite#custom#profile('default', 'context', {
 \   'start_insert': 1,
 \ })
 
-function! UniteIgnoreGlobs()
-  let l:globs = split(&wildignore, ',')
-  "" Filter globs from wildignore *after* candidates come from the source.
-  call unite#custom#source('file_rec,file_rec/async,grep',
-  \ 'ignore_globs', l:globs) 
+let s:globs = split(&wildignore, ',')
+let s:unite_glob_sources = 'file_rec,file_rec/async,file_mru,file,buffer,grep'
 
-  "" Add globs from wildignore to file_rec/async's find(1) args.
-  "" For some reason using wildignore to ignore .keep/.gitkeep etc. causes
-  "" strange behavior. Fortunately I wanted to start this list with something
-  "" to keep the loop simpler anyway, so here it is.
-  let g:unite_source_rec_find_args = ['-path', '*.*keep']
-  for l:glob in l:globs
-    call extend(g:unite_source_rec_find_args, ['-o', '-path'])
-    "" If the glob represents a dir (ends in **), add -prune so find(1) won't
-    "" descend into it.
-    if l:glob =~ '\*\*$'
-      call extend(g:unite_source_rec_find_args, [
-      \   '*/' . strpart(l:glob, 0, len(l:glob) - 1),
-      \   '-prune',
-      \ ])
-    else
-      call extend(g:unite_source_rec_find_args, ['*/' . l:glob])
-    endif
-  endfor
-  "" Handle symlinks and print.
-  call extend(g:unite_source_rec_find_args, ['-o', '-type', 'l', '-print'])
+"" Filter globs from wildignore *after* candidates come from the source.
+call unite#custom#source(s:unite_glob_sources, 'ignore_globs', s:globs)
+"" Set max_candidates to 0 (no limit).
+call unite#custom#source(s:unite_glob_sources, 'max_candidates', 0)
 
-  "" TODO: Find a decent way to give the grep source similar arguments.
-  "" Why's it not here already? Each one of these tools has slightly different
-  "" semantics for passing such arguments, and there are options available to
-  "" mitigate the issue. .ptignore, .agignore, and .ackrc all do the trick.
-  ""
-  "" ack is the single largest impediment, as it has no way to ignore pathname
-  "" globs. You get four options: exact match, exact extension, Perl regexp,
-  "" or Perl regexp run on the file's first line (shebangs and such). Dang.
-endfunction
+let g:unite_source_rec_find_args = ['-name', 'Thumbs.db']
+for s:glob in s:globs
+  if s:glob =~ '\*\*$'
+    "" If the glob represents a dir (ends in **), remove the final asterisk,
+    "" prepend a wildcard and a path separator, and match as a path part.
+    let s:path_glob = '*/' . strpart(s:glob, 0, len(s:glob) - 1)
+    call extend(g:unite_source_rec_find_args, ['-o', '-path', s:path_glob])
+  else
+    "" If it's a file, match as a regular name wildcard.
+    call extend(g:unite_source_rec_find_args, ['-o', '-name', s:glob])
+  endif
+endfor
 
-call UniteIgnoreGlobs()
-
-"" FIXME: If the above TODO gets done, running pt/ag with -U (or even -u) as
-"" well as adding globs from wildignore to their args might not be a bad idea.
-"" Sometimes you want to search in files you've gitignored or something.
+"" Prune the above, add in symlinks, and print.
+call extend(g:unite_source_rec_find_args, [
+\   '-prune',
+\   '-o', '-type', 'l',
+\ ])
 
 "" Delegate to pt, ag, or ack for searches if available
 if executable('pt')
   let g:unite_source_grep_command = 'pt'
-  let g:unite_source_grep_default_opts = '-i -e --nogroup --nocolor'
-  \ . ' --global-gitignore --home-ptignore'
+  let g:unite_source_grep_default_opts = '-i -e --nogroup --nocolor' .
+  \                                      ' --global-gitignore --home-ptignore'
   let g:unite_source_grep_recursive_opt = ''
 elseif executable('ag')
   let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '-i --vimgrep --hidden'
-  \ . ' --ignore ''.git'' --ignore ''.svn'' --ignore ''.hg'''
+  let g:unite_source_grep_default_opts = '-i --vimgrep --hidden' .
+  \                                      ' --ignore ''.git''' .
+  \                                      ' --ignore ''.svn''' .
+  \                                      ' --ignore ''.hg'''
   let g:unite_source_grep_recursive_opt = ''
 elseif executable('ack') || executable('ack-grep')
   if executable('ack')
@@ -353,18 +363,6 @@ function! ColGuide()
   endtry
 endfunction
 
-function! IgnoreGlob()
-  call inputsave()
-  let l:glob = substitute(input('Glob to ignore: '), "\n", '', 'g')
-  call inputrestore()
-  redraw
-
-  if l:glob != ''
-    let &wildignore = &wildignore . ',' . l:glob
-    call UniteIgnoreGlobs()
-  endif
-endfunction
-
 function! GetSelectedText(global)
   if a:global
     let l:selection = join(getline(1, '$'), "\n")
@@ -393,9 +391,9 @@ function! Slackcat(global)
 
   if l:channel != ''
     call system('slackcat'
-    \ . ' -c "' . l:channel . '"'
-    \ . ' -n "' . expand('%:t') . '"',
-    \ l:selection)
+    \           . ' -c "' . l:channel . '"'
+    \           . ' -n "' . expand('%:t') . '"',
+    \           l:selection)
     echom 'Sent to (#|@)' . l:channel . '!'
   else
     echoerr 'Please enter a channel/user to send to.'
@@ -428,9 +426,6 @@ inoremap <silent> jk <esc>
 "" Column guide
 nmap <silent> <leader>\ :<C-u>call ColGuide()<cr>
 nmap <silent> <leader>s\ :<C-u>call SetColGuide()<cr>
-
-"" Append glob to wildignore
-nmap <silent> <leader>ig :<C-u>call IgnoreGlob()<cr>
 
 "" Indents
 nmap <leader>2 :<C-u>call Spaces(2)<cr>
