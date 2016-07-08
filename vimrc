@@ -457,6 +457,7 @@ nmap <leader>Rl :<C-u>source ~/.vimrc<cr>
 
 "" <3 make
 nmap <silent> <leader>m :<C-u>make<cr>
+nmap <silent> <leader>md :<C-u>make debug<cr>
 nmap <silent> <leader>mc :<C-u>make clean<cr>
 
 "" Location list management
