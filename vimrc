@@ -301,6 +301,7 @@ if has('autocmd')
 
   au FileType bindzone          call Tabs(8)
   au FileType c                 call Tabs(8)
+  au FileType gitconfig         call Tabs(8)
   au FileType make              call Tabs(8)
   au BufRead,BufNewFile *.plist call Tabs(8)
   au FileType sudoers           call Tabs(8)
