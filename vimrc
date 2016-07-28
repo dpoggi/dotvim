@@ -217,6 +217,8 @@ if has('autocmd')
   au BufRead,BufNewFile jquery.*.js  set filetype=javascript syntax=jquery
   au BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
   au BufRead,BufNewFile *.json       set filetype=javascript
+  "" lol ¯\_(ツ)_/¯
+  au BufRead,BufNewFile .spacemacs   set filetype=lisp
   au BufRead,BufNewFile *.mako       set filetype=mako
   au BufRead,BufNewFile *.ru         set filetype=ruby
   au BufRead,BufNewFile *.socket     set filetype=systemd
