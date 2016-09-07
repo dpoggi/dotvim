@@ -299,7 +299,6 @@ if has('autocmd')
   au FileType python        call Spaces(4)
   au FileType scala         call Spaces(4)
   au FileType typescript    call Spaces(4)
-  au FileType xml           call Spaces(4)
 
   au FileType bindzone          call Tabs(8)
   au FileType c                 call Tabs(8)
