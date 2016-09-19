@@ -5,6 +5,7 @@
 set nocompatible
 nnoremap Q <nop>
 let g:pathogen_disabled = []
+let g:airline_extensions = []
 
 "" Local pre-load hook for plugin disables/configuration
 if filereadable($HOME . '/.vim/plugins.local')
@@ -22,8 +23,18 @@ call extend(g:pathogen_disabled, [
 \   'ios',
 \   'kiwi',
 \   'mako',
+\   'powerline',
 \   'systemverilog',
 \   'ts',
+\ ])
+
+"" Skip vim-airline extensions unless specified.
+let g:airline#extensions#disable_rtp_load = 1
+call extend(g:airline_extensions, [
+\   'branch',
+\   'syntastic',
+\   'unite',
+\   'whitespace',
 \ ])
 
 "" Comma leader
@@ -240,6 +251,8 @@ if has('autocmd')
   au FileType markdown  setlocal spell
   au FileType plaintex  setlocal spell
   au FileType text      setlocal spell
+
+  au FileType unite AirlineRefresh
 endif
 
 "" Normally we want molokai, but if we're at a basic TTY, solarized looks
@@ -247,9 +260,14 @@ endif
 set background=dark
 if $TERM =~ '^linux' || $TERM =~ '^screen$'
   colorscheme solarized
+  let g:airline_theme = 'solarized'
 else
   colorscheme molokai
+  let g:airline_theme = 'molokai'
 endif
+
+"" Have vim-airline avoid Powerline fonts until told otherwise in vimrc.local
+let g:airline_powerline_fonts = 0
 
 "" Syntastic options
 let g:syntastic_check_on_open = 1
