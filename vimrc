@@ -32,6 +32,7 @@ call extend(g:pathogen_disabled, [
 let g:airline#extensions#disable_rtp_load = 1
 call extend(g:airline_extensions, [
 \   'branch',
+\   'hunks',
 \   'syntastic',
 \   'unite',
 \   'whitespace',
@@ -268,6 +269,9 @@ endif
 
 "" Have vim-airline avoid Powerline fonts until told otherwise in vimrc.local
 let g:airline_powerline_fonts = 0
+
+"" Signify should avoid SVN for now...
+let g:signify_vcs_list = ['git', 'hg']
 
 "" Syntastic options
 let g:syntastic_check_on_open = 1
