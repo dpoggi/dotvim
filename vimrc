@@ -505,6 +505,11 @@ nmap <leader><space> :<C-u>set list!<cr>
 "" Flip-flop buffers
 nnoremap <leader><leader> <C-^>
 
+"" Buffer management
+nmap <silent> <leader>bp :<C-u>bprevious<cr>
+nmap <silent> <leader>bn :<C-u>bnext<cr>
+nmap <silent> <leader>bd :<C-u>bdelete<cr>
+
 "" Tab management
 nmap <silent> <leader>tc :<C-u>tabnew<cr>
 nmap <silent> <leader>tp :<C-u>tabprev<cr>
