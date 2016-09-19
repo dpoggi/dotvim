@@ -42,6 +42,7 @@ call extend(g:airline_extensions, [
 
 "" Comma leader
 let mapleader = ','
+let g:mapleader = ','
 
 "" Load pathogen
 execute pathogen#infect()
