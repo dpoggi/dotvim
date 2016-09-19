@@ -30,10 +30,12 @@ call extend(g:pathogen_disabled, [
 
 "" Skip vim-airline extensions unless specified.
 let g:airline#extensions#disable_rtp_load = 1
+let g:airline#extensions#tabline#enabled = 1
 call extend(g:airline_extensions, [
 \   'branch',
 \   'hunks',
 \   'syntastic',
+\   'tabline',
 \   'unite',
 \   'whitespace',
 \ ])
@@ -274,7 +276,10 @@ let g:airline_powerline_fonts = 0
 let g:signify_vcs_list = ['git', 'hg']
 
 "" Syntastic options
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 let g:syntastic_quiet_messages = {'level': 'warnings'}
 
 "" Enable syntax highlighting
