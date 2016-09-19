@@ -393,6 +393,35 @@ function! ColGuide()
   endtry
 endfunction
 
+"" This is completely superfluous, but it's how I'm doing it for the moment.
+function! SendSplitTo(direction, retain_focus)
+  if a:retain_focus
+    let l:start_win_id = win_getid()
+    if l:start_win_id == 0
+      return 1
+    endif
+  endif
+
+  if a:direction == 'below'
+    belowright split
+  elseif a:direction == 'right'
+    belowright vsplit
+  elseif a:direction == 'above'
+    aboveleft split
+  elseif a:direction == 'left'
+    aboveleft vsplit
+  else
+    return 1
+  endif
+
+  if a:retain_focus
+    let l:result = win_gotoid(l:start_win_id)
+    if l:result != 1
+      return 1
+    endif
+  endif
+endfunction
+
 function! GetSelectedText(global)
   if a:global
     let l:selection = join(getline(1, '$'), "\n")
@@ -482,8 +511,14 @@ nmap <silent> <leader>pc :<C-u>call PasteboardCopy(1)<cr>
 "" Save a buffer as superuser while running Vim unprivileged
 cnoremap w!! w !sudo tee -i % >/dev/null
 
+"" Open plugins.local
+nmap <leader>fei :<C-u>edit ~/.vim/plugins.local<cr>
+"" Open vimrc.local
+nmap <leader>fed :<C-u>edit ~/.vim/vimrc.local<cr>
+"" Open .vimrc
+nmap <leader>feV :<C-u>edit ~/.vimrc<cr>
 "" Reload .vimrc
-nmap <leader>Rl :<C-u>source ~/.vimrc<cr>
+nmap <leader>feR :<C-u>source ~/.vimrc<cr>
 
 "" <3 make
 nmap <silent> <leader>m :<C-u>make<cr>
@@ -509,6 +544,26 @@ nnoremap <leader><leader> <C-^>
 nmap <silent> <leader>bp :<C-u>bprevious<cr>
 nmap <silent> <leader>bn :<C-u>bnext<cr>
 nmap <silent> <leader>bd :<C-u>bdelete<cr>
+
+"" Window management
+nmap <silent> <leader>wc :<C-u>close<cr>
+nmap <silent> <leader>wd :<C-u>wincmd q<cr>
+nmap <silent> <leader>wM :<C-u>wincmd x<cr>
+nmap <silent> <leader>wr :<C-u>wincmd r<cr>
+nmap <silent> <leader>wR :<C-u>wincmd R<cr>
+nmap <silent> <leader>ww :<C-u>wincmd w<cr>
+
+"" Do the splits!
+nmap <silent> <leader>wv :<C-u>call SendSplitTo('right', 1)<cr>
+nmap <silent> <leader>wV :<C-u>belowright vsplit<cr>
+nmap <silent> <leader>ws :<C-u>call SendSplitTo('bottom', 1)<cr>
+nmap <silent> <leader>wS :<C-u>belowright split<cr>
+
+"" Window movement
+nmap <silent> <leader>wh :<C-u>wincmd h<cr>
+nmap <silent> <leader>wj :<C-u>wincmd j<cr>
+nmap <silent> <leader>wk :<C-u>wincmd k<cr>
+nmap <silent> <leader>wl :<C-u>wincmd l<cr>
 
 "" Tab management
 nmap <silent> <leader>tc :<C-u>tabnew<cr>
