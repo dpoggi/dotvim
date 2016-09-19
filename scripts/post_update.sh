@@ -62,6 +62,7 @@ for plugin in \
   "ios:vim-ios" \
   "kiwi:kiwi.vim" \
   "mako:mako.vim" \
+  "powerline:powerline" \
   "systemverilog:systemverilog.vim" \
   "ts:tsuquyomi"
 do
