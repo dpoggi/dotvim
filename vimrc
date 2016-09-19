@@ -232,7 +232,8 @@ if has('autocmd')
   au BufRead,BufNewFile jquery.*.js  set filetype=javascript syntax=jquery
   au BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
   au BufRead,BufNewFile *.json       set filetype=javascript
-  "" lol ¯\_(ツ)_/¯
+  "" lol (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
+  "" because why not edit Elisp in Vim and Vimscript in Emacs
   au BufRead,BufNewFile .spacemacs   set filetype=lisp
   au BufRead,BufNewFile *.mako       set filetype=mako
   au BufRead,BufNewFile *.ru         set filetype=ruby
@@ -534,8 +535,8 @@ nmap <silent> <leader>cf :<C-u>cfirst<cr>
 nmap <silent> <leader>cl :<C-u>clast<cr>
 
 "" Toggle search highlights + listchars
-nmap <leader><tab> :<C-u>set invhlsearch!<cr>
-nmap <leader><space> :<C-u>set list!<cr>
+nmap <leader>? :<C-u>set invhlsearch!<cr>
+nmap <leader><tab> :<C-u>set list!<cr>
 
 "" Flip-flop buffers
 nnoremap <leader><leader> <C-^>
@@ -570,6 +571,9 @@ nmap <silent> <leader>tc :<C-u>tabnew<cr>
 nmap <silent> <leader>tp :<C-u>tabprev<cr>
 nmap <silent> <leader>tn :<C-u>tabnext<cr>
 nmap <silent> <leader>td :<C-u>tabclose<cr>
+
+"" Peace out
+nmap <silent> <leader>qQ :<C-u>qall!<cr>
 
 "" Unite.vim
 if index(g:pathogen_disabled, 'vimproc') >= 0
