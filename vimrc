@@ -276,6 +276,8 @@ let g:airline_powerline_fonts = 0
 
 "" Signify should avoid SVN for now...
 let g:signify_vcs_list = ['git', 'hg']
+"" And check when we focus Vim
+let g:signify_update_on_focusgained = 1
 
 "" Syntastic options
 let g:syntastic_always_populate_loc_list = 1
