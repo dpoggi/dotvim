@@ -440,7 +440,7 @@ endfunction
 
 function! Slackcat(global)
   if !executable('slackcat')
-    echoerr 'slackcat is not installed.'
+    echoerr 'Couldn''t find slackcat.'
     return
   endif
 
@@ -462,18 +462,20 @@ function! Slackcat(global)
   endif
 endfunction
 
+if executable('pbcopy')
+  let g:pasteboard_cmd = 'pbcopy'
+elseif executable('xsel')
+  let g:pasteboard_cmd = 'xsel --clipboard --input'
+endif
+
 function! PasteboardCopy(global)
-  if executable('pbcopy')
-    let l:cmd = 'pbcopy'
-  elseif executable('xsel')
-    let l:cmd = 'xsel --clipboard --input'
-  else
+  if !exists('g:pasteboard_cmd')
     echoerr 'Couldn''t find pbcopy or xsel.'
     return
   endif
 
   let l:selection = GetSelectedText(a:global)
-  call system(l:cmd, l:selection)
+  call system(g:pasteboard_cmd, l:selection)
   echom 'Copied to pasteboard!'
 endfunction
 
@@ -502,14 +504,14 @@ cnoremap %% <C-r>=expand('%:h').'/'<cr>
 nnoremap <leader>I mmgg=G`m
 
 "" Send visual mode selection to slackcat
-xmap <silent> <leader>sc :<C-u>call Slackcat(0)<cr>
+xmap <silent> <leader>xs :<C-u>call Slackcat(0)<cr>
 "" Send entire file to slackcat
-nmap <silent> <leader>sc :<C-u>call Slackcat(1)<cr>
+nmap <silent> <leader>xs :<C-u>call Slackcat(1)<cr>
 
 "" Send visual mode selection to pasteboard
-xmap <silent> <leader>pc :<C-u>call PasteboardCopy(0)<cr>
+xmap <silent> <leader>xy :<C-u>call PasteboardCopy(0)<cr>
 "" Send entire file to pasteboard
-nmap <silent> <leader>pc :<C-u>call PasteboardCopy(1)<cr>
+nmap <silent> <leader>xy :<C-u>call PasteboardCopy(1)<cr>
 
 "" Save a buffer as superuser while running Vim unprivileged
 cnoremap w!! w !sudo tee -i % >/dev/null
