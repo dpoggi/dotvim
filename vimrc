@@ -426,7 +426,7 @@ function! SendSplitTo(direction, retain_focus)
   endif
 endfunction
 
-function! ToggleSyntasticList()
+function! SyntasticToggleErrors()
   let l:buffers = filter(tabpagebuflist(), 'getbufvar(v:val, "&buftype") is# "quickfix"')
   if empty(l:buffers)
     Errors
@@ -541,7 +541,8 @@ nmap <silent> <leader>md :<C-u>make debug<cr>
 nmap <silent> <leader>mc :<C-u>make clean<cr>
 
 "" Location list management
-nmap <silent> <leader>ll :<C-u>call ToggleSyntasticList()<cr>
+nmap <silent> <leader>ll :<C-u>call SyntasticToggleErrors()<cr>
+nmap <silent> <leader>lt :<C-u>SyntasticToggleMode<cr>
 nmap <silent> <leader>lj :<C-u>lnext<cr>
 nmap <silent> <leader>lk :<C-u>lprevious<cr>
 nmap <silent> <leader>lg :<C-u>lfirst<cr>
