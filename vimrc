@@ -111,6 +111,7 @@ set wildignore+=undo/**
 set wildignore+=*.o,*.obj,*.dSYM,*.exe,*.app,*.ipa
 "" Java
 set wildignore+=target/**
+set wildignore+=.gradle/**
 set wildignore+=*.class,*.jar
 "" IDEA
 set wildignore+=.idea/**
