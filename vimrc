@@ -426,6 +426,15 @@ function! SendSplitTo(direction, retain_focus)
   endif
 endfunction
 
+function! ToggleSyntasticList()
+  let l:buffers = filter(tabpagebuflist(), 'getbufvar(v:val, "&buftype") is# "quickfix"')
+  if empty(l:buffers)
+    Errors
+  else
+    lclose
+  endif
+endfunction
+
 function! GetSelectedText(global)
   if a:global
     let l:selection = join(getline(1, '$'), "\n")
@@ -532,12 +541,11 @@ nmap <silent> <leader>md :<C-u>make debug<cr>
 nmap <silent> <leader>mc :<C-u>make clean<cr>
 
 "" Location list management
-nmap <silent> <leader>co :<C-u>copen<cr>
-nmap <silent> <leader>cc :<C-u>cclose<cr>
-nmap <silent> <leader>cn :<C-u>cn<cr>
-nmap <silent> <leader>cp :<C-u>cp<cr>
-nmap <silent> <leader>cf :<C-u>cfirst<cr>
-nmap <silent> <leader>cl :<C-u>clast<cr>
+nmap <silent> <leader>ll :<C-u>call ToggleSyntasticList()<cr>
+nmap <silent> <leader>lj :<C-u>lnext<cr>
+nmap <silent> <leader>lk :<C-u>lprevious<cr>
+nmap <silent> <leader>lg :<C-u>lfirst<cr>
+nmap <silent> <leader>lG :<C-u>llast<cr>
 
 "" Toggle search highlights + listchars
 nmap <leader>? :<C-u>set invhlsearch!<cr>
