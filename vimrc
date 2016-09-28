@@ -597,7 +597,8 @@ else
   nnoremap <silent> <leader>f :<C-u>Unite file_rec/async:!<cr>
   nnoremap <silent> <leader>f. :<C-u>Unite file_rec/async:.<cr>
 endif
-nnoremap <silent> <leader>/ :<C-u>Unite -no-empty grep:.<cr>
+nnoremap <silent> <leader>/ :<C-u>Unite -no-empty grep:!<cr>
+nnoremap <silent> <leader>/. :<C-u>Unite -no-empty grep:.<cr>
 nnoremap <silent> <leader>bb :<C-u>Unite buffer<cr>
 
 "" Filetype-specific keymaps
