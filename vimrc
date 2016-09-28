@@ -210,6 +210,9 @@ endif
 "" Default shell dialect
 let g:is_bash = 1
 
+"" Hack to make Syntastic forget it has support for running javac
+let g:loaded_syntastic_java_javac_checker = 1
+
 "" Fix the filetype of certain misidentified shell scripts
 function! s:FixShellFt()
   if &filetype == '' || &filetype == 'conf'
