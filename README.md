@@ -4,19 +4,27 @@ My .vim folder. It has a lot of submodules. Credits, of course, go to their resp
 
 ## Installation
 
-Either clone the repository as your .vim folder and run `git submodule update --init`, or install my dotfiles (https://github.com/dpoggi/dcp).
+### Option A
 
-## Powerline
+Install my dotfiles (https://github.com/dpoggi/dcp).
 
-If you want to use Powerline (and have the appropriate fonts installed to do so), add this to `~/.vim/vimrc.local`:
+### Option B
 
-```
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+```sh
+cd
+
+git clone https://github.com/dpoggi/dotvim.git .vim
+ln -s .vim/vimrc .vimrc
+ln -s .vim/gvimrc .gvimrc
+
+cd .vim
+git submodule update --init
+scripts/post_update.sh
 ```
 
 ## Customization
 
-Both `vimrc.local` and `gvimrc.local` are gitignored and will be loaded by `.vimrc` and `.gvimrc` respectively at the end of their runs. `plugins.local` shares the same gitignored status but is loaded near the very beginning of `.vimrc`, and can be used as such:
+Both `vimrc.local` and `gvimrc.local` are gitignored and will be loaded by `.vimrc` and `.gvimrc` respectively at the end of their runs. `plugins.local` shares the same gitignored status but is loaded near the very beginning of `.vimrc`, and can be used as such to disable plugins:
 
 ```
 let g:pathogen_disabled = ['plugin1', 'plugin2', 'etc']
