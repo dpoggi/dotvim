@@ -137,6 +137,11 @@ set wildignore+=.imported_roles/**
 "" Unite.vim options
 ""
 
+"" Fix Unite setting LC_NUMERIC improperly, causing locale errors... grrr...
+if $LC_NUMERIC == 'en_US.utf8'
+  let $LC_NUMERIC = 'en_US.UTF-8'
+endif
+
 "" Same prompt as muh zsh theme <3
 let g:unite_prompt = '» '
 "" Fuzzy matchers, sort by rank, command defaults
