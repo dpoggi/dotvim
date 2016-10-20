@@ -4,9 +4,3 @@ set gdefault
 
 set incsearch
 set hlsearch
-
-inoremap jk <esc>`^
-nnoremap 'I mmgg=G`m
-
-"" Java 8 lambdas
-imap <C-l> <space>-><space>
