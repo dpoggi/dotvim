@@ -480,8 +480,15 @@ function! Slackcat(global)
   endif
 endfunction
 
-if executable('pbcopy')
-  let g:pasteboard_cmd = 'pbcopy'
+if has('unix')
+  "" This will run on Cygwin/MSYS/Git bash, etc. It has a uname, so what's the harm eh...
+  let g:dcp_os = substitute(system('uname -s'), "\n", '', 'g')
+else
+  let g:dcp_os = 'Windows'
+endif
+
+if g:dcp_os == 'Darwin'
+  let g:pasteboard_cmd = '/usr/bin/pbcopy'
 elseif executable('xsel')
   let g:pasteboard_cmd = 'xsel --clipboard --input'
 endif
@@ -497,6 +504,22 @@ function! PasteboardCopy(global)
   echom 'Copied to pasteboard!'
 endfunction
 
+if g:dcp_os == 'Darwin'
+  let g:system_open_cmd = '/usr/bin/open'
+elseif executable('xdg-open')
+  let g:system_open_cmd = 'xdg-open'
+endif
+
+function! SystemOpen()
+  if !exists('g:system_open_cmd')
+    echoerr 'Couldn''t find a system open command.'
+    return
+  endif
+
+  let l:selection = GetSelectedText(0)
+  call system(g:system_open_cmd, l:selection)
+  echom 'Opened!'
+endfunction
 
 ""
 "" Keymaps
@@ -530,6 +553,9 @@ nmap <silent> <leader>xs :<C-u>call Slackcat(1)<cr>
 xmap <silent> <leader>xy :<C-u>call PasteboardCopy(0)<cr>
 "" Send entire file to pasteboard
 nmap <silent> <leader>xy :<C-u>call PasteboardCopy(1)<cr>
+
+"" Open visual mode selection with system utility
+xmap <silent> <leader>xOO :<C-u>call SystemOpen()<cr>
 
 "" Save a buffer as superuser while running Vim unprivileged
 cnoremap w!! w !sudo tee -i % >/dev/null
