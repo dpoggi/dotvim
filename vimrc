@@ -277,7 +277,7 @@ if $TERM =~ '^linux' || $TERM =~ '^screen$'
   let g:airline_theme = 'solarized'
 else
   colorscheme molokai
-  let g:airline_theme = 'molokai'
+  let g:airline_theme = 'term'
 endif
 
 "" Have vim-airline avoid Powerline fonts until told otherwise in vimrc.local
