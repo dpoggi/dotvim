@@ -44,6 +44,17 @@ call extend(g:airline_extensions, [
 let mapleader = ','
 let g:mapleader = ','
 
+"" OS detection
+if has('win32unix')
+  let g:dcp_os = 'Cygwin'
+elseif has('win32') || has('win64') || has('win95')
+  let g:dcp_os = 'Windows'
+elseif has('macunix') || has('osx')
+  let g:dcp_os = 'Darwin'
+else
+  let g:dcp_os = substitute(system('uname -s'), "\n", '', 'g')
+endif
+
 "" Load pathogen
 execute pathogen#infect()
 
@@ -87,6 +98,11 @@ set timeoutlen=300
 if has('mouse')
   set mouse=a
   set ttymouse=xterm2
+endif
+
+"" Hopefully this makes Cygwin/MSYS/MinGW work?
+if g:dcp_os == 'Cygwin'
+  set shellslash
 endif
 
 
@@ -138,7 +154,7 @@ set wildignore+=.imported_roles/**
 ""
 
 "" Fix Unite setting LC_NUMERIC improperly, causing locale errors... grrr...
-if $LC_NUMERIC == 'en_US.utf8'
+if $LC_NUMERIC ==# 'en_US.utf8'
   let $LC_NUMERIC = 'en_US.UTF-8'
 endif
 
@@ -163,7 +179,7 @@ call unite#custom#source(s:unite_glob_sources, 'max_candidates', 0)
 
 let g:unite_source_rec_find_args = ['-name', 'Thumbs.db']
 for s:glob in s:globs
-  if s:glob =~ '\*\*$'
+  if s:glob =~# '\m\C\*\*$'
     "" If the glob represents a dir (ends in **), remove the final asterisk,
     "" prepend a wildcard and a path separator, and match as a path part.
     let s:path_glob = '*/' . strpart(s:glob, 0, len(s:glob) - 1)
@@ -220,14 +236,14 @@ let g:loaded_syntastic_java_javac_checker = 1
 
 "" Fix the filetype of certain misidentified shell scripts
 function! s:FixShellFt()
-  if &filetype == '' || &filetype == 'conf'
+  if &filetype ==# '' || &filetype ==# 'conf'
     set filetype=sh
   endif
 endfunction
 
 "" Fix the filetype for things that look like nginx config
 function! s:FixNginxFt()
-  if (&filetype == '' || &filetype == 'conf') && &filetype != 'yaml'
+  if (&filetype ==# '' || &filetype ==# 'conf') && &filetype !=# 'yaml'
     set filetype=nginx
   endif
 endfunction
@@ -272,7 +288,7 @@ endif
 "" Normally we want molokai, but if we're at a basic TTY, solarized looks
 "" great, even though it doesn't look like solarized.
 set background=dark
-if $TERM =~ '^linux' || $TERM =~ '^screen$'
+if $TERM =~? '\m\c^linux' || $TERM =~? '\m\c^screen$'
   colorscheme solarized
   let g:airline_theme = 'solarized'
 else
@@ -364,11 +380,11 @@ function! s:MapLeftArrow()
 endfunction
 
 function! s:MapRightArrow(spaces)
-  if a:spaces == 0
+  if a:spaces ==# 0
     inoremap <C-l> ->
-  elseif a:spaces == 1
+  elseif a:spaces ==# 1
     inoremap <C-l> <space>->
-  elseif a:spaces > 1
+  elseif a:spaces ># 1
     inoremap <C-l> <space>-><space>
   endif
 endfunction
@@ -379,7 +395,7 @@ function! SetColGuide()
   call inputrestore()
   redraw
 
-  if l:width != ''
+  if l:width !=# ''
     let g:col_guide_width = l:width
     call ColGuide()
     call ColGuide()
@@ -409,18 +425,18 @@ endfunction
 function! SendSplitTo(direction, retain_focus)
   if a:retain_focus
     let l:start_win_id = win_getid()
-    if l:start_win_id == 0
+    if l:start_win_id ==# 0
       return 1
     endif
   endif
 
-  if a:direction == 'below'
+  if a:direction ==# 'below'
     belowright split
-  elseif a:direction == 'right'
+  elseif a:direction ==# 'right'
     belowright vsplit
-  elseif a:direction == 'above'
+  elseif a:direction ==# 'above'
     aboveleft split
-  elseif a:direction == 'left'
+  elseif a:direction ==# 'left'
     aboveleft vsplit
   else
     return 1
@@ -428,7 +444,7 @@ function! SendSplitTo(direction, retain_focus)
 
   if a:retain_focus
     let l:result = win_gotoid(l:start_win_id)
-    if l:result != 1
+    if l:result !=# 1
       return 1
     endif
   endif
@@ -469,7 +485,7 @@ function! Slackcat(global)
   call inputrestore()
   redraw
 
-  if l:channel != ''
+  if l:channel !=# ''
     call system('slackcat'
     \           . ' -c "' . l:channel . '"'
     \           . ' -n "' . expand('%:t') . '"',
@@ -480,14 +496,7 @@ function! Slackcat(global)
   endif
 endfunction
 
-if has('unix')
-  "" This will run on Cygwin/MSYS/Git bash, etc. It has a uname, so what's the harm eh...
-  let g:dcp_os = substitute(system('uname -s'), "\n", '', 'g')
-else
-  let g:dcp_os = 'Windows'
-endif
-
-if g:dcp_os == 'Darwin'
+if g:dcp_os ==# 'Darwin'
   let g:pasteboard_cmd = '/usr/bin/pbcopy'
 elseif executable('xsel')
   let g:pasteboard_cmd = 'xsel --clipboard --input'
@@ -504,7 +513,7 @@ function! PasteboardCopy(global)
   echom 'Copied to pasteboard!'
 endfunction
 
-if g:dcp_os == 'Darwin'
+if g:dcp_os ==# 'Darwin'
   let g:system_open_cmd = '/usr/bin/open'
 elseif executable('xdg-open')
   let g:system_open_cmd = 'xdg-open'
