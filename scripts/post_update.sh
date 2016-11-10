@@ -57,6 +57,7 @@ for plugin in \
   "clojure:VimClojure" \
   "cocoa:cocoa.vim" \
   "command-t:Command-T" \
+  "elm:elm-vim" \
   "funcoo:funcoo.vim" \
   "haml:vim-haml" \
   "ios:vim-ios" \

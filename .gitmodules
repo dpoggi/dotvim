@@ -121,9 +121,6 @@
 [submodule "bundle/thrift"]
 	path = bundle/thrift
 	url = git://github.com/solarnz/thrift.vim.git
-[submodule "bundle/elm"]
-	path = bundle/elm
-	url = git://github.com/ElmCast/elm-vim.git
 [submodule "bundle/airline"]
 	path = bundle/airline
 	url = git://github.com/vim-airline/vim-airline.git
