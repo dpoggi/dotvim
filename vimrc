@@ -459,26 +459,23 @@ function! SyntasticToggleErrors()
   endif
 endfunction
 
-function! GetSelectedText(global)
-  if a:global
-    let l:selection = join(getline(1, '$'), "\n")
-  else
-    normal! gv"xy
-    let l:selection = getreg('x')
-    normal! gv
-    normal! :<C-u><cr>
-  endif
-
+function! s:GetSelectedText()
+  normal! gv"xy
+  let l:selection = getreg('x')
+  normal! gv
+  normal! :<C-u><cr>
   return l:selection
 endfunction
 
-function! Slackcat(global)
+function! s:GetBufferText()
+  return join(getline(1, '$'), "\n")
+endfunction
+
+function! s:SendTextToSlack(text)
   if !executable('slackcat')
     echoerr 'Couldn''t find slackcat.'
     return
   endif
-
-  let l:selection = GetSelectedText(a:global)
 
   call inputsave()
   let l:channel = substitute(input('Send to: '), "\n", '', 'g')
@@ -489,11 +486,19 @@ function! Slackcat(global)
     call system('slackcat'
     \           . ' -c "' . l:channel . '"'
     \           . ' -n "' . expand('%:t') . '"',
-    \           l:selection)
+    \           a:text)
     echom 'Sent to (#|@)' . l:channel . '!'
   else
     echoerr 'Please enter a channel/user to send to.'
   endif
+endfunction
+
+function! SendSelectionToSlack()
+  call s:SendTextToSlack(s:GetSelectedText())
+endfunction
+
+function! SendBufferToSlack()
+  call s:SendTextToSlack(s:GetBufferText())
 endfunction
 
 if g:dcp_os ==# 'Darwin'
@@ -502,15 +507,26 @@ elseif executable('xsel')
   let g:pasteboard_cmd = 'xsel --clipboard --input'
 endif
 
-function! PasteboardCopy(global)
+function! s:PasteboardCopyText(text)
   if !exists('g:pasteboard_cmd')
     echoerr 'Couldn''t find pbcopy or xsel.'
     return
   endif
 
-  let l:selection = GetSelectedText(a:global)
-  call system(g:pasteboard_cmd, l:selection)
+  call system(g:pasteboard_cmd, a:text)
   echom 'Copied to pasteboard!'
+endfunction
+
+function! PasteboardCopySelection()
+  call s:PasteboardCopyText(s:GetSelectedText())
+endfunction
+
+function! PasteboardCopyBuffer()
+  call s:PasteboardCopyText(s:GetBufferText())
+endfunction
+
+function! PasteboardCopyPath()
+  call s:PasteboardCopyText(expand('%:p'))
 endfunction
 
 if g:dcp_os ==# 'Darwin'
@@ -525,7 +541,7 @@ function! SystemOpen()
     return
   endif
 
-  let l:selection = GetSelectedText(0)
+  let l:selection = s:GetSelectedText()
   call system(g:system_open_cmd, l:selection)
   echom 'Opened!'
 endfunction
@@ -554,14 +570,16 @@ cnoremap %% <C-r>=expand('%:h').'/'<cr>
 nnoremap <leader>I mmgg=G`m
 
 "" Send visual mode selection to slackcat
-xmap <silent> <leader>xs :<C-u>call Slackcat(0)<cr>
-"" Send entire file to slackcat
-nmap <silent> <leader>xs :<C-u>call Slackcat(1)<cr>
+xmap <silent> <leader>xs :<C-u>call SendSelectionToSlack()<cr>
+"" Send whole buffer to slackcat
+nmap <silent> <leader>xs :<C-u>call SendBufferToSlack()<cr>
 
 "" Send visual mode selection to pasteboard
-xmap <silent> <leader>xy :<C-u>call PasteboardCopy(0)<cr>
-"" Send entire file to pasteboard
-nmap <silent> <leader>xy :<C-u>call PasteboardCopy(1)<cr>
+xmap <silent> <leader>xy :<C-u>call PasteboardCopySelection()<cr>
+"" Send whole buffer to pasteboard
+nmap <silent> <leader>xy :<C-u>call PasteboardCopyBuffer()<cr>
+"" Send file path to pasteboard
+nmap <silent> <leader>xYP :<C-u>call PasteboardCopyPath()<cr>
 
 "" Open visual mode selection with system utility
 xmap <silent> <leader>xOO :<C-u>call SystemOpen()<cr>
