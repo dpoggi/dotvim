@@ -546,6 +546,7 @@ function! SystemOpen()
   echom 'Opened!'
 endfunction
 
+
 ""
 "" Keymaps
 ""
