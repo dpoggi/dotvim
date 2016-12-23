@@ -199,15 +199,15 @@ call extend(g:unite_source_rec_find_args, [
 "" Delegate to pt, ag, or ack for searches if available
 if executable('pt')
   let g:unite_source_grep_command = 'pt'
-  let g:unite_source_grep_default_opts = '-i -e --nogroup --nocolor' .
-  \                                      ' --global-gitignore --home-ptignore'
+  let g:unite_source_grep_default_opts = '-i -e --nogroup --nocolor'
+                                      \ .' --global-gitignore --home-ptignore'
   let g:unite_source_grep_recursive_opt = ''
 elseif executable('ag')
   let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '-i --vimgrep --hidden' .
-  \                                      ' --ignore ''.git''' .
-  \                                      ' --ignore ''.svn''' .
-  \                                      ' --ignore ''.hg'''
+  let g:unite_source_grep_default_opts = '-i --vimgrep --hidden'
+                                     \ . ' --ignore ''.git'''
+                                     \ . ' --ignore ''.svn'''
+                                     \ . ' --ignore ''.hg'''
   let g:unite_source_grep_recursive_opt = ''
 elseif executable('ack') || executable('ack-grep')
   if executable('ack')
@@ -586,7 +586,7 @@ nmap <silent> <leader>xYP :<C-u>call PasteboardCopyPath()<cr>
 xmap <silent> <leader>xOO :<C-u>call SystemOpen()<cr>
 
 "" Save a buffer as superuser while running Vim unprivileged
-cnoremap w!! w !sudo tee -i % >/dev/null
+cnoremap w!! w !sudo tee -i % > /dev/null
 
 "" Open plugins.local
 nmap <leader>fei :<C-u>edit ~/.vim/plugins.local<cr>
