@@ -241,13 +241,6 @@ function! s:FixShellFt()
   endif
 endfunction
 
-"" Fix the filetype for things that look like nginx config
-function! s:FixNginxFt()
-  if (&filetype ==# '' || &filetype ==# 'conf') && &filetype !=# 'yaml'
-    set filetype=nginx
-  endif
-endfunction
-
 "" Filetype corrections
 if has('autocmd')
   au BufRead,BufNewFile Fastfile     set filetype=ruby
@@ -267,8 +260,6 @@ if has('autocmd')
 
   au BufRead,BufNewFile *env         call s:FixShellFt()
   au BufRead,BufNewFile *.env.*      call s:FixShellFt()
-  au BufRead,BufNewFile *nginx*.conf call s:FixNginxFt()
-  au BufRead,BufNewFile */nginx/*    call s:FixNginxFt()
   au BufRead,BufNewFile *profile     call s:FixShellFt()
   au BufRead,BufNewFile *vimrc*      set filetype=vim
   au BufRead,BufNewFile *rc          call s:FixShellFt()

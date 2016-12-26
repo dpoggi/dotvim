@@ -25,9 +25,6 @@
 [submodule "bundle/fugitive"]
 	path = bundle/fugitive
 	url = git://github.com/tpope/vim-fugitive.git
-[submodule "bundle/nginx"]
-	path = bundle/nginx
-	url = git://github.com/vim-scripts/nginx.vim.git
 [submodule "bundle/less"]
 	path = bundle/less
 	url = git://github.com/groenewege/vim-less.git
