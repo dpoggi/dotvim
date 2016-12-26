@@ -474,7 +474,7 @@ endfunction
 function! s:SendTextToSlack(text)
   if !executable('slackcat')
     echoerr 'Couldn''t find slackcat.'
-    return
+    return 1
   endif
 
   call inputsave()
@@ -490,6 +490,7 @@ function! s:SendTextToSlack(text)
     echom 'Sent to (#|@)' . l:channel . '!'
   else
     echoerr 'Please enter a channel/user to send to.'
+    return 1
   endif
 endfunction
 
@@ -510,7 +511,7 @@ endif
 function! s:PasteboardCopyText(text)
   if !exists('g:pasteboard_cmd')
     echoerr 'Couldn''t find pbcopy or xsel.'
-    return
+    return 1
   endif
 
   call system(g:pasteboard_cmd, a:text)
@@ -538,7 +539,7 @@ endif
 function! SystemOpen()
   if !exists('g:system_open_cmd')
     echoerr 'Couldn''t find a system open command.'
-    return
+    return 1
   endif
 
   let l:selection = s:GetSelectedText()
