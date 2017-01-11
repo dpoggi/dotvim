@@ -127,3 +127,6 @@
 [submodule "bundle/signify"]
 	path = bundle/signify
 	url = git://github.com/mhinz/vim-signify.git
+[submodule "bundle/kotlin"]
+	path = bundle/kotlin
+	url = git://github.com/udalov/kotlin-vim.git
