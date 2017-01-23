@@ -46,6 +46,21 @@ call extend(g:airline_extensions, [
 let mapleader = ','
 let g:mapleader = ','
 
+
+""
+"" org.apache.commons.lang3.StringUtils
+"" ... lol
+""
+
+function! Chomp(str)
+  return substitute(a:str, '\n\+$', '', '')
+endfunction
+
+function! Strip(str)
+	return substitute(a:str, '^\s*\(.\{-}\)\s*$', '\1', '')
+endfunction
+
+
 "" OS detection
 if has('win32unix')
   let g:dcp_os = 'Cygwin'
@@ -54,7 +69,7 @@ elseif has('win32') || has('win64') || has('win95')
 elseif has('macunix') || has('osx')
   let g:dcp_os = 'Darwin'
 else
-  let g:dcp_os = substitute(system('uname -s'), "\n", '', 'g')
+  let g:dcp_os = Strip(system('uname -s'))
 endif
 
 "" Load pathogen
@@ -236,6 +251,52 @@ let g:is_bash = 1
 "" Hack to make Syntastic forget it has support for running javac
 let g:loaded_syntastic_java_javac_checker = 1
 
+function! s:RbenvMriPath(version)
+  if a:version =~# '[^0-9.]'
+    "" Only applies to MRI
+    return ''
+  endif
+
+  return fnameescape(
+    \ expand($RBENV_ROOT . '/versions/' . a:version . '/bin/ruby'))
+endfunction
+
+function! s:SyntasticDetectRbenvMri()
+  if empty($RBENV_ROOT) || index(g:pathogen_disabled, 'vimproc') >= 0
+    return
+  endif
+
+  if !empty($RBENV_VERSION)
+    let l:exec_path = s:RbenvMriPath($RBENV_VERSION)
+
+    if executable(l:exec_path)
+      let g:syntastic_ruby_mri_exec = l:exec_path
+      return
+    endif
+  endif
+
+  let l:version_path = fnameescape(expand($RBENV_ROOT . '/version'))
+
+  if !filereadable(l:version_path)
+    return
+  endif
+
+  let l:file = vimproc#fopen(l:version_path)
+  let l:version = Chomp(l:file.read())
+  call l:file.close()
+
+  let l:exec_path = s:RbenvMriPath(l:version)
+
+  if !executable(l:exec_path)
+    return
+  endif
+
+  let g:syntastic_ruby_mri_exec = l:exec_path
+endfunction
+
+call s:SyntasticDetectRbenvMri()
+
+
 "" Fix the filetype of certain misidentified shell scripts
 function! s:FixShellFt()
   if &filetype ==# '' || &filetype ==# 'conf'
@@ -285,7 +346,7 @@ if $TERM =~? '\m\c^linux' || $TERM =~? '\m\c^screen$'
   colorscheme solarized
   let g:airline_theme = 'solarized'
 else
-  colorscheme molokai
+  colorscheme slate
   let g:airline_theme = 'term'
 endif
 
@@ -472,7 +533,7 @@ function! s:SendTextToSlack(text)
   endif
 
   call inputsave()
-  let l:channel = substitute(input('Send to: '), "\n", '', 'g')
+  let l:channel = Strip(input('Send to: '))
   call inputrestore()
   redraw
 
