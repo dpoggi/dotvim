@@ -540,7 +540,7 @@ function! s:SendTextToSlack(text)
   if l:channel !=# ''
     call system('slackcat'
     \           . ' -c "' . l:channel . '"'
-    \           . ' -n "' . expand('%:t') . '"',
+    \           . ' -n "' . fnameescape(expand('%:t')) . '"',
     \           a:text)
     echom 'Sent to (#|@)' . l:channel . '!'
   else
@@ -621,7 +621,7 @@ nmap <leader>g4 :<C-u>call Tabs(4)<cr>
 nmap <leader>8 :<C-u>call Tabs(8)<cr>
 
 "" Get current file's directory in command mode
-cnoremap %% <C-r>=expand('%:h').'/'<cr>
+cnoremap %% <C-r>=fnameescape(expand('%:h')).'/'<cr>
 
 "" Re-indent the entire file
 nnoremap <leader>I mmgg=G`m
