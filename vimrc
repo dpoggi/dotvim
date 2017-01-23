@@ -339,16 +339,20 @@ if has('autocmd')
   au FileType unite AirlineRefresh
 endif
 
-"" Normally we want molokai, but if we're at a basic TTY, solarized looks
-"" great, even though it doesn't look like solarized.
+"" Light background? In my Vim?
 set background=dark
+
+"" Normally we want Slate, but if we're at a basic TTY, Solarized looks
+"" great, even though it doesn't look like Solarized.
 if $TERM =~? '\m\c^linux' || $TERM =~? '\m\c^screen$'
   colorscheme solarized
-  let g:airline_theme = 'solarized'
 else
   colorscheme slate
-  let g:airline_theme = 'term'
 endif
+
+"" 'term' looks solid with Solarized in a plain TTY, or with Slate in a
+"" graphical terminal.
+let g:airline_theme = 'term'
 
 "" Have vim-airline avoid Powerline fonts until told otherwise in vimrc.local
 let g:airline_powerline_fonts = 0
