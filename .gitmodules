@@ -130,3 +130,6 @@
 [submodule "bundle/kotlin"]
 	path = bundle/kotlin
 	url = git://github.com/udalov/kotlin-vim.git
+[submodule "bundle/powershell"]
+	path = bundle/powershell
+	url = git://github.com/PProvost/vim-ps1.git
