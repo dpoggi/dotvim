@@ -306,8 +306,6 @@ endfunction
 
 "" Filetype corrections
 if has('autocmd')
-  au BufRead,BufNewFile Fastfile     set filetype=ruby
-  au BufRead,BufNewFile *gemrc*      set filetype=yaml
   au BufRead,BufNewFile *.gradle     set filetype=groovy
   au BufRead,BufNewFile *.hjs        set filetype=handlebars
   au BufRead,BufNewFile jquery.*.js  set filetype=javascript syntax=jquery
@@ -317,18 +315,20 @@ if has('autocmd')
   "" because why not edit Elisp in Vim and Vimscript in Emacs
   au BufRead,BufNewFile .spacemacs   set filetype=lisp
   au BufRead,BufNewFile *.mako       set filetype=mako
+  au BufRead,BufNewFile Fastfile     set filetype=ruby
   au BufRead,BufNewFile *.ru         set filetype=ruby
   au BufRead,BufNewFile *.socket     set filetype=systemd
+  au BufRead,BufNewFile *vimrc*      set filetype=vim
+  au BufRead,BufNewFile *gemrc*      set filetype=yaml
   au BufRead,BufNewFile Procfile     set filetype=yaml
+  au BufRead,BufNewFile *.yml        set filetype=yaml
+  au BufRead,BufNewFile *.zsh*       set filetype=zsh
 
   au BufRead,BufNewFile *env         call s:FixShellFt()
   au BufRead,BufNewFile *.env.*      call s:FixShellFt()
   au BufRead,BufNewFile *profile     call s:FixShellFt()
-  au BufRead,BufNewFile *vimrc*      set filetype=vim
   au BufRead,BufNewFile *rc          call s:FixShellFt()
   au BufRead,BufNewFile *rc_*        call s:FixShellFt()
-  au BufRead,BufNewFile *.yml        set filetype=yaml
-  au BufRead,BufNewFile *.zsh*       set filetype=zsh
 
   au FileType gitcommit setlocal spell
   au FileType latex     setlocal spell
@@ -415,12 +415,13 @@ if has('autocmd')
   au FileType scala         call Spaces(4)
   au FileType typescript    call Spaces(4)
 
-  au FileType bindzone          call Tabs(8)
-  au FileType c                 call Tabs(8)
-  au FileType gitconfig         call Tabs(8)
-  au FileType make              call Tabs(8)
-  au BufRead,BufNewFile *.plist call Tabs(8)
-  au FileType sudoers           call Tabs(8)
+  au FileType bindzone                  call Tabs(8)
+  au FileType c                         call Tabs(8)
+  au FileType gitconfig                 call Tabs(8)
+  au FileType make                      call Tabs(8)
+  au BufRead,BufNewFile *.plist         call Tabs(8)
+  au BufRead,BufNewFile postgresql.conf call Tabs(8)
+  au FileType sudoers                   call Tabs(8)
 
   au FileType go call Tabs(4)
 endif
