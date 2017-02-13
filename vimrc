@@ -603,7 +603,9 @@ function! SystemOpen()
   endif
 
   let l:selection = s:GetSelectedText()
-  call system(g:system_open_cmd, l:selection)
+
+  call system(g:system_open_cmd . ' "' . l:selection . '"')
+
   echom 'Opened!'
 endfunction
 
