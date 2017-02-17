@@ -427,6 +427,12 @@ if has('autocmd')
   au FileType go call Tabs(4)
 endif
 
+"" Column guides for specific filetypes
+if has('autocmd')
+  au FileType java  call SetColGuide(120)
+  au FileType rust  call SetColGuide(99)
+endif
+
 
 ""
 "" Keymap functions
@@ -450,17 +456,23 @@ function! s:MapRightArrow(spaces)
   endif
 endfunction
 
-function! SetColGuide()
+function! SetColGuide(width)
+  let g:col_guide_width = a:width
+
+  call ColGuide()
+  call ColGuide()
+endfunction
+
+function! PromptSetColGuide()
   call inputsave()
   let l:width = substitute(input('Column guide width: '), '[^0-9]', '', 'g')
   call inputrestore()
   redraw
 
   if l:width !=# ''
-    let g:col_guide_width = l:width
-    call ColGuide()
-    call ColGuide()
-    echom 'Column guide width set to ' . g:col_guide_width . '!'
+    call SetColGuide(l:width)
+
+    echom 'Column guide width set to ' . l:width . '!'
   else
     echom 'Column guide width must be a number.'
   endif
@@ -620,7 +632,7 @@ inoremap <silent> jk <esc>
 
 "" Column guide
 nmap <silent> <leader>\ :<C-u>call ColGuide()<cr>
-nmap <silent> <leader>s\ :<C-u>call SetColGuide()<cr>
+nmap <silent> <leader>s\ :<C-u>call PromptSetColGuide()<cr>
 
 "" Indents
 nmap <leader>2 :<C-u>call Spaces(2)<cr>
