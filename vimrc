@@ -412,6 +412,7 @@ if has('autocmd')
   au FileType perl          call Spaces(4)
   au FileType php           call Spaces(4)
   au FileType python        call Spaces(4)
+  au FileType rust          call Spaces(4)
   au FileType scala         call Spaces(4)
   au FileType typescript    call Spaces(4)
 
