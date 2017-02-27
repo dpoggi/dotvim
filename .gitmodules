@@ -133,3 +133,6 @@
 [submodule "bundle/powershell"]
 	path = bundle/powershell
 	url = git://github.com/PProvost/vim-ps1.git
+[submodule "bundle/toml"]
+	path = bundle/toml
+	url = git://github.com/cespare/vim-toml.git
