@@ -52,11 +52,11 @@ let g:mapleader = ','
 "" ... lol
 ""
 
-function! Chomp(str)
+function! s:Chomp(str)
   return substitute(a:str, '\n\+$', '', '')
 endfunction
 
-function! Strip(str)
+function! s:Strip(str)
 	return substitute(a:str, '^\s*\(.\{-}\)\s*$', '\1', '')
 endfunction
 
@@ -69,7 +69,7 @@ elseif has('win32') || has('win64') || has('win95')
 elseif has('macunix') || has('osx')
   let g:dcp_os = 'Darwin'
 else
-  let g:dcp_os = Strip(system('uname -s'))
+  let g:dcp_os = s:Strip(system('uname -s'))
 endif
 
 "" Load pathogen
@@ -282,7 +282,7 @@ function! s:SyntasticDetectRbenvMri()
   endif
 
   let l:file = vimproc#fopen(l:version_path)
-  let l:version = Chomp(l:file.read())
+  let l:version = s:Chomp(l:file.read())
   call l:file.close()
 
   let l:exec_path = s:RbenvMriPath(l:version)
@@ -430,7 +430,7 @@ endif
 "" Column guides for specific filetypes
 if has('autocmd')
   au FileType java  call SetColGuide(120)
-  au FileType rust  call SetColGuide(99)
+  au FileType rust  call SetColGuide(100)
 endif
 
 
@@ -551,7 +551,7 @@ function! s:SendTextToSlack(text)
   endif
 
   call inputsave()
-  let l:channel = Strip(input('Send to: '))
+  let l:channel = s:Strip(input('Send to: '))
   call inputrestore()
   redraw
 
