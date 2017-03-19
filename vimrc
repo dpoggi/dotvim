@@ -108,6 +108,15 @@ set laststatus=2
 "" How did I go without this?
 set showcmd
 
+"" Completion menus are good
+set wildmenu
+
+"" Don't redraw if we don't need to
+set lazyredraw
+
+"" Show matching ([{
+set showmatch
+
 "" 300ms keymap
 set timeoutlen=300
 
