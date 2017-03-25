@@ -1,20 +1,37 @@
 #!/usr/bin/env bash
+
 set -e
 
-dir="$(cd "$(dirname "${BASH_SOURCE}")/.." && pwd -P)"
-fake_home="$(cd "${dir}/.." && pwd -P)"
-gitmodules="${dir}/.gitmodules"
-git_config="${dir}/.git/config"
-vimproc="true"
+readonly VIM_DIR="$(cd "$(dirname "${BASH_SOURCE}")/.." && pwd -P)"
+readonly EFFECTIVE_HOME="$(cd "${VIM_DIR}/.." && pwd -P)"
+readonly GIT_MODULES="${VIM_DIR}/.gitmodules"
+readonly GIT_CONFIG="${VIM_DIR}/.git/config"
+
+log_info() {
+  printf "\033[0;34m[%s]:\033[0m %s\n" \
+         "$(date "+%Y-%m-%d %H:%M:%S")" \
+         "$*"
+}
+
+log_error() {
+  printf >&2 "\033[1;37;41m[%s]:\033[0m %s\n" \
+             "$(date "+%Y-%m-%d %H:%M:%S")" \
+             "$*"
+}
+
+MAKE_VIMPROC="true"
 
 # Don't try to make vimproc if it's being ignored.
-if grep -Fq "vimproc" "${dir}/plugins.local" &> /dev/null; then
-  vimproc="false"
+if grep -Fq "vimproc" "${VIM_DIR}/plugins.local" &> /dev/null; then
+  MAKE_VIMPROC="false"
 fi
+
 # Don't try to make vimproc if we're on a Mac without Xcode/CLI tools
 # (/usr/bin/make will be present but trigger a GUI installer).
 if [[ "$(uname -s)" = "Darwin" ]]; then
-  xcode-select --print-path &> /dev/null || vimproc="false"
+  if ! xcode-select --print-path &> /dev/null; then
+    MAKE_VIMPROC="false"
+  fi
 fi
 
 remove_dir() {
@@ -22,7 +39,8 @@ remove_dir() {
     return
   fi
 
-  printf >&2 "Removing %s for %s...\n" "$2" "$3"
+  log_info "Removing $2 for $3..."
+
   rm -rf "$1"
 }
 
@@ -31,25 +49,37 @@ clean_up() {
     return
   fi
 
-  printf >&2 "Cleaning up %s for %s...\n" "$2" "$4"
+  log_info "Cleaning up $2 for $4..."
+
   perl -i -ln \
     -e "print unless (/bundle\/$3/ || /\/$4.git/)" \
     "$1"
 }
 
 remove_submodule() {
-  remove_dir "${dir}/bundle/$1" \
-    "plugin bundle" "$2"
-  remove_dir "${dir}/.git/modules/bundle/$1" \
-    "orphaned submodule" "$2"
+  remove_dir "${VIM_DIR}/bundle/$1" \
+             "plugin bundle" \
+             "$2"
 
-  clean_up "${gitmodules}" ".gitmodules" "$1" "$2"
-  clean_up "${git_config}" ".git/config" "$1" "$2"
+  remove_dir "${VIM_DIR}/.git/modules/bundle/$1" \
+             "orphaned submodule" \
+             "$2"
+
+  clean_up "${GIT_MODULES}" \
+           ".gitmodules" \
+           "$1" \
+           "$2"
+
+  clean_up "${GIT_CONFIG}" \
+           ".git/config" \
+           "$1" \
+           "$2"
 }
 
-if [[ "${vimproc}" = "true" ]]; then
-  printf >&2 "Rebuilding vimproc...\n"
-  HOME="${fake_home}" vim -c "silent VimProcInstall" -c "qall!"
+if [[ "${MAKE_VIMPROC}" = "true" ]]; then
+  log_info "Rebuilding vimproc..."
+
+  HOME="${EFFECTIVE_HOME}" vim -c "silent VimProcInstall" -c "qall!"
 fi
 
 for plugin in \
@@ -69,19 +99,31 @@ for plugin in \
   "ts:tsuquyomi"
 do
   IFS=":" read -r bundle repo <<< "${plugin}"
+
   remove_submodule "${bundle}" "${repo}"
 done
 
-if grep -Fq "sprsquish" "${git_config}" &> /dev/null; then
-  remove_dir "${dir}/bundle/thrift" \
-    "plugin bundle" "thrift.vim"
-  remove_dir "${dir}/.git/modules/bundle/thrift" \
-    "orphaned submodule" "thrift.vim"
+if grep -Fq "sprsquish" "${GIT_CONFIG}" &> /dev/null; then
+  remove_dir "${VIM_DIR}/bundle/thrift" \
+             "plugin bundle" \
+             "thrift.vim"
+
+  remove_dir "${VIM_DIR}/.git/modules/bundle/thrift" \
+             "orphaned submodule" \
+             "thrift.vim"
+
   perl -i -pn \
-    -e "s/sprsquish/solarnz/" \
-    "${git_config}"
-  (cd "${dir}" && git submodule update --init)
+       -e "s/sprsquish/solarnz/" \
+       "${GIT_CONFIG}"
+
+  (cd "${VIM_DIR}" && git submodule update --init)
 fi
 
-find "${dir}/bundle" -name "tags" -delete
-HOME="${fake_home}" vim -c "call pathogen#helptags()" -c "qall!"
+find "${VIM_DIR}/bundle" \
+     -mindepth 3 \
+     -maxdepth 3 \
+     -type f \
+     -name "tags" \
+     -delete
+
+HOME="${EFFECTIVE_HOME}" vim -c "call pathogen#helptags()" -c "qall!"
