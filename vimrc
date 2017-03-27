@@ -260,6 +260,18 @@ let g:is_bash = 1
 "" Hack to make Syntastic forget it has support for running javac
 let g:loaded_syntastic_java_javac_checker = 1
 
+function! s:VimprocUsable()
+  if index(g:pathogen_disabled, 'vimproc') >= 0
+    return 0
+  endif
+
+  if !filereadable(g:vimproc#dll_path)
+    return 0
+  endif
+
+  return 1
+endfunction
+
 function! s:RbenvMriPath(version)
   if a:version =~# '[^0-9.]'
     "" Only applies to MRI
@@ -271,7 +283,7 @@ function! s:RbenvMriPath(version)
 endfunction
 
 function! s:SyntasticDetectRbenvMri()
-  if empty($RBENV_ROOT) || index(g:pathogen_disabled, 'vimproc') >= 0
+  if empty($RBENV_ROOT) || !s:VimprocUsable()
     return
   endif
 
@@ -737,7 +749,7 @@ nmap <silent> <leader>td :<C-u>tabclose<cr>
 nmap <silent> <leader>qQ :<C-u>qall!<cr>
 
 "" Unite.vim
-if index(g:pathogen_disabled, 'vimproc') >= 0
+if !s:VimprocUsable()
   nnoremap <silent> <leader>f :<C-u>Unite file_rec:!<cr>
   nnoremap <silent> <leader>f. :<C-u>Unite file_rec:.<cr>
 else
