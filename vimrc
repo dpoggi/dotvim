@@ -69,7 +69,7 @@ elseif has('win32') || has('win64') || has('win95')
 elseif has('macunix') || has('osx')
   let g:dcp_os = 'Darwin'
 else
-  let g:dcp_os = s:Strip(system('uname -s'))
+  let g:dcp_os = s:Chomp(system('uname -s'))
 endif
 
 "" Load pathogen
