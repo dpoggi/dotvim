@@ -257,9 +257,6 @@ endif
 "" Default shell dialect
 let g:is_bash = 1
 
-"" Hack to make Syntastic forget it has support for running javac
-let g:loaded_syntastic_java_javac_checker = 1
-
 function! s:VimprocUsable()
   if index(g:pathogen_disabled, 'vimproc') >= 0
     return 0
@@ -388,7 +385,17 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_quiet_messages = {'level': 'warnings'}
+let g:syntastic_quiet_messages = { 'level': 'warnings' }
+
+"" Hack to make Syntastic forget it has support for running javac
+let g:loaded_syntastic_java_javac_checker = 1
+
+"" Passive mode by default for rpmbuild specs
+let g:syntastic_mode_map = {
+\   'mode': 'active',
+\   'active_filetypes': [],
+\   'passive_filetypes': ['spec'],
+\ }
 
 "" Enable syntax highlighting
 syntax on
