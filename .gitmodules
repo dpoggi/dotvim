@@ -136,3 +136,6 @@
 [submodule "bundle/toml"]
 	path = bundle/toml
 	url = git://github.com/cespare/vim-toml.git
+[submodule "bundle/obsidian"]
+	path = bundle/obsidian
+	url = git://github.com/vim-scripts/Son-of-Obisidian.git
