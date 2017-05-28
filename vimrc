@@ -435,6 +435,7 @@ if has('autocmd')
 
   au FileType apiblueprint  call Spaces(4)
   au FileType cpp           call Spaces(4)
+  au FileType d             call Spaces(4)
   au FileType java          call Spaces(4)
   au FileType kotlin        call Spaces(4)
   au FileType lua           call Spaces(4)
