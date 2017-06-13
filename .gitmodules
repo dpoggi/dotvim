@@ -139,3 +139,6 @@
 [submodule "bundle/obsidian"]
 	path = bundle/obsidian
 	url = git://github.com/vim-scripts/Son-of-Obisidian.git
+[submodule "bundle/batsh"]
+	path = bundle/batsh
+	url = git://github.com/vuryleo/vim-Batsh.git
