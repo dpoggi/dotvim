@@ -5,33 +5,47 @@
 # regenerate helptags.
 #
 
-set -e
+set -euo pipefail
 
 readonly VIM_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 readonly EFFECTIVE_HOME="$(cd "${VIM_DIR}/.." && pwd -P)"
 readonly GIT_MODULES="${VIM_DIR}/.gitmodules"
 readonly GIT_CONFIG="${VIM_DIR}/.git/config"
 
-log_info() {
-  printf "\033[0;34m[%s]:\033[0m %s\n" \
-         "$(date "+%Y-%m-%d %H:%M:%S")" \
-         "$*"
+__logfln() {
+  local lvl="$1"; shift
+  local lvl_clr="$1"; shift
+  local fmt="$1"; shift
+
+  if [[ -t 1 ]]; then
+    printf "\033[2;39;49m%s ${lvl_clr}${lvl}\033[2;39;49m : \033[0m${fmt}\n" \
+           "$(__log_date)" \
+           "$@"
+  else
+    printf "%s ${lvl} : ${fmt}\n" \
+           "$(__log_date)" \
+           "$@"
+  fi
 }
+
+__log_date() { date "+%Y-%m-%d %H:%M:%S"; }
+
+infofln() { __logfln " INFO" "\033[0;34m" "$@"; }
 
 build_vimproc() {
   # Don't try to build vimproc if it's being ignored in ~/.vim/plugins.local
-  if grep -Fq 'vimproc' "${VIM_DIR}/plugins.local" 2> /dev/null; then
+  if grep -Fq 'vimproc' "${VIM_DIR}/plugins.local" 2>/dev/null; then
     return
   fi
 
   # Don't try to build vimproc if we're on macOS without Xcode or CLI tools
   # installed (/usr/bin/make will be present but trigger a GUI installer)
   if [[ "$(uname -s)" = "Darwin" ]] \
-     && ! xcode-select --print-path &> /dev/null; then
+     && ! xcode-select --print-path >/dev/null 2>&1; then
     return
   fi
 
-  log_info "(Re)building vimproc..."
+  infofln "(Re)building vimproc..."
 
   HOME="${EFFECTIVE_HOME}" vim -c 'silent VimProcInstall' -c 'qall!'
 }
@@ -45,7 +59,7 @@ remove_dir() {
     return
   fi
 
-  log_info "Removing ${dir_description} for ${plugin_repo}..."
+  infofln "Removing %s for %s..." "${dir_description}" "${plugin_repo}"
 
   rm -rf "${dir_path}"
 }
@@ -61,7 +75,7 @@ scrub_file() {
     return
   fi
 
-  log_info "Scrubbing ${plugin_repo} from ${file_description}..."
+  infofln "Scrubbing %s from %s..." "${plugin_repo}" "${file_description}"
 
   perl -i -ln \
        -e "print unless (/bundle\\/${plugin_bundle}/ || /\\/${plugin_repo}\\.git/)" \
@@ -143,7 +157,7 @@ main() {
     "systemverilog:systemverilog.vim" \
     "ts:tsuquyomi"
   do
-    IFS=$':' read -r bundle repo <<< "${plugin}"
+    IFS=':' read -r bundle repo <<< "${plugin}"
 
     remove_submodule "${bundle}" "${repo}"
   done

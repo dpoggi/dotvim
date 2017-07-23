@@ -4,67 +4,78 @@
 # Updates Vim plugin submodules from their respective origins
 #
 
-set -e
+set -euo pipefail
 
-log_info() {
-  printf "\033[0;34m[%s]:\033[0m %s\n" \
-         "$(date "+%Y-%m-%d %H:%M:%S")" \
-         "$*"
+__logfln() {
+  local lvl="$1"; shift
+  local lvl_clr="$1"; shift
+  local fmt="$1"; shift
+
+  if [[ -t 1 ]]; then
+    printf "\033[2;39;49m%s ${lvl_clr}${lvl}\033[2;39;49m : \033[0m${fmt}\n" \
+           "$(__log_date)" \
+           "$@"
+  else
+    printf "%s ${lvl} : ${fmt}\n" \
+           "$(__log_date)" \
+           "$@"
+  fi
 }
 
-log_error() {
-  printf >&2 "\033[1;37;41m[%s]:\033[0m %s\n" \
-             "$(date "+%Y-%m-%d %H:%M:%S")" \
-             "$*"
-}
+__log_date() { date "+%Y-%m-%d %H:%M:%S"; }
+
+infofln() { __logfln " INFO" "\033[0;34m" "$@"; }
+errorfln() { __logfln "ERROR" "\033[0;31m" "$@"; }
 
 main() {
   cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-  log_info "Fetching origin recursively..."
+  infofln "Fetching origin recursively..."
 
   git fetch origin --recurse-submodules
 
   printf >&2 "\n"
 
-  local submodule plugin symbolic_ref ref
+  local submodule plugin
+  local symbolic_ref=""
+  local ref=""
 
-  for submodule in bundle/*; do
+  for submodule in ./bundle/*; do
     plugin="$(basename "${submodule}")"
 
-    pushd "${submodule}" > /dev/null
+    pushd "${submodule}" >/dev/null
 
     # The JavaScript plugin's master branch is a little... behind
     if [[ "${plugin}" = "javascript" ]]; then
       symbolic_ref="refs/remotes/origin/develop"
     else
-      symbolic_ref="$(git symbolic-ref refs/remotes/origin/HEAD 2> /dev/null)"
+      symbolic_ref="$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null)"
     fi
 
     # refs/remotes/origin/branch -> sha1
     if [[ -n "${symbolic_ref}" ]]; then
-      ref="$(git show-ref --hash --verify "${symbolic_ref}" 2> /dev/null)"
+      ref="$(git show-ref --hash --verify "${symbolic_ref}" 2>/dev/null)"
     fi
 
     if [[ -z "${symbolic_ref}" || -z "${ref}" ]]; then
-      log_error "Error: unable to establish remote branch for ${plugin}, skipping..."
+      errorfln "Error: unable to establish remote branch for %s, skipping..." "${plugin}"
 
-      popd > /dev/null
+      popd >/dev/null
 
       continue
     fi
 
-    log_info "Attempting to checkout ${symbolic_ref} for ${plugin}..."
+    infofln "Attempting to checkout %s for %s..." "${symbolic_ref}" "${plugin}"
 
     git checkout --force "${ref}"
 
-    log_info "Updating submodules for ${plugin}, if any..."
+    infofln "Updating submodules for %s, if any..." "${plugin}"
 
     git submodule update --init --recursive
 
     printf >&2 "\n"
 
-    popd > /dev/null
+    popd >/dev/null
   done
 }
 
