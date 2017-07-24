@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 #
-# post_update.sh
-# Post-update hook to ensure Vimproc is built, handle submodule removal, and
-# regenerate helptags.
+# post_update.sh - Post-update hook to ensure Vimproc is built, handle
+# submodule removal, and regenerate helptags.
 #
 
-set -euo pipefail
+set -eo pipefail
 
 readonly VIM_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 readonly EFFECTIVE_HOME="$(cd "${VIM_DIR}/.." && pwd -P)"
@@ -17,31 +16,38 @@ __logfln() {
   local lvl_clr="$1"; shift
   local fmt="$1"; shift
 
-  if [[ -t 1 ]]; then
-    printf "\033[2;39;49m%s ${lvl_clr}${lvl}\033[2;39;49m : \033[0m${fmt}\n" \
-           "$(__log_date)" \
-           "$@"
-  else
-    printf "%s ${lvl} : ${fmt}\n" \
-           "$(__log_date)" \
-           "$@"
-  fi
+  printf "\033[2;39;49m%s ${lvl_clr}${lvl}\033[2;39;49m : \033[0m${fmt}\n" \
+         "$(date "+%Y-%m-%d %H:%M:%S")" \
+         "$@"
 }
 
-__log_date() { date "+%Y-%m-%d %H:%M:%S"; }
-
 infofln() { __logfln " INFO" "\033[0;34m" "$@"; }
+errorfln() { __logfln "ERROR" "\033[0;31m" "$@"; }
+
+__qfgrep() { grep -qF "$@" 2>/dev/null; }
+
+__is_xcode_installed() { xcode-select --print-path >/dev/null 2>&1; }
+
+assert_deps() {
+  local dep
+
+  for dep in vim perl; do
+    if ! hash "${dep}" 2>/dev/null; then
+      errorfln "${dep} not found"
+      return 1
+    fi
+  done
+}
 
 build_vimproc() {
   # Don't try to build vimproc if it's being ignored in ~/.vim/plugins.local
-  if grep -Fq 'vimproc' "${VIM_DIR}/plugins.local" 2>/dev/null; then
+  if __qfgrep 'vimproc' "${VIM_DIR}/plugins.local"; then
     return
   fi
 
   # Don't try to build vimproc if we're on macOS without Xcode or CLI tools
   # installed (/usr/bin/make will be present but trigger a GUI installer)
-  if [[ "$(uname -s)" = "Darwin" ]] \
-     && ! xcode-select --print-path >/dev/null 2>&1; then
+  if [[ "$(uname -s)" = "Darwin" ]] && ! __is_xcode_installed; then
     return
   fi
 
@@ -70,8 +76,8 @@ scrub_file() {
   local plugin_bundle="$3"
   local plugin_repo="$4"
 
-  if ! grep -Fq "bundle/${plugin_bundle}" "${file_path}" \
-     && ! grep -Fq "/${plugin_repo}.git" "${file_path}"; then
+  if ! __qfgrep "bundle/${plugin_bundle}" "${file_path}" \
+     && ! __qfgrep "/${plugin_repo}.git" "${file_path}"; then
     return
   fi
 
@@ -106,7 +112,7 @@ remove_submodule() {
 }
 
 migrate_thrift() {
-  if ! grep -Fq 'sprsquish' "${GIT_CONFIG}"; then
+  if ! __qfgrep 'sprsquish' "${GIT_CONFIG}"; then
     return
   fi
 
@@ -126,17 +132,14 @@ migrate_thrift() {
 }
 
 regenerate_helptags() {
-  find "${VIM_DIR}/bundle" \
-       -mindepth 3 \
-       -maxdepth 3 \
-       -type f \
-       -name 'tags' \
-       -delete
+  find "${VIM_DIR}/bundle" -mindepth 3 -maxdepth 3 -type f -name 'tags' -delete
 
   HOME="${EFFECTIVE_HOME}" vim -c 'call pathogen#helptags()' -c 'qall!'
 }
 
 main() {
+  assert_deps
+
   build_vimproc
 
   local plugin bundle repo
@@ -158,7 +161,6 @@ main() {
     "ts:tsuquyomi"
   do
     IFS=':' read -r bundle repo <<< "${plugin}"
-
     remove_submodule "${bundle}" "${repo}"
   done
 
