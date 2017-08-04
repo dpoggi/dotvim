@@ -30,8 +30,7 @@ __is_xcode_installed() { xcode-select --print-path >/dev/null 2>&1; }
 
 assert_deps() {
   local dep
-
-  for dep in vim perl; do
+  for dep in "$@"; do
     if ! hash "${dep}" 2>/dev/null; then
       errorfln "${dep} not found"
       return 1
@@ -138,25 +137,26 @@ regenerate_helptags() {
 }
 
 main() {
-  assert_deps
+  assert_deps vim perl
 
   build_vimproc
 
   local plugin bundle repo
 
   for plugin in \
+    "batsh:vim-Batsh"                 \
     "CamelCaseMotion:CamelCaseMotion" \
-    "clojure:VimClojure" \
-    "cocoa:cocoa.vim" \
-    "command-t:Command-T" \
-    "elm:elm-vim" \
-    "funcoo:funcoo.vim" \
-    "haml:vim-haml" \
-    "ios:vim-ios" \
-    "kiwi:kiwi.vim" \
-    "mako:mako.vim" \
-    "nginx:nginx.vim" \
-    "powerline:powerline" \
+    "clojure:VimClojure"              \
+    "cocoa:cocoa.vim"                 \
+    "command-t:Command-T"             \
+    "elm:elm-vim"                     \
+    "funcoo:funcoo.vim"               \
+    "haml:vim-haml"                   \
+    "ios:vim-ios"                     \
+    "kiwi:kiwi.vim"                   \
+    "mako:mako.vim"                   \
+    "nginx:nginx.vim"                 \
+    "powerline:powerline"             \
     "systemverilog:systemverilog.vim" \
     "ts:tsuquyomi"
   do
