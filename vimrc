@@ -334,6 +334,7 @@ if has('autocmd')
   "" because why not edit Elisp in Vim and Vimscript in Emacs
   au BufRead,BufNewFile .spacemacs   set filetype=lisp
   au BufRead,BufNewFile *.mako       set filetype=mako
+  au BufRead,BufNewFile *.mm         set filetype=objcpp
   au BufRead,BufNewFile Fastfile     set filetype=ruby
   au BufRead,BufNewFile *.ru         set filetype=ruby
   au BufRead,BufNewFile *.socket     set filetype=systemd
