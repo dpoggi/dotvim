@@ -4,3 +4,5 @@ set gdefault
 
 set incsearch
 set hlsearch
+
+set surround
