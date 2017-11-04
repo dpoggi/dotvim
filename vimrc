@@ -257,6 +257,9 @@ endif
 "" Default shell dialect
 let g:is_bash = 1
 
+"" Disable Vim version warning from Go plugin
+let g:go_version_warning = 0
+
 function! s:VimprocUsable()
   if index(g:pathogen_disabled, 'vimproc') >= 0
     return 0
