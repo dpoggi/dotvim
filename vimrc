@@ -434,8 +434,11 @@ set autoindent
 call Spaces(2)
 filetype plugin indent on
 
-"" Indents for specific filetypes
 if has('autocmd')
+  ""
+  "" Indents for specific filetypes
+  ""
+
   au FileType * call Spaces(2)
 
   au FileType apiblueprint  call Spaces(4)
@@ -461,10 +464,17 @@ if has('autocmd')
   au FileType sudoers                   call Tabs(8)
 
   au FileType go call Tabs(4)
-endif
 
-"" Column guides for specific filetypes
-if has('autocmd')
+  ""
+  "" Comment strings for specific filetypes
+  ""
+
+  au FileType c,cpp,cs,java let &l:commentstring = '// %s'
+
+  ""
+  "" Column guides for specific filetypes
+  ""
+
   au FileType java  call SetColGuide(120)
   au FileType rust  call SetColGuide(100)
 endif
