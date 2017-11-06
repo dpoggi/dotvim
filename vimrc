@@ -327,6 +327,7 @@ endfunction
 
 "" Filetype corrections
 if has('autocmd')
+  au BufRead,BufNewFile *.h          set filetype=c
   au BufRead,BufNewFile *.mod        set filetype=dosini
   au BufRead,BufNewFile *.gradle     set filetype=groovy
   au BufRead,BufNewFile *.hjs        set filetype=handlebars
