@@ -454,8 +454,6 @@ if has('autocmd')
   ""
   "" Indents for specific filetypes
   ""
-  au FileType * call SpacesLocal(2)
-
   au FileType apiblueprint,cpp,d,groovy,java,kotlin,lua call SpacesLocal(4)
   au FileType perl,php,python,rust,scala,typescript     call SpacesLocal(4)
 
@@ -674,10 +672,10 @@ nmap <silent> <leader>\ :<C-u>call ColGuide()<cr>
 nmap <silent> <leader>s\ :<C-u>call PromptSetColGuide()<cr>
 
 "" Indents
-nmap <leader>2 :<C-u>call SpacesLocal(2)<cr>
-nmap <leader>4 :<C-u>call SpacesLocal(4)<cr>
-nmap <leader>g4 :<C-u>call TabsLocal(4)<cr>
-nmap <leader>8 :<C-u>call TabsLocal(8)<cr>
+nmap <leader>2 :<C-u>call Spaces(2)<cr>
+nmap <leader>4 :<C-u>call Spaces(4)<cr>
+nmap <leader>g4 :<C-u>call Tabs(4)<cr>
+nmap <leader>8 :<C-u>call Tabs(8)<cr>
 
 "" Get current file's directory in command mode
 cnoremap %% <C-r>=fnameescape(expand('%:h')).'/'<cr>
