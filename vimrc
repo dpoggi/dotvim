@@ -414,16 +414,32 @@ function! Spaces(num)
   set expandtab
   set smarttab
   let &tabstop = a:num
-  let &softtabstop = 0
   let &shiftwidth = a:num
+  set softtabstop=0
 endfunction
 
-function! Tabs(size)
+function! SpacesLocal(num)
+  setlocal expandtab
+  setlocal smarttab
+  let &l:tabstop = a:num
+  let &l:shiftwidth = a:num
+  setlocal softtabstop=0
+endfunction
+
+function! Tabs(width)
   set noexpandtab
   set nosmarttab
-  let &tabstop = a:size
-  let &softtabstop = 0
-  let &shiftwidth = a:size
+  let &tabstop = a:width
+  let &shiftwidth = a:width
+  set softtabstop=0
+endfunction
+
+function! TabsLocal(width)
+  setlocal noexpandtab
+  setlocal nosmarttab
+  let &l:tabstop = a:width
+  let &l:shiftwidth = a:width
+  setlocal softtabstop=0
 endfunction
 
 "" editorconfig
@@ -438,45 +454,22 @@ if has('autocmd')
   ""
   "" Indents for specific filetypes
   ""
+  au FileType * call SpacesLocal(2)
 
-  au FileType * call Spaces(2)
+  au FileType apiblueprint,cpp,d,groovy,java,kotlin,lua call SpacesLocal(4)
+  au FileType perl,php,python,rust,scala,typescript     call SpacesLocal(4)
 
-  au FileType apiblueprint  call Spaces(4)
-  au FileType cpp           call Spaces(4)
-  au FileType d             call Spaces(4)
-  au FileType groovy        call Spaces(4)
-  au FileType java          call Spaces(4)
-  au FileType kotlin        call Spaces(4)
-  au FileType lua           call Spaces(4)
-  au FileType perl          call Spaces(4)
-  au FileType php           call Spaces(4)
-  au FileType python        call Spaces(4)
-  au FileType rust          call Spaces(4)
-  au FileType scala         call Spaces(4)
-  au FileType typescript    call Spaces(4)
+  au FileType go call TabsLocal(4)
 
-  au FileType bindzone                  call Tabs(8)
-  au FileType c                         call Tabs(8)
-  au FileType gitconfig                 call Tabs(8)
-  au FileType make                      call Tabs(8)
-  au BufRead,BufNewFile *.plist         call Tabs(8)
-  au BufRead,BufNewFile postgresql.conf call Tabs(8)
-  au FileType sudoers                   call Tabs(8)
+  au FileType           bindzone,c,gitconfig,make,sudoers call TabsLocal(8)
+  au BufRead,BufNewFile *.plist,postgresql.conf           call TabsLocal(8)
 
-  au FileType go call Tabs(4)
-
-  ""
   "" Comment strings for specific filetypes
-  ""
+  au FileType c,cpp,cs,java,rust  let &l:commentstring = '// %s'
 
-  au FileType c,cpp,cs,java let &l:commentstring = '// %s'
-
-  ""
   "" Column guides for specific filetypes
-  ""
-
-  au FileType java  call SetColGuide(120)
-  au FileType rust  call SetColGuide(100)
+  au FileType c,cpp,rust  call SetColGuide(100)
+  au FileType cs,java     call SetColGuide(120)
 endif
 
 
@@ -681,10 +674,10 @@ nmap <silent> <leader>\ :<C-u>call ColGuide()<cr>
 nmap <silent> <leader>s\ :<C-u>call PromptSetColGuide()<cr>
 
 "" Indents
-nmap <leader>2 :<C-u>call Spaces(2)<cr>
-nmap <leader>4 :<C-u>call Spaces(4)<cr>
-nmap <leader>g4 :<C-u>call Tabs(4)<cr>
-nmap <leader>8 :<C-u>call Tabs(8)<cr>
+nmap <leader>2 :<C-u>call SpacesLocal(2)<cr>
+nmap <leader>4 :<C-u>call SpacesLocal(4)<cr>
+nmap <leader>g4 :<C-u>call TabsLocal(4)<cr>
+nmap <leader>8 :<C-u>call TabsLocal(8)<cr>
 
 "" Get current file's directory in command mode
 cnoremap %% <C-r>=fnameescape(expand('%:h')).'/'<cr>
