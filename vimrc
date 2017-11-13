@@ -360,6 +360,8 @@ if has('autocmd')
   au FileType plaintex  setlocal spell
   au FileType text      setlocal spell
 
+  au BufReadPre *.nfo setlocal fileencodings=cp437,utf-8
+
   au FileType unite AirlineRefresh
 endif
 
