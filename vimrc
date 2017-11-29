@@ -466,7 +466,7 @@ if has('autocmd')
   au BufRead,BufNewFile *.plist,postgresql.conf           call TabsLocal(8)
 
   "" Comment strings for specific filetypes
-  au FileType c,cpp,cs,java,rust  let &l:commentstring = '// %s'
+  au FileType c,cpp,cs,java,kotlin,rust  let &l:commentstring = '// %s'
 
   "" Column guides for specific filetypes
   au FileType c,cpp,rust  call SetColGuide(100)
