@@ -372,7 +372,7 @@ set background=dark
 
 "" Normally we want Slate, but if we're at a basic TTY, Solarized looks
 "" great, even though it doesn't look like Solarized.
-if $TERM =~? '\m\c^linux' || $TERM =~? '\m\c^screen$'
+if $TERM =~? '\m\c^linux' || $TERM =~? '\m\c^screen$' || $TERM =~? '\m\c^sun'
   colorscheme solarized
 else
   colorscheme slate
