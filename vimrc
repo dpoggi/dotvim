@@ -259,16 +259,18 @@ let g:is_bash = 1
 
 "" Disable Vim version warning from Go plugin
 let g:go_version_warning = 0
+"" Use goimports if available
+if executable('goimports')
+  let g:go_fmt_command = 'goimports'
+endif
 
 function! s:VimprocUsable()
   if index(g:pathogen_disabled, 'vimproc') >= 0
     return 0
   endif
-
   if !filereadable(g:vimproc#dll_path)
     return 0
   endif
-
   return 1
 endfunction
 
