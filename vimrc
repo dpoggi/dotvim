@@ -341,6 +341,7 @@ if has('autocmd')
   au BufRead,BufNewFile .spacemacs   set filetype=lisp
   au BufRead,BufNewFile *.mako       set filetype=mako
   au BufRead,BufNewFile *.mm         set filetype=objcpp
+  au BufRead,BufNewFile *.rpy        set filetype=python
   au BufRead,BufNewFile Fastfile     set filetype=ruby
   au BufRead,BufNewFile *.ru         set filetype=ruby
   au BufRead,BufNewFile *.socket     set filetype=systemd
