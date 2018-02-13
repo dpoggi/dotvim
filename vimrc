@@ -473,7 +473,7 @@ if has('autocmd')
   au FileType c,cpp,cs,java,kotlin,rust  let &l:commentstring = '// %s'
 
   "" Column guides for specific filetypes
-  au FileType c,cpp,rust  call SetColGuide(100)
+  au FileType cpp,rust  call SetColGuide(100)
   au FileType cs,java     call SetColGuide(120)
 endif
 
