@@ -1,9 +1,11 @@
-set ignorecase
-set smartcase
-set gdefault
-
 set incsearch
 set hlsearch
+
+set ignorecase
+set smartcase
+
+set timeoutlen=300
+set wrapscan
 
 inoremap jk <esc>
 nnoremap 'I mmgg=G`m
