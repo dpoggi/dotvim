@@ -345,6 +345,7 @@ if has('autocmd')
   au BufRead,BufNewFile *.rpy        set filetype=python
   au BufRead,BufNewFile Fastfile     set filetype=ruby
   au BufRead,BufNewFile *.ru         set filetype=ruby
+  au BufRead,BufNewFile *.swift.gyb  set filetype=swift
   au BufRead,BufNewFile *.socket     set filetype=systemd
   au BufRead,BufNewFile *vimrc*      set filetype=vim
   au BufRead,BufNewFile *gemrc*      set filetype=yaml
