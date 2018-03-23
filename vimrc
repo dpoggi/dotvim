@@ -348,6 +348,7 @@ if has('autocmd')
   au BufRead,BufNewFile *.swift.gyb  set filetype=swift
   au BufRead,BufNewFile *.socket     set filetype=systemd
   au BufRead,BufNewFile *vimrc*      set filetype=vim
+  au BufRead,BufNewFile *.xmp        set filetype=xml
   au BufRead,BufNewFile *gemrc*      set filetype=yaml
   au BufRead,BufNewFile Procfile     set filetype=yaml
   au BufRead,BufNewFile *.yml        set filetype=yaml
