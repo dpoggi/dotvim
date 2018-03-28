@@ -463,8 +463,8 @@ if has('autocmd')
   ""
   "" Indents for specific filetypes
   ""
-  au FileType apiblueprint,cpp,d,groovy,java,kotlin,lua call SpacesLocal(4)
-  au FileType perl,php,python,rust,scala,typescript     call SpacesLocal(4)
+  au FileType apiblueprint,cpp,d,groovy,java,kotlin,lua   call SpacesLocal(4)
+  au FileType perl,php,python,rust,scala,swift,typescript call SpacesLocal(4)
 
   au FileType go call TabsLocal(4)
 
@@ -476,7 +476,7 @@ if has('autocmd')
 
   "" Column guides for specific filetypes
   au FileType cpp,rust  call SetColGuide(100)
-  au FileType cs,java     call SetColGuide(120)
+  au FileType cs,java   call SetColGuide(120)
 endif
 
 
