@@ -10,5 +10,16 @@ set wrapscan
 inoremap jk <esc>
 nnoremap 'I mmgg=G`m
 
-"" Swift return types
-imap <C-l> <space>-><space>
+"" Splits
+nnoremap <space>wv :<C-u>vsplit<cr>
+nnoremap <space>ws :<C-u>split<cr>
+
+"" Window management
+nnoremap <space>wd <C-w><C-q>
+
+"" Window movement
+nnoremap <space>wh <C-w><C-h>
+nnoremap <space>wj <C-w><C-j>
+nnoremap <space>wk <C-w><C-k>
+nnoremap <space>wl <C-w><C-l>
+nnoremap <space>ww <C-w><C-w>
