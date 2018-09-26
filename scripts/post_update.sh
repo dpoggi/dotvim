@@ -10,6 +10,7 @@ readonly VIM_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 readonly EFFECTIVE_HOME="$(cd "${VIM_DIR}/.." && pwd -P)"
 readonly GIT_MODULES="${VIM_DIR}/.gitmodules"
 readonly GIT_CONFIG="${VIM_DIR}/.git/config"
+readonly FINGERPRINT_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/dcp/brew_codesign.sha1"
 
 __logfln() {
   local lvl="$1"; shift
@@ -26,7 +27,7 @@ errorfln() { __logfln "ERROR" "\033[0;31m" "$@"; }
 
 __qfgrep() { grep -qF "$@" 2>/dev/null; }
 
-__is_xcode_installed() { xcode-select --print-path >/dev/null 2>&1; }
+__is_xcode_installed() { xcrun xcode-select --print-path >/dev/null 2>&1; }
 
 assert_deps() {
   local dep
@@ -36,6 +37,18 @@ assert_deps() {
       return 1
     fi
   done
+}
+
+__codesign() {
+  if [[ ! -r "${FINGERPRINT_PATH}" ]]; then
+    return
+  fi
+
+  local fingerprint
+  fingerprint="$(<"${FINGERPRINT_PATH}")"
+
+  infofln "Code signing vimproc..."
+  xcrun codesign --force --sign "${fingerprint}" "$1" || :
 }
 
 build_vimproc() {
@@ -53,6 +66,11 @@ build_vimproc() {
   infofln "(Re)building vimproc..."
 
   HOME="${EFFECTIVE_HOME}" vim -c 'silent VimProcInstall' -c 'qall!'
+
+  # If possible, attempt to codesign for macOS Mojave.
+  if [[ -r "${VIM_DIR}/bundle/vimproc/lib/vimproc_mac.so" ]]; then
+    __codesign "${VIM_DIR}/bundle/vimproc/lib/vimproc_mac.so"
+  fi
 }
 
 remove_dir() {
