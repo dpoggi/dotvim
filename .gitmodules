@@ -142,3 +142,6 @@
 [submodule "bundle/hashicorp-tools"]
 	path = bundle/hashicorp-tools
 	url = git://github.com/HashiVim/vim-hashicorp-tools.git
+[submodule "bundle/xcconfig"]
+	path = bundle/xcconfig
+	url = git://github.com/keith/xcconfig.vim.git
