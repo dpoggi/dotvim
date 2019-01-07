@@ -343,6 +343,7 @@ if has('autocmd')
   au BufRead,BufNewFile *.mm         set filetype=objcpp
   au BufRead,BufNewFile *.pth        set filetype=python
   au BufRead,BufNewFile *.rpy        set filetype=python
+  au BufRead,BufNewFile Brewfile     set filetype=ruby
   au BufRead,BufNewFile Fastfile     set filetype=ruby
   au BufRead,BufNewFile *.ru         set filetype=ruby
   au BufRead,BufNewFile *.swift.gyb  set filetype=swift
