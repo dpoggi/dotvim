@@ -160,7 +160,7 @@ set wildignore+=*.class,*.jar
 "" IDEA
 set wildignore+=.idea/**
 "" Ruby
-set wildignore+=.bundle/**
+set wildignore+=.bundle/ruby/**
 "" Python
 set wildignore+=*.pyc
 "" CocoaPods/Carthage
@@ -344,28 +344,29 @@ if has('autocmd')
   au BufRead,BufNewFile *.json       set filetype=javascript
   "" lol (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
   "" because why not edit Elisp in Vim and Vimscript in Emacs
-  au BufRead,BufNewFile .spacemacs   set filetype=lisp
-  au BufRead,BufNewFile *.mako       set filetype=mako
-  au BufRead,BufNewFile *.mm         set filetype=objcpp
-  au BufRead,BufNewFile *.pth        set filetype=python
-  au BufRead,BufNewFile *.rpy        set filetype=python
-  au BufRead,BufNewFile Brewfile*    set filetype=ruby
-  au BufRead,BufNewFile Fastfile*    set filetype=ruby
-  au BufRead,BufNewFile *.ru         set filetype=ruby
-  au BufRead,BufNewFile *.swift.gyb  set filetype=swift
-  au BufRead,BufNewFile *.socket     set filetype=systemd
-  au BufRead,BufNewFile *vimrc*      set filetype=vim
-  au BufRead,BufNewFile *.xmp        set filetype=xml
-  au BufRead,BufNewFile *gemrc*      set filetype=yaml
-  au BufRead,BufNewFile Procfile     set filetype=yaml
-  au BufRead,BufNewFile *.yml        set filetype=yaml
-  au BufRead,BufNewFile *.zsh*       set filetype=zsh
+  au BufRead,BufNewFile .spacemacs      set filetype=lisp
+  au BufRead,BufNewFile *.mako          set filetype=mako
+  au BufRead,BufNewFile *.mm            set filetype=objcpp
+  au BufRead,BufNewFile *.pth           set filetype=python
+  au BufRead,BufNewFile *.rpy           set filetype=python
+  au BufRead,BufNewFile Brewfile*       set filetype=ruby
+  au BufRead,BufNewFile Fastfile*       set filetype=ruby
+  au BufRead,BufNewFile *.ru            set filetype=ruby
+  au BufRead,BufNewFile *.swift.gyb     set filetype=swift
+  au BufRead,BufNewFile *.socket        set filetype=systemd
+  au BufRead,BufNewFile *vimrc*         set filetype=vim
+  au BufRead,BufNewFile *.xmp           set filetype=xml
+  au BufRead,BufNewFile .bundle/config  set filetype=yaml
+  au BufRead,BufNewFile *gemrc*         set filetype=yaml
+  au BufRead,BufNewFile Procfile        set filetype=yaml
+  au BufRead,BufNewFile *.yml           set filetype=yaml
+  au BufRead,BufNewFile *.zsh*          set filetype=zsh
 
-  au BufRead,BufNewFile *env         call s:FixShellFt()
-  au BufRead,BufNewFile *.env.*      call s:FixShellFt()
-  au BufRead,BufNewFile *profile     call s:FixShellFt()
-  au BufRead,BufNewFile *rc          call s:FixShellFt()
-  au BufRead,BufNewFile *rc_*        call s:FixShellFt()
+  au BufRead,BufNewFile *env      call s:FixShellFt()
+  au BufRead,BufNewFile *.env.*   call s:FixShellFt()
+  au BufRead,BufNewFile *profile  call s:FixShellFt()
+  au BufRead,BufNewFile *rc       call s:FixShellFt()
+  au BufRead,BufNewFile *rc_*     call s:FixShellFt()
 
   au FileType gitcommit setlocal spell
   au FileType latex     setlocal spell
