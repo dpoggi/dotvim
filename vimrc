@@ -3,7 +3,9 @@
 ""
 
 set nocompatible
+
 nnoremap Q <nop>
+
 let g:pathogen_disabled = []
 let g:airline_extensions = []
 
@@ -222,11 +224,10 @@ call extend(g:unite_source_rec_find_args, [
 \   '-o', '-type', 'l',
 \ ])
 
-"" Delegate to pt, ag, or ack for searches if available
-if executable('pt')
-  let g:unite_source_grep_command = 'pt'
-  let g:unite_source_grep_default_opts = '-i -e --nogroup --nocolor'
-                                      \ .' --global-gitignore --home-ptignore'
+"" Delegate to ripgrep, ag, pt, or ack for searches if available
+if executable('rg')
+  let g:unite_source_grep_command = 'rg'
+  let g:unite_source_grep_default_opts = '--no-heading --ignore --smart-case --vimgrep'
   let g:unite_source_grep_recursive_opt = ''
 elseif executable('ag')
   let g:unite_source_grep_command = 'ag'
@@ -234,6 +235,11 @@ elseif executable('ag')
                                      \ . ' --ignore ''.git'''
                                      \ . ' --ignore ''.svn'''
                                      \ . ' --ignore ''.hg'''
+  let g:unite_source_grep_recursive_opt = ''
+elseif executable('pt')
+  let g:unite_source_grep_command = 'pt'
+  let g:unite_source_grep_default_opts = '-i -e --nogroup --nocolor'
+                                      \ .' --global-gitignore --home-ptignore'
   let g:unite_source_grep_recursive_opt = ''
 elseif executable('ack') || executable('ack-grep')
   if executable('ack')
