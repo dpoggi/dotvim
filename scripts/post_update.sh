@@ -148,6 +148,23 @@ migrate_thrift() {
   (cd "${VIM_DIR}" && git submodule update --init)
 }
 
+fix_base16_if_needed() {
+  local base16_dir="${VIM_DIR}/bundle/base16"
+
+  local revision
+  if ! revision="$(cd "${base16_dir}" && git rev-parse --verify HEAD)" || [[ "${revision}" != "2073e2dd9f"* ]]; then
+    return
+  fi
+
+  grep -Flr 'a:attr' "${base16_dir}/colors" \
+    | xargs sed -i '' -e 's/a:attr/l:attr/g'
+  grep -Flr 'a:guisp' "${base16_dir}/colors" \
+    | xargs sed -i '' -e 's/a:guisp/l:guisp/g'
+
+  grep -Flr ', l:attr, l:guisp)' "${base16_dir}/colors" \
+    | xargs sed -i '' -e 's/, l:attr, l:guisp)/, a:attr, a:guisp)/g'
+}
+
 regenerate_helptags() {
   find "${VIM_DIR}/bundle" -mindepth 3 -maxdepth 3 -type f -name 'tags' -delete
 
@@ -183,6 +200,7 @@ main() {
   done
 
   migrate_thrift
+  fix_base16_if_needed
 
   regenerate_helptags
 }
