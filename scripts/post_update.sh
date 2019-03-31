@@ -10,6 +10,7 @@ readonly VIM_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 readonly EFFECTIVE_HOME="$(cd "${VIM_DIR}/.." && pwd -P)"
 readonly GIT_MODULES="${VIM_DIR}/.gitmodules"
 readonly GIT_CONFIG="${VIM_DIR}/.git/config"
+readonly OS_NAME="$(uname -s)"
 readonly FINGERPRINT_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/dcp/brew_codesign.sha1"
 
 __logfln() {
@@ -59,7 +60,7 @@ build_vimproc() {
 
   # Don't try to build vimproc if we're on macOS without Xcode or CLI tools
   # installed (/usr/bin/make will be present but trigger a GUI installer)
-  if [[ "$(uname -s)" = "Darwin" ]] && ! __is_xcode_installed; then
+  if [[ "${OS_NAME}" = "Darwin" ]] && ! __is_xcode_installed; then
     return
   fi
 
@@ -156,13 +157,18 @@ fix_base16_if_needed() {
     return
   fi
 
+  local sed_command=( "sed" "-i" )
+  if [[ "${OS_NAME}" = "Darwin" ]]; then
+    sed_command+=( "" )
+  fi
+
   grep -Flr 'a:attr' "${base16_dir}/colors" \
-    | xargs sed -i '' -e 's/a:attr/l:attr/g'
+    | xargs "${sed_command[@]}" -e 's/a:attr/l:attr/g'
   grep -Flr 'a:guisp' "${base16_dir}/colors" \
-    | xargs sed -i '' -e 's/a:guisp/l:guisp/g'
+    | xargs "${sed_command[@]}" -e 's/a:guisp/l:guisp/g'
 
   grep -Flr ', l:attr, l:guisp)' "${base16_dir}/colors" \
-    | xargs sed -i '' -e 's/, l:attr, l:guisp)/, a:attr, a:guisp)/g'
+    | xargs "${sed_command[@]}" -e 's/, l:attr, l:guisp)/, a:attr, a:guisp)/g'
 }
 
 regenerate_helptags() {
