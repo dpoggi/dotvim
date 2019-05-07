@@ -8,25 +8,25 @@ set -eo pipefail
 
 readonly VIM_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 
+infofln() { __logfln " INFO" "\033[0;34m" "$@"; }
+errorfln() { __logfln "ERROR" "\033[0;31m" "$@"; }
+
 __logfln() {
   local level="$1"; shift
   local level_color="$1"; shift
   local format="$1"; shift
   printf \
     "\033[2;39;49m%s ${level_color}${level}\033[2;39;49m : \033[0m${format}\\n" \
-    "$(date "+%Y-%m-%d %H:%M:%S")" \
-    "$@"
+    "$(date "+%Y-%m-%d %H:%M:%S")" "$@"
 }
-
-infofln() { __logfln " INFO" "\033[0;34m" "$@"; }
-errorfln() { __logfln "ERROR" "\033[0;31m" "$@"; }
 
 find_submodules() {
-  local path="$1"; shift
-  find "${path}" -mindepth 1 -maxdepth 1 -type d "$@"
+  git -C "$1" submodule status 2>/dev/null | awk '$2 ~ /^bundle\// { print $2 }'
 }
 
-git_symbolic_ref() { git -C "$1" symbolic-ref --quiet "refs/remotes/origin/HEAD"; }
+git_symbolic_ref() {
+  git -C "$1" symbolic-ref --quiet "refs/remotes/origin/HEAD"
+}
 
 update_submodule() {
   local dir name symbolic_ref
@@ -45,7 +45,7 @@ update_submodule() {
   infofln "Updating submodules for %s, if any..." "${name}"
   git -C "${dir}" submodule --quiet update --init --recursive
 
-  printf "\\n"
+  printf '\n'
 }
 
 main() {
@@ -54,14 +54,14 @@ main() {
   infofln "Fetching origin recursively..."
   git -C "${VIM_DIR}" fetch --quiet --recurse-submodules origin 2>/dev/null
 
-  printf "\\n"
+  printf '\n'
 
-  while IFS='' read -d '' -r submodule_dir; do
-    if ! update_submodule "${submodule_dir}" 2>/dev/null; then
-      errorfln "Unable to establish remote branch for %s, skipping..." "${submodule_name}"
+  while IFS='' read -r submodule_dir; do
+    if ! update_submodule "${VIM_DIR}/${submodule_dir}" 2>/dev/null; then
+      errorfln "Unable to establish remote branch for %s, skipping..." "${submodule_dir}"
     fi
   done < <(
-    find_submodules "${VIM_DIR}/bundle" -print0 2>/dev/null
+    find_submodules "${VIM_DIR}" 2>/dev/null
   )
 }
 
