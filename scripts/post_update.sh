@@ -173,9 +173,9 @@ regenerate_helptags() {
     -name 'tags' \
     -delete
 
-  # FIXME: This is a terrible hack to support bundling the whole distribution,
-  # but I think I just missed the correct way to boot up Vim with a different
-  # runtime path.
+  # FIXME: This is a terrible hack to support bundling the whole distribution.
+  # Figuring out what VIMRUNTIME should be to do this in a sane way appears
+  # non-trivial, but I could be wrong.
   HOME="$(dirname "${VIM_DIR}")" \
     vim \
     -c 'call pathogen#helptags()' \
