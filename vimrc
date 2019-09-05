@@ -129,7 +129,7 @@ if has('mouse')
 endif
 
 "" Hopefully this makes Cygwin/MSYS/MinGW work?
-if g:dcp_os == 'Cygwin'
+if g:dcp_os ==# 'Cygwin'
   set shellslash
 endif
 
