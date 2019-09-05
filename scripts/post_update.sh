@@ -7,71 +7,88 @@
 set -eo pipefail
 
 readonly VIM_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
-readonly EFFECTIVE_HOME="$(cd "${VIM_DIR}/.." && pwd -P)"
 readonly GIT_MODULES="${VIM_DIR}/.gitmodules"
 readonly GIT_CONFIG="${VIM_DIR}/.git/config"
-readonly OS_NAME="$(uname -s)"
-readonly FINGERPRINT_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/dcp/brew_codesign.sha1"
 
 __logfln() {
-  local lvl="$1"; shift
-  local lvl_clr="$1"; shift
-  local fmt="$1"; shift
-
-  printf "\033[2;39;49m%s ${lvl_clr}${lvl}\033[2;39;49m : \033[0m${fmt}\n" \
-         "$(date "+%Y-%m-%d %H:%M:%S")" \
-         "$@"
+  local level="$1"; shift
+  local level_color="$1"; shift
+  local format="$1"; shift
+  printf \
+    "\033[2;39;49m%s\033[0m ${level_color}${level}\033[0;35;49m %s\033[2;39m :\033[0m ${format}\\n" \
+    "$(date '+%F %T')" \
+    "$$" \
+    "$@"
 }
 
 infofln() { __logfln " INFO" "\033[0;34m" "$@"; }
-errorfln() { __logfln "ERROR" "\033[0;31m" "$@"; }
+warnfln() { __logfln " WARN" "\033[0;33m" "$@"; }
+errorfln() { __logfln "ERROR" "\033[1;31m" "$@"; }
 
-__qfgrep() { grep -qF "$@" 2>/dev/null; }
+qfgrep() {
+  # FIXME: This is a function because we don't do existence checks before
+  # searching files and need 2>/dev/null everywhere.
+  grep -F -q "$@" 2>/dev/null
+}
 
-__is_xcode_installed() { xcrun xcode-select --print-path >/dev/null 2>&1; }
+is_cmd() {
+  command -v "$1" >/dev/null
+}
 
-assert_deps() {
-  local dep
-  for dep in "$@"; do
-    if ! hash "${dep}" 2>/dev/null; then
-      errorfln "${dep} not found"
+check_cmds() {
+  while (($# > 0)); do
+    if ! is_cmd "$1"; then
+      errorfln '%s not found' "$1"
       return 1
     fi
+    shift
   done
 }
 
-__codesign() {
-  if [[ ! -r "${FINGERPRINT_PATH}" ]]; then
+rebuild_vimproc() {
+  # Don't try to build vimproc if it's being ignored in ~/.vim/plugins.local
+  if qfgrep 'vimproc' "${VIM_DIR}/plugins.local"; then
     return
   fi
 
-  local fingerprint
-  fingerprint="$(<"${FINGERPRINT_PATH}")"
-
-  infofln "Code signing vimproc..."
-  xcrun codesign --force --sign "${fingerprint}" "$1" || :
-}
-
-build_vimproc() {
-  # Don't try to build vimproc if it's being ignored in ~/.vim/plugins.local
-  if __qfgrep 'vimproc' "${VIM_DIR}/plugins.local"; then
-    return
+  local darwin
+  if [[ "$(uname -s)" = "Darwin" ]]; then
+    darwin="true"
+  else
+    darwin="false"
   fi
 
   # Don't try to build vimproc if we're on macOS without Xcode or CLI tools
   # installed (/usr/bin/make will be present but trigger a GUI installer)
-  if [[ "${OS_NAME}" = "Darwin" ]] && ! __is_xcode_installed; then
+  if "${darwin}" && ! xcode-select --print-path >/dev/null 2>&1; then
     return
   fi
 
-  infofln "(Re)building vimproc..."
-
-  HOME="${EFFECTIVE_HOME}" vim -c 'silent VimProcInstall' -c 'qall!'
-
-  # If possible, attempt to codesign for macOS Mojave.
-  if [[ -r "${VIM_DIR}/bundle/vimproc/lib/vimproc_mac.so" ]]; then
-    __codesign "${VIM_DIR}/bundle/vimproc/lib/vimproc_mac.so"
+  local -a make_cmd
+  if "${darwin}"; then
+    make_cmd=(xcrun --sdk macosx make)
+  else
+    if is_cmd gmake; then
+      make_cmd=(gmake)
+    elif is_cmd make; then
+      make_cmd=(make)
+    elif is_cmd nmake; then
+      make_cmd=(nmake -f "make_msvc.mak" nodebug=1)
+    fi
   fi
+
+  if ((${#make_cmd[@]} == 0)); then
+    warnfln 'make not found, unable to rebuild vimproc'
+    return
+  fi
+
+  infofln 'Rebuilding vimproc...'
+
+  (
+    cd "${VIM_DIR}/bundle/vimproc"
+    "${make_cmd[@]}" clean
+    "${make_cmd[@]}"
+  )
 }
 
 remove_dir() {
@@ -94,14 +111,14 @@ scrub_file() {
   local plugin_bundle="$3"
   local plugin_repo="$4"
 
-  if ! __qfgrep "bundle/${plugin_bundle}" "${file_path}" \
-     && ! __qfgrep "/${plugin_repo}.git" "${file_path}"; then
+  if ! qfgrep "bundle/${plugin_bundle}" "${file_path}" &&
+     ! qfgrep "/${plugin_repo}.git" "${file_path}"; then
     return
   fi
 
   infofln "Scrubbing %s from %s..." "${plugin_repo}" "${file_description}"
 
-  perl -i -ln \
+  perl -ln -i \
        -e "print unless (/bundle\\/${plugin_bundle}/ || /\\/${plugin_repo}\\.git/)" \
        "${file_path}"
 }
@@ -130,7 +147,7 @@ remove_submodule() {
 }
 
 migrate_thrift() {
-  if ! __qfgrep 'sprsquish' "${GIT_CONFIG}"; then
+  if ! qfgrep 'sprsquish' "${GIT_CONFIG}"; then
     return
   fi
 
@@ -142,48 +159,35 @@ migrate_thrift() {
              "orphaned submodule" \
              "thrift.vim"
 
-  perl -i -pn \
-       -e 's/sprsquish/solarnz/' \
-       "${GIT_CONFIG}"
+  perl -pn -i -e 's/sprsquish/solarnz/' "${GIT_CONFIG}"
 
-  (cd "${VIM_DIR}" && git submodule update --init)
-}
-
-fix_base16_if_needed() {
-  local base16_dir="${VIM_DIR}/bundle/base16"
-
-  local revision
-  if ! revision="$(cd "${base16_dir}" && git rev-parse --verify HEAD)" || [[ "${revision}" != "2073e2dd9f"* ]]; then
-    return
-  fi
-
-  local sed_command=( "sed" "-i" )
-  if [[ "${OS_NAME}" = "Darwin" ]]; then
-    sed_command+=( "" )
-  fi
-
-  grep -Flr 'a:attr' "${base16_dir}/colors" \
-    | xargs "${sed_command[@]}" -e 's/a:attr/l:attr/g'
-  grep -Flr 'a:guisp' "${base16_dir}/colors" \
-    | xargs "${sed_command[@]}" -e 's/a:guisp/l:guisp/g'
-
-  grep -Flr ', l:attr, l:guisp)' "${base16_dir}/colors" \
-    | xargs "${sed_command[@]}" -e 's/, l:attr, l:guisp)/, a:attr, a:guisp)/g'
+  git -C "${VIM_DIR}" submodule update --init
 }
 
 regenerate_helptags() {
-  find "${VIM_DIR}/bundle" -mindepth 3 -maxdepth 3 -type f -name 'tags' -delete
+  find \
+    "${VIM_DIR}/bundle" \
+    -mindepth 3 \
+    -maxdepth 3 \
+    -type f \
+    -name 'tags' \
+    -delete
 
-  HOME="${EFFECTIVE_HOME}" vim -c 'call pathogen#helptags()' -c 'qall!'
+  # FIXME: This is a terrible hack to support bundling the whole distribution,
+  # but I think I just missed the correct way to boot up Vim with a different
+  # runtime path.
+  HOME="$(dirname "${VIM_DIR}")" \
+    vim \
+    -c 'call pathogen#helptags()' \
+    -c 'qall!'
 }
 
 main() {
-  assert_deps vim perl
+  check_cmds grep perl vim
 
-  build_vimproc
+  rebuild_vimproc
 
   local plugin bundle repo
-
   for plugin in \
     "batsh:vim-Batsh"                 \
     "CamelCaseMotion:CamelCaseMotion" \
@@ -202,11 +206,11 @@ main() {
     "ts:tsuquyomi"
   do
     IFS=':' read -r bundle repo <<< "${plugin}"
+
     remove_submodule "${bundle}" "${repo}"
   done
 
   migrate_thrift
-  fix_base16_if_needed
 
   regenerate_helptags
 }

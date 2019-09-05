@@ -8,17 +8,19 @@ set -eo pipefail
 
 readonly VIM_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 
-infofln() { __logfln " INFO" "\033[0;34m" "$@"; }
-errorfln() { __logfln "ERROR" "\033[0;31m" "$@"; }
-
 __logfln() {
   local level="$1"; shift
   local level_color="$1"; shift
   local format="$1"; shift
   printf \
-    "\033[2;39;49m%s ${level_color}${level}\033[2;39;49m : \033[0m${format}\\n" \
-    "$(date "+%Y-%m-%d %H:%M:%S")" "$@"
+    "\033[2;39;49m%s\033[0m ${level_color}${level}\033[0;35;49m %s\033[2;39m :\033[0m ${format}\\n" \
+    "$(date '+%F %T')" \
+    "$$" \
+    "$@"
 }
+
+infofln() { __logfln " INFO" "\033[0;34m" "$@"; }
+errorfln() { __logfln "ERROR" "\033[1;31m" "$@"; }
 
 find_submodules() {
   git -C "$1" submodule status 2>/dev/null | awk '$2 ~ /^bundle\// { print $2 }'
