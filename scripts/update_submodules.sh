@@ -27,7 +27,7 @@ find_submodules() {
 }
 
 git_symbolic_ref() {
-  git -C "$1" symbolic-ref --quiet "refs/remotes/origin/HEAD"
+  git -C "$1" symbolic-ref --quiet refs/remotes/origin/HEAD 2>/dev/null
 }
 
 update_submodule() {
@@ -42,10 +42,10 @@ update_submodule() {
   fi
 
   infofln "Attempting to checkout %s for %s..." "${symbolic_ref}" "${name}"
-  git -C "${dir}" checkout --quiet --force "${symbolic_ref}"
+  git -C "${dir}" checkout --force "${symbolic_ref}"
 
   infofln "Updating submodules for %s, if any..." "${name}"
-  git -C "${dir}" submodule --quiet update --init --recursive
+  git -C "${dir}" submodule update --init --recursive
 
   printf '\n'
 }
@@ -54,7 +54,7 @@ main() {
   local submodule_dir
 
   infofln "Fetching origin recursively..."
-  git -C "${VIM_DIR}" fetch --quiet --recurse-submodules origin 2>/dev/null
+  git -C "${VIM_DIR}" fetch --recurse-submodules origin
 
   printf '\n'
 
