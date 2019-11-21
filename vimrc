@@ -478,7 +478,8 @@ if has('autocmd')
   au FileType go call TabsLocal(4)
 
   au FileType           bindzone,gitconfig,make,sudoers   call TabsLocal(8)
-  au BufRead,BufNewFile *.pbxproj,*.plist,postgresql.conf call TabsLocal(8)
+  au BufRead,BufNewFile *.entitlements,*.pbxproj,*.plist  call TabsLocal(8)
+  au BufRead,BufNewFile postgresql.conf                   call TabsLocal(8)
 
   "" Comment strings for specific filetypes
   au FileType c,cpp,cs,java,kotlin,rust  let &l:commentstring = '// %s'
