@@ -145,6 +145,3 @@
 [submodule "bundle/xcconfig"]
 	path = bundle/xcconfig
 	url = git://github.com/keith/xcconfig.vim.git
-[submodule "bundle/swig"]
-	path = bundle/swig
-	url = git://github.com/SpaceVim/vim-swig.git

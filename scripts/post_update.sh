@@ -202,6 +202,7 @@ main() {
     "mako:mako.vim"                   \
     "nginx:nginx.vim"                 \
     "powerline:powerline"             \
+    "swig:vim-swig"                   \
     "systemverilog:systemverilog.vim" \
     "ts:tsuquyomi"
   do
