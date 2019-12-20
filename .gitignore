@@ -55,6 +55,7 @@
 !/bundle/stylus
 !/bundle/surround
 !/bundle/swift
+!/bundle/swig
 !/bundle/syntastic
 !/bundle/systemd
 !/bundle/thrift
