@@ -370,11 +370,12 @@ if has('autocmd')
   au BufRead,BufNewFile *rc       call s:FixShellFt()
   au BufRead,BufNewFile *rc_*     call s:FixShellFt()
 
-  au FileType gitcommit setlocal spell
   au FileType latex     setlocal spell
   au FileType markdown  setlocal spell
   au FileType plaintex  setlocal spell
   au FileType text      setlocal spell
+
+  au FileType gitcommit setlocal nospell
 
   au BufReadPre *.nfo setlocal fileencodings=cp437,utf-8
 
