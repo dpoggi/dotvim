@@ -37,9 +37,6 @@ endif
 function! s:Chomp(str)
   return substitute(a:str, '\n\+$', '', '')
 endfunction
-function! s:Strip(str)
-	return substitute(a:str, '^\s*\(.\{-}\)\s*$', '\1', '')
-endfunction
 
 "" OS detection
 if has('win32unix')

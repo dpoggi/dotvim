@@ -59,7 +59,7 @@ function! s:Chomp(str)
 endfunction
 
 function! s:Strip(str)
-	return substitute(a:str, '^\s*\(.\{-}\)\s*$', '\1', '')
+  return substitute(a:str, '^\s*\(.\{-}\)\s*$', '\1', '')
 endfunction
 
 
