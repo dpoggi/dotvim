@@ -93,7 +93,7 @@ if has('mouse')
 endif
 
 "" Hopefully this makes Cygwin work
-if g:dcp_os == 'Cygwin'
+if g:dcp_os ==# 'Cygwin'
   set shellslash
 endif
 
@@ -156,12 +156,14 @@ endfunction
 "" Filetype corrections
 if has('autocmd')
   au BufRead,BufNewFile *.h             set filetype=c
+  au BufRead,BufNewFile *.pch           set filetype=c
   au BufRead,BufNewFile *.mod           set filetype=dosini
   au BufRead,BufNewFile *.gradle        set filetype=groovy
   au BufRead,BufNewFile *.hjs           set filetype=handlebars
   au BufRead,BufNewFile jquery.*.js     set filetype=javascript syntax=jquery
   au BufRead,BufNewFile *.jquery.js     set filetype=javascript syntax=jquery
   au BufRead,BufNewFile *.json          set filetype=javascript
+  au BufRead,BufNewFile *.vmx           set filetype=jproperties
   au BufRead,BufNewFile .spacemacs      set filetype=lisp
   au BufRead,BufNewFile *.mako          set filetype=mako
   au BufRead,BufNewFile *.mm            set filetype=objcpp
@@ -186,11 +188,12 @@ if has('autocmd')
   au BufRead,BufNewFile *rc       call s:FixShellFt()
   au BufRead,BufNewFile *rc_*     call s:FixShellFt()
 
-  au FileType gitcommit setlocal spell
   au FileType latex     setlocal spell
   au FileType markdown  setlocal spell
   au FileType plaintex  setlocal spell
   au FileType text      setlocal spell
+
+  au FileType gitcommit setlocal nospell
 
   au BufReadPre *.nfo setlocal fileencodings=cp437,utf-8
 endif
@@ -255,13 +258,14 @@ if has('autocmd')
   ""
   "" Indents for specific filetypes
   ""
-  au FileType apiblueprint,cpp,d,groovy,java,kotlin,lua,objc  call SpacesLocal(4)
-  au FileType perl,php,python,rust,scala,swift,typescript     call SpacesLocal(4)
+  au FileType apiblueprint,c,cpp,d,groovy,java,kotlin,lua,objc,objcpp call SpacesLocal(4)
+  au FileType perl,php,python,rust,scala,swift,typescript             call SpacesLocal(4)
 
   au FileType go call TabsLocal(4)
 
-  au FileType           bindzone,c,gitconfig,make,sudoers call TabsLocal(8)
-  au BufRead,BufNewFile *.pbxproj,*.plist,postgresql.conf call TabsLocal(8)
+  au FileType           bindzone,gitconfig,make,sudoers   call TabsLocal(8)
+  au BufRead,BufNewFile *.entitlements,*.pbxproj,*.plist  call TabsLocal(8)
+  au BufRead,BufNewFile postgresql.conf                   call TabsLocal(8)
 
   "" Comment strings for specific filetypes
   au FileType c,cpp,cs,java,kotlin,rust  let &l:commentstring = '//%s'
