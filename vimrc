@@ -505,12 +505,10 @@ function! s:MapLeftArrow()
 endfunction
 
 function! s:MapRightArrow(spaces)
-  if a:spaces ==# 0
-    inoremap <C-l> ->
-  elseif a:spaces ==# 1
-    inoremap <C-l> <space>->
-  elseif a:spaces ># 1
+  if a:spaces
     inoremap <C-l> <space>-><space>
+  else
+    inoremap <C-l> ->
   endif
 endfunction
 
@@ -811,14 +809,12 @@ if has('autocmd')
   au FileType go call s:MapLeftArrow()
 
   au FileType c     call s:MapRightArrow(0)
+  au FileType cpp   call s:MapRightArrow(0)
   au FileType objc  call s:MapRightArrow(0)
 
-  au FileType coffee call s:MapRightArrow(1)
-
-  au FileType cpp   call s:MapRightArrow(2)
-  au FileType java  call s:MapRightArrow(2)
-  au FileType rust  call s:MapRightArrow(2)
-  au FileType swift call s:MapRightArrow(2)
+  au FileType java  call s:MapRightArrow(1)
+  au FileType rust  call s:MapRightArrow(1)
+  au FileType swift call s:MapRightArrow(1)
 endif
 
 
