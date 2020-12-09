@@ -556,10 +556,14 @@ endfunction
 function! s:FixCommentString()
   if &l:commentstring ==# '# %s'
     let &l:commentstring = '#%s'
-  elseif &l:commentstring ==# '// %s'
-    let &l:commentstring = '//%s'
-  elseif (&l:commentstring ==# '/* %s */' || &l:commentstring ==# '/*%s*/') && &l:filetype !=# 'css'
-    let &l:commentstring = '//%s'
+  elseif &l:commentstring ==# '// %s' || &l:commentstring ==# '/* %s */' || &l:commentstring ==# '/*%s*/'
+    if &l:filetype !=# 'css'
+      let &l:commentstring = '//%s'
+    endif
+  elseif &l:commentstring ==# '-- %s'
+    let &l:commentstring = '--%s'
+  elseif &l:commentstring ==# '" %s'
+    let &l:commentstring = '"%s'
   endif
 
   let b:commentary_format = &l:commentstring
