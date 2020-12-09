@@ -483,12 +483,15 @@ if has('autocmd')
   au BufRead,BufNewFile *.entitlements,*.pbxproj,*.plist  call TabsLocal(8)
   au BufRead,BufNewFile postgresql.conf                   call TabsLocal(8)
 
-  "" Comment strings for specific filetypes
-  au FileType c,cpp,cs,java,kotlin,rust  let &l:commentstring = '//%s'
-
   "" Column guides for specific filetypes
   au FileType cpp,rust  call SetColGuide(100)
   au FileType cs,java   call SetColGuide(120)
+
+  "" Comment strings for SQL
+  au FileType sql let &l:commentstring = '--%s'
+
+  "" Make commentary behave
+  au BufRead,BufNewFile * call s:FixCommentString()
 endif
 
 
@@ -548,6 +551,18 @@ function! ColGuide()
     let g:col_guide = matchadd('Error', '\%>' . l:width . 'v.\+')
     return 1
   endtry
+endfunction
+
+function! s:FixCommentString()
+  if &l:commentstring ==# '# %s'
+    let &l:commentstring = '#%s'
+  elseif &l:commentstring ==# '// %s'
+    let &l:commentstring = '//%s'
+  elseif (&l:commentstring ==# '/* %s */' || &l:commentstring ==# '/*%s*/') && &l:filetype !=# 'css'
+    let &l:commentstring = '//%s'
+  endif
+
+  let b:commentary_format = &l:commentstring
 endfunction
 
 "" This is completely superfluous, but it's how I'm doing it for the moment.
