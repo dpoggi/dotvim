@@ -553,7 +553,7 @@ function! ColGuide()
   endtry
 endfunction
 
-function! s:FixCommentString()
+function! FixCommentString()
   if &l:commentstring ==# '# %s'
     let &l:commentstring = '#%s'
   elseif &l:commentstring ==# '// %s' || &l:commentstring ==# '/* %s */' || &l:commentstring ==# '/*%s*/'
