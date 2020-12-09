@@ -491,7 +491,7 @@ if has('autocmd')
   au FileType sql let &l:commentstring = '--%s'
 
   "" Make commentary behave
-  au BufRead,BufNewFile * call s:FixCommentString()
+  au BufRead,BufNewFile * call FixCommentString()
 endif
 
 
