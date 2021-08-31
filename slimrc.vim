@@ -35,7 +35,7 @@ endif
 
 "" String manipulation
 function! s:Chomp(str)
-  return substitute(a:str, '\n\+$', '', '')
+  return substitute(a:str, '\m\C\n\+$', '', 'g')
 endfunction
 
 "" OS detection
@@ -289,7 +289,7 @@ endfunction
 
 function! PromptSetColGuide()
   call inputsave()
-  let l:width = substitute(input('Column guide width: '), '[^0-9]', '', 'g')
+  let l:width = substitute(input('Column guide width: '), '\m\C\D', '', 'g')
   call inputrestore()
   redraw
 
@@ -359,6 +359,10 @@ function! s:GetBufferText()
   return join(getline(1, '$'), "\n")
 endfunction
 
+function! s:GetBufferPath()
+  return expand('%:p')
+endfunction
+
 if g:dcp_os ==# 'Darwin'
   let g:pasteboard_cmd = '/usr/bin/pbcopy'
 elseif executable('xsel')
@@ -384,7 +388,7 @@ function! PasteboardCopyBuffer()
 endfunction
 
 function! PasteboardCopyPath()
-  call s:PasteboardCopyText(expand('%:p'))
+  call s:PasteboardCopyText(s:GetBufferPath())
 endfunction
 
 ""

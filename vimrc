@@ -51,15 +51,15 @@ let g:mapleader = ','
 
 ""
 "" org.apache.commons.lang3.StringUtils
-"" ... lol
+"" ... lol. These chomp/strip _each line_ of their input.
 ""
 
 function! s:Chomp(str)
-  return substitute(a:str, '\n\+$', '', '')
+  return substitute(a:str, '\m\C\n\+$', '', 'g')
 endfunction
 
 function! s:Strip(str)
-  return substitute(a:str, '^\s*\(.\{-}\)\s*$', '\1', '')
+  return substitute(a:str, '\m\C^\s*\(.\{-}\)\s*$', '\1', 'g')
 endfunction
 
 
@@ -523,7 +523,7 @@ endfunction
 
 function! PromptSetColGuide()
   call inputsave()
-  let l:width = substitute(input('Column guide width: '), '[^0-9]', '', 'g')
+  let l:width = substitute(input('Column guide width: '), '\m\C\D', '', 'g')
   call inputrestore()
   redraw
 
@@ -618,6 +618,10 @@ function! s:GetBufferText()
   return join(getline(1, '$'), "\n")
 endfunction
 
+function! s:GetBufferPath()
+  return expand('%:p')
+endfunction
+
 function! s:SendTextToSlack(text)
   if !executable('slackcat')
     echoerr 'Couldn''t find slackcat.'
@@ -674,7 +678,7 @@ function! PasteboardCopyBuffer()
 endfunction
 
 function! PasteboardCopyPath()
-  call s:PasteboardCopyText(expand('%:p'))
+  call s:PasteboardCopyText(s:GetBufferPath())
 endfunction
 
 if g:dcp_os ==# 'Darwin'
