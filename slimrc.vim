@@ -14,21 +14,21 @@ let g:mapleader = ','
 map <space> <leader>
 
 "" Backup, swap, and undo directories
-if isdirectory(expand('~/.vim/backup'))
+if isdirectory(expand('~/.cache/vim/backup'))
   set backup
-  set backupdir=~/.vim/backup//
+  set backupdir=~/.cache/vim/backup//
 else
   set nobackup
 endif
-if isdirectory(expand('~/.vim/swap'))
+if isdirectory(expand('~/.cache/vim/swap'))
   set swapfile
-  set directory=~/.vim/swap//
+  set directory=~/.cache/vim/swap//
 else
   set noswapfile
 endif
-if isdirectory(expand('~/.vim/undo'))
+if isdirectory(expand('~/.cache/vim/undo'))
   set undofile
-  set undodir=~/.vim/undo//
+  set undodir=~/.cache/vim/undo//
 else
   set noundofile
 endif
@@ -108,9 +108,6 @@ set wildignore+=.keep,.gitkeep,.hgkeep
 "" Temporary files
 set wildignore+=tmp/**
 set wildignore+=*.tmp
-"" ~/.vim
-set wildignore+=backup/**
-set wildignore+=undo/**
 "" Native objects/debug symbols/binaries
 set wildignore+=*.o,*.obj,*.dSYM,*.exe,*.app,*.ipa
 "" Java
@@ -198,13 +195,8 @@ endif
 "" Light background? In my Vim?
 set background=dark
 
-"" Normally we want Slate, but if we're at a basic TTY, Solarized looks
-"" great, even though it doesn't look like Solarized.
-if $TERM =~? '\m\c^linux' || $TERM =~? '\m\c^screen$' || $TERM =~? '\m\c^sun'
-  colorscheme solarized
-else
-  colorscheme slate
-endif
+"" Most Vim installations should have slate, I hope
+colorscheme slate
 
 "" Enable syntax highlighting
 syntax on
