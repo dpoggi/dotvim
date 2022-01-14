@@ -38,6 +38,7 @@
 !/bundle/javascript
 !/bundle/jinja2
 !/bundle/jquery
+!/bundle/kitty
 !/bundle/kotlin
 !/bundle/less
 !/bundle/markdown

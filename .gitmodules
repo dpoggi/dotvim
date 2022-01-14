@@ -145,3 +145,6 @@
 [submodule "bundle/xcconfig"]
 	path = bundle/xcconfig
 	url = git://github.com/keith/xcconfig.vim.git
+[submodule "bundle/kitty"]
+	path = bundle/kitty
+	url = git://github.com/fladson/vim-kitty.git
