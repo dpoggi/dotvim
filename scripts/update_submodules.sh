@@ -36,7 +36,11 @@ update_submodule() {
   dir="$1"
   name="$(basename "${dir}")"
 
-  symbolic_ref="$(git_symbolic_ref "${dir}")"
+  case "${name}" in
+    toml) symbolic_ref="refs/remotes/origin/main" ;;
+    *)    symbolic_ref="$(git_symbolic_ref "${dir}")"
+  esac
+
   if [[ -z "${symbolic_ref}" ]]; then
     return 1
   fi
