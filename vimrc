@@ -785,10 +785,10 @@ nmap <silent> <leader>wR :<C-u>wincmd R<cr>
 nmap <silent> <leader>ww :<C-u>wincmd w<cr>
 
 "" Do the splits!
-nmap <silent> <leader>wv :<C-u>call SendSplitTo('right', 1)<cr>
-nmap <silent> <leader>wV :<C-u>belowright vsplit<cr>
-nmap <silent> <leader>ws :<C-u>call SendSplitTo('bottom', 1)<cr>
-nmap <silent> <leader>wS :<C-u>belowright split<cr>
+nmap <silent> <leader>wv :<C-u>belowright vsplit<cr>
+nmap <silent> <leader>wV :<C-u>call SendSplitTo('right', 1)<cr>
+nmap <silent> <leader>ws :<C-u>belowright split<cr>
+nmap <silent> <leader>wS :<C-u>call SendSplitTo('below', 1)<cr>
 
 "" Window movement
 nmap <silent> <leader>wh :<C-u>wincmd h<cr>
