@@ -338,6 +338,7 @@ if has('autocmd')
   au BufRead,BufNewFile *.h          set filetype=c
   au BufRead,BufNewFile *.pch        set filetype=c
   au BufRead,BufNewFile *.mod        set filetype=dosini
+  au BufRead,BufNewFile go.mod       set filetype=gomod
   au BufRead,BufNewFile *.gradle     set filetype=groovy
   au BufRead,BufNewFile *.hjs        set filetype=handlebars
   au BufRead,BufNewFile jquery.*.js  set filetype=javascript syntax=jquery
