@@ -756,8 +756,10 @@ nmap <leader>feR :<C-u>source ~/.vimrc<cr>
 
 "" <3 make
 nmap <silent> <leader>m :<C-u>make<cr>
-nmap <silent> <leader>md :<C-u>make debug<cr>
 nmap <silent> <leader>mc :<C-u>make clean<cr>
+nmap <silent> <leader>md :<C-u>make debug<cr>
+nmap <silent> <leader>mr :<C-u>make release<cr>
+nmap <silent> <leader>mu :<C-u>make upload<cr>
 
 "" Location list management
 nmap <silent> <leader>ll :<C-u>call SyntasticToggleErrors()<cr>
