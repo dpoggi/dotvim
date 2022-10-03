@@ -727,6 +727,9 @@ cnoremap %% <C-r>=fnameescape(expand('%:h')).'/'<cr>
 "" Re-indent the entire file
 nnoremap <leader>I mmgg=G`m
 
+"" Toggle paste mode
+nmap <silent> <leader>xp :<C-u>set paste!<cr>
+
 "" Send visual mode selection to slackcat
 xmap <silent> <leader>xs :<C-u>call SendSelectionToSlack()<cr>
 "" Send whole buffer to slackcat

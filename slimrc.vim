@@ -417,6 +417,9 @@ cnoremap %% <C-r>=fnameescape(expand('%:h')).'/'<cr>
 "" Re-indent the entire file
 nnoremap <leader>I mmgg=G`m
 
+"" Toggle paste mode
+nmap <silent> <leader>xp :<C-u>set paste!<cr>
+
 "" Send visual mode selection to pasteboard
 xmap <silent> <leader>xy :<C-u>call PasteboardCopySelection()<cr>
 "" Send whole buffer to pasteboard
