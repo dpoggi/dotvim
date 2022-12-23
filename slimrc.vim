@@ -157,7 +157,6 @@ if has('autocmd')
   au BufRead,BufNewFile *.hjs           set filetype=handlebars
   au BufRead,BufNewFile jquery.*.js     set filetype=javascript syntax=jquery
   au BufRead,BufNewFile *.jquery.js     set filetype=javascript syntax=jquery
-  au BufRead,BufNewFile *.json          set filetype=javascript
   au BufRead,BufNewFile *.vmx           set filetype=jproperties
   au BufRead,BufNewFile .spacemacs      set filetype=lisp
   au BufRead,BufNewFile *.mako          set filetype=mako
