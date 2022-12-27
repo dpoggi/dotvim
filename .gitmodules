@@ -148,3 +148,6 @@
 [submodule "bundle/kitty"]
 	path = bundle/kitty
 	url = https://github.com/fladson/vim-kitty.git
+[submodule "bundle/zig"]
+	path = bundle/zig
+	url = https://github.com/ziglang/zig.vim.git
