@@ -86,7 +86,7 @@ set timeoutlen=300
 "" Enable mouse support, if possible
 if has('mouse')
   set mouse=a
-  set ttymouse=xterm2
+  set ttymouse=sgr
 endif
 
 "" Hopefully this makes Cygwin work
