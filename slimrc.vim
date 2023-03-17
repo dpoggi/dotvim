@@ -256,8 +256,8 @@ if has('autocmd')
   au BufRead,BufNewFile postgresql.conf                   call TabsLocal(8)
 
   "" Column guides for specific filetypes
-  au FileType cpp,rust  call SetColGuide(100)
-  au FileType cs,java   call SetColGuide(120)
+  au FileType c,cpp,rust          call SetColGuide(100)
+  au FileType cs,java,objc,objcpp call SetColGuide(120)
 endif
 
 ""

@@ -335,17 +335,15 @@ endfunction
 
 "" Filetype corrections
 if has('autocmd')
-  au BufRead,BufNewFile *.h          set filetype=c
-  au BufRead,BufNewFile *.pch        set filetype=c
-  au BufRead,BufNewFile *.mod        set filetype=dosini
-  au BufRead,BufNewFile go.mod       set filetype=gomod
-  au BufRead,BufNewFile *.gradle     set filetype=groovy
-  au BufRead,BufNewFile *.hjs        set filetype=handlebars
-  au BufRead,BufNewFile jquery.*.js  set filetype=javascript syntax=jquery
-  au BufRead,BufNewFile *.jquery.js  set filetype=javascript syntax=jquery
-  au BufRead,BufNewFile *.vmx        set filetype=jproperties
-  "" lol (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
-  "" because why not edit Elisp in Vim and Vimscript in Emacs
+  au BufRead,BufNewFile *.h             set filetype=c
+  au BufRead,BufNewFile *.pch           set filetype=c
+  au BufRead,BufNewFile *.mod           set filetype=dosini
+  au BufRead,BufNewFile go.mod          set filetype=gomod
+  au BufRead,BufNewFile *.gradle        set filetype=groovy
+  au BufRead,BufNewFile *.hjs           set filetype=handlebars
+  au BufRead,BufNewFile jquery.*.js     set filetype=javascript syntax=jquery
+  au BufRead,BufNewFile *.jquery.js     set filetype=javascript syntax=jquery
+  au BufRead,BufNewFile *.vmx           set filetype=jproperties
   au BufRead,BufNewFile .spacemacs      set filetype=lisp
   au BufRead,BufNewFile *.mako          set filetype=mako
   au BufRead,BufNewFile *.mm            set filetype=objcpp
@@ -483,8 +481,8 @@ if has('autocmd')
   au BufRead,BufNewFile postgresql.conf                   call TabsLocal(8)
 
   "" Column guides for specific filetypes
-  au FileType cpp,rust  call SetColGuide(100)
-  au FileType cs,java   call SetColGuide(120)
+  au FileType c,cpp,rust          call SetColGuide(100)
+  au FileType cs,java,objc,objcpp call SetColGuide(120)
 
   "" Comment strings for SQL
   au FileType sql let &l:commentstring = '--%s'
