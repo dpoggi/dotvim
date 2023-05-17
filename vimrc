@@ -345,6 +345,7 @@ if has('autocmd')
   au BufRead,BufNewFile *.jquery.js     set filetype=javascript syntax=jquery
   au BufRead,BufNewFile *.vmx           set filetype=jproperties
   au BufRead,BufNewFile .spacemacs      set filetype=lisp
+  au BufRead,BufNewFile *.make          set filetype=make
   au BufRead,BufNewFile *.mako          set filetype=mako
   au BufRead,BufNewFile *.mm            set filetype=objcpp
   au BufRead,BufNewFile *.pth           set filetype=python
