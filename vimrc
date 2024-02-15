@@ -349,7 +349,6 @@ if has('autocmd')
   au BufRead,BufNewFile *.make                      set filetype=make
   au BufRead,BufNewFile *.mako                      set filetype=mako
   au BufRead,BufNewFile *.mm                        set filetype=objcpp
-  au BufRead,BufNewFile .lldbinit                   set filetype=python
   au BufRead,BufNewFile *.pth                       set filetype=python
   au BufRead,BufNewFile *.rpy                       set filetype=python
   au BufRead,BufNewFile Brewfile*                   set filetype=ruby
