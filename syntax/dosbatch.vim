@@ -64,7 +64,7 @@ syn match dosbatchSpecialChar   "%%"
 
 " Environment variables
 syn match dosbatchIdentifier    contained "\s\h\w*\>"
-syn match dosbatchVariable	"%\h\w*%"
+syn match dosbatchVariable	"%\h[0-9A-Za-z_()]*%"
 syn match dosbatchVariable	"%\h\w*:\*\=[^=]*=[^%]*%"
 syn match dosbatchVariable	"%\h\w*:\~[-]\=\d\+\(,[-]\=\d\+\)\=%" contains=dosbatchInteger
 syn match dosbatchVariable	"!\h\w*!"
