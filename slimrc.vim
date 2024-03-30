@@ -388,7 +388,13 @@ function! PasteboardCopySelection()
 endfunction
 
 function! PasteboardCopyBuffer()
-  call s:PasteboardCopyText(s:GetBufferText())
+  let l:buffer_text = s:GetBufferText()
+  if line('$') ==# 1
+    "" Don't copy the newline from single line buffers
+    call s:PasteboardCopyText(s:Chomp(l:buffer_text))
+  else
+    call s:PasteboardCopyText(l:buffer_text)
+  endif
 endfunction
 
 function! PasteboardCopyPath()
