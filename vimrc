@@ -663,7 +663,7 @@ endif
 
 function! s:PasteboardCopyText(text)
   if !exists('g:pasteboard_cmd')
-    echoerr 'Couldn''t find pbcopy or xsel.'
+    echoerr 'Couldn''t find pbcopy, xsel, or clip.exe'
     return 1
   endif
 
