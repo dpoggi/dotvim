@@ -490,7 +490,8 @@ if has('autocmd')
   au FileType sql let &l:commentstring = '--%s'
 
   "" Make commentary behave
-  au BufRead,BufNewFile * call FixCommentString()
+  au BufRead,BufNewFile *       call FixCommentString()
+  au FileType           dosini  call FixCommentString()
 endif
 
 
@@ -563,6 +564,8 @@ function! FixCommentString()
     let &l:commentstring = '--%s'
   elseif &l:commentstring ==# '" %s'
     let &l:commentstring = '"%s'
+  elseif &l:commentstring ==# '; %s'
+    let &l:commentstring = ';%s'
   endif
 
   let b:commentary_format = &l:commentstring
