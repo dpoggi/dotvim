@@ -25,6 +25,7 @@
 !/bundle/commentary
 !/bundle/css-color
 !/bundle/css3
+!/bundle/cython
 !/bundle/dash
 !/bundle/Dockerfile
 !/bundle/editorconfig

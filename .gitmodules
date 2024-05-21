@@ -151,3 +151,6 @@
 [submodule "bundle/zig"]
 	path = bundle/zig
 	url = https://github.com/ziglang/zig.vim.git
+[submodule "bundle/cython"]
+	path = bundle/cython
+	url = https://github.com/lambdalisue/vim-cython-syntax.git
