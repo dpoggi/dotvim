@@ -337,6 +337,7 @@ endfunction
 if has('autocmd')
   au BufRead,BufNewFile *.h                         set filetype=c
   au BufRead,BufNewFile *.pch                       set filetype=c
+  au BufRead,BufNewFile *.pxi                       set filetype=cython
   au BufRead,BufNewFile *.mod                       set filetype=dosini
   au BufRead,BufNewFile go.mod                      set filetype=gomod
   au BufRead,BufNewFile *.gradle                    set filetype=groovy
