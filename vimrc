@@ -419,7 +419,7 @@ let g:loaded_syntastic_java_javac_checker = 1
 let g:syntastic_mode_map = {
 \   'mode': 'active',
 \   'active_filetypes': [],
-\   'passive_filetypes': ['spec'],
+\   'passive_filetypes': ['html', 'jinja.html', 'spec'],
 \ }
 
 "" Enable syntax highlighting
