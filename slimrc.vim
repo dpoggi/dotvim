@@ -1,9 +1,5 @@
-""
 "" Get out of Vi mode, do some setup
-""
-
 set nocompatible
-
 nnoremap Q <nop>
 
 "" Comma leader
