@@ -249,9 +249,9 @@ if has('autocmd')
 
   au FileType go call TabsLocal(4)
 
-  au FileType           bindzone,dosbatch,gitconfig,make,sudoers  call TabsLocal(8)
-  au BufRead,BufNewFile *.entitlements,*.pbxproj,*.plist          call TabsLocal(8)
-  au BufRead,BufNewFile postgresql.conf                           call TabsLocal(8)
+  au FileType           bindzone,dosbatch,gitconfig,make,slang,sudoers  call TabsLocal(8)
+  au BufRead,BufNewFile *.entitlements,*.pbxproj,*.plist                call TabsLocal(8)
+  au BufRead,BufNewFile postgresql.conf                                 call TabsLocal(8)
 
   "" Column guides for specific filetypes
   au FileType c,cpp,rust          call SetColGuide(100)
