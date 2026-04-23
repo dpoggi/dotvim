@@ -363,6 +363,8 @@ endfunction
 
 if g:dcp_os ==# 'Darwin'
   let g:pasteboard_cmd = '/usr/bin/pbcopy'
+elseif executable('wl-copy')
+  let g:pasteboard_cmd = 'wl-copy'
 elseif executable('xsel')
   let g:pasteboard_cmd = 'xsel --clipboard --input'
 elseif executable('clip.exe')
