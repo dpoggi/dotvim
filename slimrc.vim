@@ -244,8 +244,8 @@ if has('autocmd')
   ""
   "" Indents for specific filetypes
   ""
-  au FileType apiblueprint,c,cpp,d,groovy,java,kotlin,ld,lua,objc,  call SpacesLocal(4)
-  au FileType objcpp,perl,php,python,rust,scala,swift,typescript    call SpacesLocal(4)
+  au FileType apiblueprint,c,cpp,d,groovy,hyprlang,java,kotlin,ld,lua,objc  call SpacesLocal(4)
+  au FileType objcpp,perl,php,python,rust,scala,swift,typescript            call SpacesLocal(4)
 
   au FileType go call TabsLocal(4)
 
